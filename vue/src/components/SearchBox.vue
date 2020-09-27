@@ -1,24 +1,24 @@
 <template>
-    <div class='row'>
-      <div class='col-12 p-0'>
-        <div class='row'>
-          <div class='search col-lg-8 pr-0'>
-            <div class='col-lg-4 searchItem pl-lg-3'>
-              <div class='pt-2 text text-headers font-weight-bold'>Location</div>
-              <input type='text' class='p-0 text searchText font-weight-light font-italic' placeholder='Where would you like to go?'>
-            </div>
-            <div class='col-lg-4 searchItem pr-0'>
-              <div class='pl-lg-3 pt-2 text text-headers font-weight-bold'>Genre</div>
-              <input type='text' class='pl-lg-3 pt-0 text searchText font-weight-light font-italic' placeholder='What music would you like to hear?'>
-            </div>
-            <div class='col-lg-3 searchItem pr-lg-0 pl-lg-0'>
-              <div class='pl-lg-3 pt-2 text text-headers font-weight-bold'>Date</div>
-              <input type='date' class='pl-lg-3 pt-0 date'>
-            </div>
+  <div class='container-fluid'>
+    <div class='col-12 p-0'>
+      <div class='row'>
+        <div class='search col-lg-8 pr-0'>
+          <div class='col-lg-4 searchItem pl-lg-3'>
+            <div class='pt-2 text text-headers font-weight-bold'>Location</div>
+            <input type='text' class='p-0 text searchText font-weight-light font-italic' placeholder='Where would you like to go?'>
+          </div>
+          <div class='col-lg-4 searchItem pr-0'>
+            <div class='pl-lg-3 pt-2 text text-headers font-weight-bold'>Genre</div>
+            <input type='text' class='pl-lg-3 pt-0 text searchText font-weight-light font-italic' placeholder='What music would you like to hear?'>
+          </div>
+          <div class='col-lg-3 searchItem pr-lg-0 pl-lg-0'>
+            <div class='pl-lg-3 pt-2 text text-headers font-weight-bold'>Date</div>
+            <input type='date' class='pl-lg-3 pt-0 date'>
           </div>
         </div>
       </div>
     </div>
+  </div>
 </template>
 
 <script>
