@@ -41,23 +41,23 @@
         </div>
       </div>
       <div class='row d-flex justify-content-center pb-4'>
-        <h5 class='col-6 font-weight-light font-italic text-center'>
+        <h5 class='col-lg-6 col-sm-12 font-weight-light font-italic text-center'>
           We believe in events created by the people;
           by subscribing you can get notified when people are creating events in your area.
         </h5>
       </div>
       <div class='row d-flex justify-content-center py-4'>
-        <div class='col-2 input-group mb-3'>
+        <div class='col-lg-2 col-sm-12 input-group mb-3'>
           <input v-model='email' type='email' class='form-control' placeholder='Email Address'>
         </div>
-        <div class='col-2 input-group'>
+        <div class='col-lg-2 col-sm-12 input-group'>
           <select v-model='location' class='form-control browser-default custom-select'>
             <option selected>Choose location</option>
             <option value='Barcelona'>Barcelona</option>
             <option value='Berlin'>Berlin</option>
           </select>
         </div>
-        <button type='button' class='form-control col-2 py-0 btn btn-light btn-outline-dark'>Subscribe</button>
+        <button type='button' class='form-control col-lg-2 col-sm-6 mt-sm-3 mt-lg-0 py-0 btn btn-light btn-outline-dark'>Subscribe</button>
       </div>
     </section>
   </main>

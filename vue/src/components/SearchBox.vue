@@ -1,20 +1,21 @@
 <template>
-  <div class='container-fluid'>
-    <div class='col-12 p-0'>
-      <div class='row'>
-        <div class='search col-lg-8 pr-0'>
-          <div class='col-lg-4 searchItem pl-lg-3'>
-            <div class='pt-2 text text-headers font-weight-bold'>Location</div>
-            <input type='text' class='p-0 text searchText font-weight-light font-italic' placeholder='Where would you like to go?'>
-          </div>
-          <div class='col-lg-4 searchItem pr-0'>
-            <div class='pl-lg-3 pt-2 text text-headers font-weight-bold'>Genre</div>
-            <input type='text' class='pl-lg-3 pt-0 text searchText font-weight-light font-italic' placeholder='What music would you like to hear?'>
-          </div>
-          <div class='col-lg-3 searchItem pr-lg-0 pl-lg-0'>
-            <div class='pl-lg-3 pt-2 text text-headers font-weight-bold'>Date</div>
-            <input type='date' class='pl-lg-3 pt-0 date'>
-          </div>
+  <div class='row'>
+    <div class='col-12'>
+      <div class='search col-lg-7 pr-0 d-flex justify-content-center'>
+        <div class='col-lg-4 searchItem pl-lg-3'>
+          <div class='pt-2 text text-headers font-weight-bold'>Location</div>
+          <input v-model='loaction' type='text' class='p-0 text searchText font-weight-light font-italic' placeholder='Where would you like to go?'>
+        </div>
+        <div class='col-lg-3 searchItem pr-0 mr-5'>
+          <div class='pl-lg-3 pt-2 text text-headers font-weight-bold'>Genre</div>
+          <input v-model='genre' type='text' class='pl-lg-3 pt-0 text searchText font-weight-light font-italic' placeholder='Choose a genre'>
+        </div>
+        <div class='col-lg-2 searchItem pr-lg-0 pl-lg-3'>
+          <div class='pl-lg-3 pt-2 text text-headers font-weight-bold'>Date</div>
+          <input v-model='date' type='date' class='pt-0 date'>
+        </div>
+        <div class='col-lg-1 ml-lg-5 pt-lg-3 searchItem'>
+          <img class='icon' src='~@/assets/img/search.svg'>
         </div>
       </div>
     </div>
@@ -23,7 +24,13 @@
 
 <script>
 export default {
-  name: 'SearchBox'
+  data () {
+    return {
+      location: '',
+      genre: '',
+      date: ''
+    }
+  }
 }
 </script>
 
@@ -46,7 +53,6 @@ export default {
   text-transform: uppercase;
   text-decoration: none;
   border-radius: 60px;
-  padding-left: 30px;;
 }
 
 .text {
@@ -69,13 +75,9 @@ export default {
   transition: 0.4s ease-in-out;
 }
 
-.searchItem:hover {
-  background-color: rgb(192, 189, 191);
-}
-
 .date {
   font-size: 12px;
-  width: 65%;
+  width: 120px;
 }
 
 .date:focus {
@@ -93,5 +95,11 @@ input {
 
 .searchText:focus {
   outline: none;
+}
+
+.icon {
+  height: 25px;
+  width: 25px;
+  cursor: pointer;
 }
 </style>
