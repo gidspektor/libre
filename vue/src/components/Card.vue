@@ -1,6 +1,6 @@
 <template>
   <div class='cardStyles p-0'>
-    <a :href='`${cardLink}`' class='nounderline'>
+    <a :href='`${cardLink}`' class='noUnderline'>
       <img class='cardImage card-img-top' :src='require(`../assets/img/${cardImage}`)' alt='Card image cap'>
       <div class='card-body pl-0 pb-0 pt-2 ml-3'>
         <h5 class='mb-2'>{{cardTitle}}</h5>
@@ -36,7 +36,7 @@ export default {
     height: 18vw;
   }
 
-  .nounderline {
+  .noUnderline {
     color: inherit;
     text-decoration: none !important
   }
@@ -44,4 +44,10 @@ export default {
   .text {
     font-size: 12px;
   }
+
+  @media screen and (max-width: 500px) {
+    .cardImage {
+      height: 30vw;
+    }
+}
 </style>
