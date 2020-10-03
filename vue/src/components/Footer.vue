@@ -65,22 +65,22 @@ export default {
 </script>
 
 <style scoped>
+.section {
+    height: 500px;
+}
+
+@media screen and (max-width: 800px) {
   .section {
-      height: 500px;
+    height: 700px;
   }
+}
 
-  @media screen and (max-width: 800px) {
-    .section {
-      height: 700px;
-    }
-  }
+.titles {
+  font-size: 15px;
+  color: rgb(13, 201, 44);
+}
 
-  .titles {
-    font-size: 15px;
-    color: rgb(13, 201, 44);
-  }
-
-  .mainTitle{
-    font-family: Tahoma;
-  }
+.mainTitle{
+  font-family: Tahoma;
+}
 </style>

@@ -17,37 +17,37 @@ export default {
 </script>
 
 <style scoped>
-  .cardStyles {
-    width: 200px;
-    border-top-left-radius: 20px;
-    border-top-right-radius: 20px;
-    border-bottom-left-radius: 20px;
-    border-bottom-right-radius: 20px;
-  }
+.cardStyles {
+  width: 200px;
+  border-top-left-radius: 20px;
+  border-top-right-radius: 20px;
+  border-bottom-left-radius: 20px;
+  border-bottom-right-radius: 20px;
+}
 
-  .cardStyles:hover {
-    transition: 0.2s ease-in-out;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.15);
-  }
+.cardStyles:hover {
+  transition: 0.2s ease-in-out;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.15);
+}
 
+.cardImage {
+  border-top-left-radius: 20px;
+  border-top-right-radius: 20px;
+  height: 18vw;
+}
+
+.noUnderline {
+  color: inherit;
+  text-decoration: none !important
+}
+
+.text {
+  font-size: 12px;
+}
+
+@media screen and (max-width: 500px) {
   .cardImage {
-    border-top-left-radius: 20px;
-    border-top-right-radius: 20px;
-    height: 18vw;
+    height: 30vw;
   }
-
-  .noUnderline {
-    color: inherit;
-    text-decoration: none !important
-  }
-
-  .text {
-    font-size: 12px;
-  }
-
-  @media screen and (max-width: 500px) {
-    .cardImage {
-      height: 30vw;
-    }
 }
 </style>

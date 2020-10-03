@@ -60,93 +60,93 @@ export default {
 </script>
 
 <style scoped>
-  .mobileSearch {
-    display: none;
-  }
+.mobileSearch {
+  display: none;
+}
 
-  .mainImage {
-    background: url('~@/assets/img/home.jpg') no-repeat;
-    height: 800px;
-    background-size: cover;
-    background-position: center;
-  }
+.mainImage {
+  background: url('~@/assets/img/home.jpg') no-repeat;
+  height: 800px;
+  background-size: cover;
+  background-position: center;
+}
 
-  .search {
-    height: 60px;
-    margin: 0 auto;
-    margin-top: 20px;
-    font-size: 18px;
-    font-weight: bold;
-    border: 3px solid #ffff;
-    background-color: #ffff;
-    text-transform: uppercase;
-    text-decoration: none;
-    border-radius: 60px;
-  }
+.search {
+  height: 60px;
+  margin: 0 auto;
+  margin-top: 20px;
+  font-size: 18px;
+  font-weight: bold;
+  border: 3px solid #ffff;
+  background-color: #ffff;
+  text-transform: uppercase;
+  text-decoration: none;
+  border-radius: 60px;
+}
 
-  .text {
-    letter-spacing: 0.1em;
-  }
+.text {
+  letter-spacing: 0.1em;
+}
 
-  .text-headers {
-    font-size: 11px;
-  }
+.text-headers {
+  font-size: 11px;
+}
 
-  .searchText {
-    font-size: 12px;
-    width: 100%;
-  }
+.searchText {
+  font-size: 12px;
+  width: 100%;
+}
 
-  .searchItem {
-    display: inline-block;
-    height: 100%;
-    border-radius: 60px;
-    transition: 0.4s ease-in-out;
-  }
+.searchItem {
+  display: inline-block;
+  height: 100%;
+  border-radius: 60px;
+  transition: 0.4s ease-in-out;
+}
 
-  .date {
-    font-size: 12px;
-    width: 120px;
-  }
+.date {
+  font-size: 12px;
+  width: 120px;
+}
 
-  .date:focus {
-    outline: none;
-  }
+.date:focus {
+  outline: none;
+}
 
-  input {
-    width: 100%;
-    font-size: 12px;
-    background-color: transparent;
-    box-sizing: border-box;
-    border: none;
-    transition: 0.4s ease-in-out;
-  }
+input {
+  width: 100%;
+  font-size: 12px;
+  background-color: transparent;
+  box-sizing: border-box;
+  border: none;
+  transition: 0.4s ease-in-out;
+}
 
-  .searchText:focus {
-    outline: none;
-  }
+.searchText:focus {
+  outline: none;
+}
 
-  .icon {
-    height: 25px;
-    width: 25px;
+.icon {
+  height: 25px;
+  width: 25px;
+  cursor: pointer;
+}
+
+@media screen and (max-width: 1400px) {
+    .icon {
+    height: 20px;
+    width: 20px;
     cursor: pointer;
   }
+}
 
-  @media screen and (max-width: 1400px) {
-     .icon {
-      height: 20px;
-      width: 20px;
-      cursor: pointer;
-    }
+@media screen and (max-width: 800px) {
+  .mobileSearch {
+    display: block;
   }
 
-  @media screen and (max-width: 800px) {
-    .mobileSearch {
-      display: block;
-    }
-
-    .largeSearch {
-      display: none;
-    }
+  .largeSearch {
+    display: none;
   }
+}
 </style>
