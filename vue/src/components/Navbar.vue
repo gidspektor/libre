@@ -1,8 +1,8 @@
 <template>
   <div class='row'>
     <nav class='col-12 navbar navbar-expand-lg navbar-light'>
-      <a class='navbar-brand ml-5' href='#'>
-        <strong class='text-white font-italic'>Libre</strong>
+      <a class='navbar-brand ml-5' >
+        <router-link to='/'><strong class='text-white font-italic'>Libre</strong></router-link>
       </a>
       <button class='navbar-toggler bg-light' type='button' data-toggle='collapse' data-target='#navbarSupportedContent' aria-controls='navbarSupportedContent' aria-expanded='false' aria-label='Toggle navigation'>
         <span class='navbar-toggler-icon' id='hamburgerDropdown' @click='toggleHamburger'></span>

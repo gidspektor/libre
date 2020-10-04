@@ -1,7 +1,7 @@
 <template>
   <main>
     <section class='mainImage section container-fluid pt-5'>
-      <searchBox></searchBox>
+      <SearchBox></SearchBox>
       <div class='row d-block rowSpace ml-4 mt-4 pt-lg-5 mt-lg-5'>
         <div class='col-12'>
           <h1 class='text-white mb-1'>Events near you</h1>
@@ -14,24 +14,24 @@
     </section>
     <section class='midSection container-fluid my-4'>
       <div class='row d-flex justify-content-center'>
-        <card class='card col-lg-3 col-11 mr-lg-4 my-2'
+        <Card class='card col-lg-3 col-11 mr-lg-4 my-2'
           :cardImage='mainLeftCard.image'
           :cardText='mainLeftCard.text'
           :cardTitle='mainLeftCard.title'
           :cardLink='mainLeftCard.link'>
-        </card>
-        <card class='card col-lg-3 col-11 mx-lg-5 my-2'
+        </Card>
+        <Card class='card col-lg-3 col-11 mx-lg-5 my-2'
           :cardImage='mainMiddleCard.image'
           :cardText='mainMiddleCard.text'
           :cardTitle='mainMiddleCard.title'
           :cardLink='mainMiddleCard.link'>
-        </card>
-        <card class='card col-lg-3 col-11 ml-lg-4 my-2'
+        </Card>
+        <Card class='card col-lg-3 col-11 ml-lg-4 my-2'
           :cardImage='mainRightCard.image'
           :cardText='mainRightCard.text'
           :cardTitle='mainRightCard.title'
           :cardLink='mainRightCard.link'>
-        </card>
+        </Card>
       </div>
     </section>
     <section class='midSection container-fluid bg-light py-5'>
@@ -84,7 +84,7 @@ export default {
         image: 'crowd.jpg',
         title: 'Find events',
         text: 'Find events happening near you now, created by music lovers.',
-        link: '/'
+        link: 'findEvents'
       },
       mainRightCard: {
         image: 'artists.jpg',

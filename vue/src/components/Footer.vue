@@ -33,7 +33,7 @@
             <a class='text-white' href='/'>FAQ</a>
           </li>
           <li>
-            <a class='text-white' href='/'>Terms & Conditions</a>
+            <router-link to='terms'><a class='text-white'>Terms & Conditions</a></router-link>
           </li>
         </ul>
       </div>

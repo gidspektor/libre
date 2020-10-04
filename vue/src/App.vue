@@ -9,8 +9,9 @@
 <script>
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
-import Navbar from './components/Navbar'
+
 import Footer from './components/Footer'
+import Navbar from './components/Navbar'
 export default {
   components: {
     Navbar,

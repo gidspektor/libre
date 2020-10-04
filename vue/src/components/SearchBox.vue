@@ -16,7 +16,7 @@
             <input v-model='date' type='date' class='pt-0 date'>
           </div>
           <div class='col-lg-1 ml-lg-5 pt-lg-3 searchItem'>
-            <img class='icon' src='~@/assets/img/search.svg'>
+            <router-link to='findEvents' @click='search()'><img class='icon' src='~@/assets/img/search.svg'></router-link>
           </div>
         </div>
       </div>
@@ -48,12 +48,24 @@
 </template>
 
 <script>
+import axios from 'axios'
 export default {
   data () {
     return {
       location: '',
       genre: '',
       date: ''
+    }
+  },
+
+  methods: {
+    search () {
+      let response = axios.post('/search-events', {
+        location: this.location,
+        genre: this.genre,
+        date: this.date
+      })
+      this.$store.commit('searchResults', response)
     }
   }
 }
