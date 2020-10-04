@@ -1,5 +1,5 @@
 <template>
-  <div class='row'>
+  <div class='row mb-5'>
     <nav class='col-12 navbar navbar-expand-lg navbar-light'>
       <a class='navbar-brand ml-5' >
         <router-link to='/'><strong class='text-white font-italic'>Libre</strong></router-link>
