@@ -1,7 +1,7 @@
 <template>
   <main>
     <section class='section'>
-      <div> 
+      <div>
         <h1 class='font-italic ml-5 pl-5'>Hello</h1>
         <h2>hello</h2>
         <h6>hello</h6>

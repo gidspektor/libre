@@ -1,17 +1,18 @@
 <template>
-  <main class='container-fluid'>
+  <main class='container-fluid bg-primary section container-fluid pt-5'>
     <SearchBox></SearchBox>
-    <!-- <ResultsBox></ResultsBox> -->
+    <ResultsBox></ResultsBox>
   </main>
 </template>
 
 <script>
 import { mapState } from 'vuex'
-// import ResultsBox from '../ResultsBox'
+import ResultsBox from '../ResultsBox'
 import SearchBox from '../SearchBox'
 export default {
   components: {
-    SearchBox
+    SearchBox,
+    ResultsBox
   },
 
   computed: {

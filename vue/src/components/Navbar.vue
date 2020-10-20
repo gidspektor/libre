@@ -1,40 +1,42 @@
 <template>
-  <div class='row mb-5'>
-    <nav class='col-12 navbar navbar-expand-lg navbar-light'>
-      <a class='navbar-brand ml-5' >
-        <router-link to='/'><strong class='text-white font-italic'>Libre</strong></router-link>
-      </a>
-      <button class='navbar-toggler bg-light' type='button' data-toggle='collapse' data-target='#navbarSupportedContent' aria-controls='navbarSupportedContent' aria-expanded='false' aria-label='Toggle navigation'>
-        <span class='navbar-toggler-icon' id='hamburgerDropdown' @click='toggleHamburger'></span>
-        <div class='drop dropdown-menu-right' v-show='hamBurgetState'>
-          <a class='nav-link' href='#'>Sign up</a>
-          <a class='nav-link' href='#'>Log in</a>
-          <div class='dropdown-divider'></div>
-          <a class='nav-link' href='#'>Host events</a>
-          <a class='nav-link' href='#'>Help</a>
+  <main class='container-fluid'>
+    <div class='row'>
+      <nav class='col-12 navbar navbar-expand-lg navbar-light mb-5'>
+        <a class='navbar-brand ml-5' >
+          <router-link to='/'><strong class='text-white font-italic'>Libre</strong></router-link>
+        </a>
+        <button class='navbar-toggler bg-light' type='button' data-toggle='collapse' data-target='#navbarSupportedContent' aria-controls='navbarSupportedContent' aria-expanded='false' aria-label='Toggle navigation'>
+          <span class='navbar-toggler-icon' id='hamburgerDropdown' @click='toggleHamburger'></span>
+          <div class='drop dropdown-menu-right' v-show='hamBurgetState'>
+            <a class='nav-link' href='#'>Sign up</a>
+            <a class='nav-link' href='#'>Log in</a>
+            <div class='dropdown-divider'></div>
+            <a class='nav-link' href='#'>Host events</a>
+            <a class='nav-link' href='#'>Help</a>
+          </div>
+        </button>
+        <div class='collapse navbar-collapse d-flex-md justify-content-end' id='navbarSupportedContent'>
+          <ul class='navbar-nav'>
+            <li class='nav-item mr-3'>
+              <a class='nav-link text-white ' href='#'>Host an event</a>
+            </li>
+            <li class='nav-item dropdown'>
+              <a class='nav-link dropdown-toggle mr-3 text-black' @click='toggleDropdown' href='#' id='navbarDropdown' role='button'>
+                <img class='' src='~@/assets/img/user.svg'>
+              </a>
+              <div class='drop dropdown-menu-right' v-show='dropState'>
+                <a class='nav-link' href='#'>Sign up</a>
+                <a class='nav-link' href='#'>Log in</a>
+                <div class='dropdown-divider'></div>
+                <a class='nav-link' href='#'>Host events</a>
+                <a class='nav-link' href='#'>Help</a>
+              </div>
+            </li>
+          </ul>
         </div>
-      </button>
-      <div class='collapse navbar-collapse d-flex-md justify-content-end' id='navbarSupportedContent'>
-        <ul class='navbar-nav'>
-          <li class='nav-item mr-3'>
-            <a class='nav-link text-white ' href='#'>Host an event</a>
-          </li>
-          <li class='nav-item dropdown'>
-            <a class='nav-link dropdown-toggle mr-3 text-black' @click='toggleDropdown' href='#' id='navbarDropdown' role='button'>
-              <img class='' src='~@/assets/img/user.svg'>
-            </a>
-            <div class='drop dropdown-menu-right' v-show='dropState'>
-              <a class='nav-link' href='#'>Sign up</a>
-              <a class='nav-link' href='#'>Log in</a>
-              <div class='dropdown-divider'></div>
-              <a class='nav-link' href='#'>Host events</a>
-              <a class='nav-link' href='#'>Help</a>
-            </div>
-          </li>
-        </ul>
-      </div>
-    </nav>
-  </div>
+      </nav>
+    </div>
+  </main>
 </template>
 
 <script>
