@@ -2,21 +2,31 @@
   <main>
     <div class='row largeSearch'>
       <div class='col-12'>
-        <div class='search col-lg-7 pr-0 d-flex justify-content-center'>
+        <div class='search col-lg-7 pr-0 d-flex justify-content-center border border-dark'>
           <div class='col-lg-4 searchItem pl-lg-3'>
             <div class='pt-2 text text-headers font-weight-bold'>Location</div>
             <input v-model='location' type='text' class='p-0 text searchText font-weight-light font-italic' placeholder='Where would you like to go?'>
           </div>
-          <div class='col-lg-3 searchItem pr-0 mr-5'>
+          <div v-if="this.$route.name === 'createEvents'" class='col-lg-3 searchItem pr-0 mr-5'>
+            <div class='pl-lg-4 pt-2 text text-headers font-weight-bold'>Capacity</div>
+            <select v-model='capacity' class='ml-lg-4 pl-lg-2 rounded-pill capacity'>
+              <option disabled value=''>Choose</option>
+              <option value='10-50'>10-50</option>
+              <option value='50-150'>50-150</option>
+              <option value='150-250'>150-250</option>
+              <option value='250-350'>250-350</option>
+            </select>
+          </div>
+          <div v-else class='col-lg-3 searchItem pr-0 mr-5'>
             <div class='pl-lg-3 pt-2 text text-headers font-weight-bold'>Genre</div>
             <input v-model='genre' type='text' class='pl-lg-3 pt-0 text searchText font-weight-light font-italic' placeholder='Choose a genre'>
           </div>
           <div class='col-lg-2 searchItem pr-lg-0 pl-lg-3'>
-            <div class='pl-lg-3 pt-2 text text-headers font-weight-bold'>Date</div>
+            <div class='pl-lg-1 pt-2 text text-headers font-weight-bold'>Date</div>
             <input v-model='date' type='date' class='pt-0 date'>
           </div>
           <div class='col-lg-1 ml-lg-5 pt-lg-3 searchItem'>
-            <router-link to='findEvents' @click='search()'><img class='icon' src='~@/assets/img/search.svg'></router-link>
+            <router-link :to='searchRedirect' @click='search()'><img class='icon' src='~@/assets/img/search.svg'></router-link>
           </div>
         </div>
       </div>
@@ -54,18 +64,34 @@ export default {
     return {
       location: '',
       genre: '',
-      date: ''
+      date: '',
+      capacity: ''
+    }
+  },
+
+  computed: {
+    searchRedirect () {
+      return this.$route.name === 'createEvents' ? 'createEvents' : 'findEvents'
     }
   },
 
   methods: {
     search () {
-      let response = axios.post('/search-events', {
-        location: this.location,
-        genre: this.genre,
-        date: this.date
-      })
-      this.$store.commit('searchResults', response)
+      if (this.$route.name === 'createEvents') {
+        let response = axios.post('/search-event-spaces', {
+          location: this.location,
+          capacity: this.capacity,
+          date: this.date
+        })
+        this.$store.commit('searchResults', response)
+      } else {
+        let response = axios.post('/search-events', {
+          location: this.location,
+          genre: this.genre,
+          date: this.date
+        })
+        this.$store.commit('searchResults', response)
+      }
     }
   }
 }
@@ -107,6 +133,15 @@ export default {
 .searchText {
   font-size: 12px;
   width: 100%;
+}
+
+.capacity {
+  font-size: 13px;
+  width: 50%;
+}
+
+.capacity:focus {
+  outline: none;
 }
 
 .searchItem {

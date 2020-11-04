@@ -52,7 +52,7 @@
         </div>
         <div class='col-lg-2 col-12 input-group'>
           <select v-model='location' class='form-control browser-default custom-select'>
-            <option selected>Choose location</option>
+            <option disabled value=''>Choose location</option>
             <option value='Barcelona'>Barcelona</option>
             <option value='Berlin'>Berlin</option>
           </select>
@@ -78,7 +78,7 @@ export default {
         image: 'warehouse.jpg',
         title: 'Create Events',
         text: 'Create your own crowdfunded events, you choose the location and you choose the music.',
-        link: '/'
+        link: 'createEvents'
       },
       mainMiddleCard: {
         image: 'crowd.jpg',

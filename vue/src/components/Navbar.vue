@@ -11,7 +11,7 @@
             <a class='nav-link' href='#'>Sign up</a>
             <a class='nav-link' href='#'>Log in</a>
             <div class='dropdown-divider'></div>
-            <a class='nav-link' href='#'>Host events</a>
+            <router-link class='nav-link' :to="'createEvents'">Host events</router-link>
             <a class='nav-link' href='#'>Help</a>
           </div>
         </button>
