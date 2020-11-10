@@ -90,7 +90,7 @@ export default {
         image: 'artists.jpg',
         title: 'Collaborate',
         text: 'Connect with other artists who want to set up events, or just make music.',
-        link: '/'
+        link: 'collaborate'
       },
       state: false,
       location: '',

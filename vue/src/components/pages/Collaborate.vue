@@ -1,18 +1,18 @@
 <template>
-  <main class='container-fluid bg-white section pt-5'>
+  <main class='section bg-white container-fluid pt-5'>
     <SearchBox></SearchBox>
-    <ResultsBox></ResultsBox>
+    <CollaborateResult></CollaborateResult>
   </main>
 </template>
 
 <script>
 import { mapState } from 'vuex'
-import ResultsBox from '../ResultsBox'
+import CollaborateResult from '../CollaborateResult'
 import SearchBox from '../SearchBox'
 export default {
   components: {
     SearchBox,
-    ResultsBox
+    CollaborateResult
   },
 
   computed: {
@@ -42,7 +42,7 @@ export default {
 
 @media screen and (max-width: 800px) {
   .section {
-    height: 1050px;
+    height: 700px;
   }
 }
 </style>

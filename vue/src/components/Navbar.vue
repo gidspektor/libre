@@ -11,24 +11,25 @@
             <a class='nav-link' href='#'>Sign up</a>
             <a class='nav-link' href='#'>Log in</a>
             <div class='dropdown-divider'></div>
-            <router-link class='nav-link' :to="'createEvents'">Host events</router-link>
+            <router-link class='nav-link' :to="{createEvents}">Host events</router-link>
             <a class='nav-link' href='#'>Help</a>
           </div>
         </button>
         <div class='collapse navbar-collapse d-flex-md justify-content-end' id='navbarSupportedContent'>
           <ul class='navbar-nav'>
             <li class='nav-item mr-3'>
-              <a class='nav-link text-white ' href='#'>Host an event</a>
+              <a v-if="this.$route.name !== 'createEvents'" class='nav-link text-white ' href='#/createEvents'>Host an event</a>
+              <a v-else class='nav-link text-white ' href='#/FindEvents'>Find an event</a>
             </li>
             <li class='nav-item dropdown'>
-              <a class='nav-link dropdown-toggle mr-3 text-black' @click='toggleDropdown' href='#' id='navbarDropdown' role='button'>
+              <span class='nav-link dropdown-toggle mr-3 text-black' @click='toggleDropdown' id='navbarDropdown' role='button'>
                 <img class='' src='~@/assets/img/user.svg'>
-              </a>
+              </span>
               <div class='drop dropdown-menu-right' v-show='dropState'>
                 <a class='nav-link' href='#'>Sign up</a>
                 <a class='nav-link' href='#'>Log in</a>
                 <div class='dropdown-divider'></div>
-                <a class='nav-link' href='#'>Host events</a>
+                <a class='nav-link' href='#/Collaborate'>Collaborate</a>
                 <a class='nav-link' href='#'>Help</a>
               </div>
             </li>
@@ -45,6 +46,11 @@ export default {
     return {
       dropState: false,
       hamBurgetState: false
+    }
+  },
+  computed: {
+    searchRedirect () {
+      return this.$route.name !== 'collaborate' ? 'findEvents' : this.$route.name
     }
   },
   created () {

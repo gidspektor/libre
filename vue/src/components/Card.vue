@@ -14,7 +14,6 @@
 export default {
   props: ['cardImage', 'cardText', 'cardLink', 'cardTitle']
 }
-
 </script>
 
 <style scoped>

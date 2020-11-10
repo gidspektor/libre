@@ -1,5 +1,5 @@
 <template>
-  <main class='container-fluid bg-white container-fluid pt-5'>
+  <main class='section container-fluid bg-white pt-5'>
     <SearchBox></SearchBox>
     <ResultsBox></ResultsBox>
   </main>
@@ -30,19 +30,9 @@ export default {
 </script>
 
 <style scoped>
-.align-items-center {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.rowSpace {
-  margin-top: 80px;
-}
-
 @media screen and (max-width: 800px) {
-  .midSection {
-    height: 700px;
+  .section {
+    height: 1050px;
   }
 }
 </style>
