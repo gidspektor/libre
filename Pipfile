@@ -4,10 +4,15 @@ url = "https://pypi.org/simple"
 verify_ssl = true
 
 [dev-packages]
+pylint = "*"
 
 [packages]
 django = "==3.1.1"
 djangorestframework = "*"
+mysql-client = "*"
+djangorestframework-api-key = "==2.*"
+selenium = "==2.53.6"
+beautifulsoup4 = "*"
 
 [requires]
 python_version = "3.8"
