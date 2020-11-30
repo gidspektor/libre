@@ -3,8 +3,8 @@ import logging
 from django.core.management.base import BaseCommand
 
 from api import config
-from api.tasks import scrapers
 from api.tools import create_web_driver, create_parser
+from api.tasks import scrapers
 
 logger = logging.getLogger('command')
 
@@ -32,4 +32,4 @@ class Command(BaseCommand):
         driver = create_web_driver()
 
         if website == 'venuu':
-            scrapers.scrape_venuu(driver, url)
+            scrapers.navigate_venuu(driver, url)
