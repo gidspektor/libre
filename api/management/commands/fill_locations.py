@@ -1,5 +1,5 @@
 import logging
-
+from api.models import Location
 from django.core.management.base import BaseCommand
 
 from api import config

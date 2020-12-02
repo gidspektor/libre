@@ -1,1 +1,4 @@
-from api.models import Countries, Cities, Location, Events
+from .Countries import *
+from .Cities import *
+from .Location import *
+from .Events import *

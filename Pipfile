@@ -13,6 +13,8 @@ mysql-client = "*"
 djangorestframework-api-key = "==2.*"
 selenium = "==2.53.6"
 beautifulsoup4 = "*"
+pycopy-shutil = "*"
+requests = "*"
 
 [requires]
 python_version = "3.8"
