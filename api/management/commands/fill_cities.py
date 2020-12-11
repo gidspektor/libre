@@ -25,7 +25,7 @@ class Command(BaseCommand):
       'Correze',
       'Barcelona',
       'Sant Adrio de Besos',
-      'L\'Hospitalet de Llobregat',
+      'L\' Hospitalet de Llobregat',
       'Esplugues de Llobregat',
       'Santa Coloma de Gramenet',
       'Sant Just Desvern',

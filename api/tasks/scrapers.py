@@ -59,8 +59,10 @@ def scrape_venuu(url, driver):
   location.post_code = address.find('span', {'itemprop': 'postalCode'}).text
 
   city = address.find('span', {'itemprop': 'addressLocality'}).text
-  city = city.encode("utf-8")
-  city_object = Cities.objects.filter(city__icontains=city).first()
+  # city = city.replace("'", "\'").encode('utf-8')
+  print(city)
+  city_object = Cities.objects.extra(where=["%s LIKE city + '%%'"], params=[city])
+  print(city_object)
   location.city = city_object
 
   available_extras = soup.findAll('i', {'class': 'fa fa-check m-service-list-available'})
