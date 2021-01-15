@@ -8,10 +8,7 @@ import urllib
 import uuid
 
 def scrape_venuu(driver, total_pages, current_page, ul, city):
-  index = 0
-
   for li in ul:
-    index += 1
     url = li.find('a')['href']
     driver.get(config.WEBSITES.get('venuu').get('base_url') + url)
     page_source = driver.page_source
@@ -81,9 +78,6 @@ def scrape_venuu(driver, total_pages, current_page, ul, city):
 
     location.save()
     print('scraped')
-
-    if index == ul.length:
-      break
   
   if current_page != total_pages:
     current_page += 1
