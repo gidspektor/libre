@@ -1,1 +1,1 @@
-from api.tasks import scrapers
+from api.tasks import *

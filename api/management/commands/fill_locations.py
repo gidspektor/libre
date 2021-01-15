@@ -20,16 +20,24 @@ class Command(BaseCommand):
         )
 
         parser.add_argument(
-            '--location',
-            dest='location',
+            '--country',
+            dest='country',
+            default='spain'
+        )
+
+        parser.add_argument(
+            '--city',
+            dest='city',
             default='barcelona'
         )
 
     def handle(self, *args, **options):
         website = options['website']
-        location = options['location']
-        url = config.WEBSITES.get(website).get(location)
+        country = options['country']
+        city = options['city']
+
+        url = config.WEBSITES.get(website).get(country).format(city)
         driver = create_web_driver()
 
         if website == 'venuu':
-            scrapers.navigate_venuu(driver, url)
+            scrapers.navigate_venuu(driver, url, city)

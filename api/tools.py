@@ -9,7 +9,7 @@ def create_parser(page_source, page_type):
   e.g. html or lxml to parse and returns 
   the parser for that page.
   '''
-  soup = BeautifulSoup(page_source, page_type)
+  soup = BeautifulSoup(page_source, features=page_type)
   return soup
 
 def create_web_driver():
@@ -19,5 +19,4 @@ def create_web_driver():
   chrome_options = Options()
   chrome_options.add_argument('--headless')
   driver = webdriver.Chrome(executable_path=r'./api/driver/chromedriver', chrome_options=chrome_options)
-  # driver = webdriver.Chrome(r'./api/driver/chromedriver')
   return driver
