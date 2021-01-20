@@ -1,13 +1,13 @@
 <template>
   <main>
-    <div class='row largeSearch'>
-      <div class='col-12'>
-        <div class='search pr-0 d-flex justify-content-center border border-dark' v-bind:class="columnSize">
-          <div class='searchItem pl-lg-3 col-lg-4' v-bind:class="locationClass">
+    <div class='row largeSearch d-flex justify-content-center'>
+      <div class='col-9'>
+        <div class='search px-5 d-flex justify-content-center border border-dark' v-bind:class="columnSize">
+          <div class='searchItem border-right border-dark mr-5 col-lg-6' v-bind:class="locationClass">
             <div class='pt-2 text text-headers font-weight-bold'>Location</div>
-            <input v-model='location' type='text' class='p-0 text searchText font-weight-light font-italic' placeholder='Where?'>
+            <input v-model='keywordSearch' @input='searchLocations' type='text' class='p-0 text searchText font-weight-light font-italic' placeholder='Choose a city'>
           </div>
-          <div v-if="this.$route.name === 'createEvents'" class='col-lg-3 searchItem pr-0 mr-5'>
+          <!-- <div v-if="this.$route.name === 'createEvents'" class='col-lg-3 searchItem pr-0 mr-5'>
             <div class='pl-lg-4 pt-2 text text-headers font-weight-bold'>Capacity</div>
             <select v-model='capacity' class='ml-lg-4 pl-lg-2 rounded-pill capacity'>
               <option disabled value=''>Choose</option>
@@ -16,59 +16,59 @@
               <option value='150-250'>150-250</option>
               <option value='250-350'>250-350</option>
             </select>
-          </div>
-          <div v-else-if="this.$route.name != 'collaborate'" class='col-lg-3 searchItem pr-0 mr-5 '>
+          </div> -->
+          <!-- <div v-else-if="this.$route.name != 'collaborate'" class='col-lg-3 searchItem pr-0 mr-5 '>
             <div class='pl-lg-3 pt-2 text text-headers font-weight-bold'>Genre</div>
             <input v-model='genre' type='text' class='pl-lg-3 pt-0 text searchText font-weight-light font-italic' placeholder='Choose a genre'>
-          </div>
-          <div v-if="this.$route.name != 'collaborate'" class='col-lg-2 searchItem pr-lg-0 pl-lg-3'>
-            <div class='pl-lg-1 pt-2 text text-headers font-weight-bold'>Date</div>
+          </div> -->
+          <div v-if="this.$route.name != 'collaborate'" class='col-lg-4 searchItem'>
+            <div class='pl-lg-1 pt-2 mr-3 text text-headers font-weight-bold'>Date</div>
             <input v-model='date' type='date' class='pt-0 date'>
           </div>
-          <div v-if="this.$route.name === 'collaborate'" class='col-lg-5 searchItem pl-lg-1'>
+          <div v-if="this.$route.name === 'collaborate'" class='col-lg-4 searchItem pl-lg-1'>
             <div class='pt-2 text text-headers font-weight-bold'>Search</div>
             <input v-model='keywordSearch' type='text' class='p-0 text searchText font-weight-light font-italic' placeholder='Search posts e.g. drummer wanted'>
           </div>
-          <div class='col-lg-1 ml-lg-5 pt-lg-3 searchItem'>
-            <router-link :to='searchRedirect' @click='search()'><img class='icon' src='~@/assets/img/search.svg'></router-link>
+          <div class='col-lg-1 ml-auto pt-lg-3 searchItem' @click='search()'>
+            <router-link :to='searchRedirect'><img class='icon' src='~@/assets/img/search.svg'></router-link>
           </div>
         </div>
       </div>
     </div>
     <div class='row mobileSearch'>
-      <div class='search col-sm-12'>
+      <div class='border border-dark search col-11 pl-4'>
         <div class='pt-2 text text-headers font-weight-bold'>Location</div>
-        <input v-model='location' type='text' class='p-0 text searchText font-weight-light font-italic' placeholder='Where?'>
+        <input v-model='location' type='text' class='p-0 text searchText font-weight-light font-italic' placeholder='Choose a city'>
       </div>
     </div>
-    <div v-if="this.$route.name != 'collaborate'" class='row mobileSearch border border-dark'>
+    <!-- <div v-if="this.$route.name != 'collaborate'" class='row mobileSearch border border-dark'>
       <div class='search col-sm-12'>
         <div class='pl-lg-3 pt-2 text text-headers font-weight-bold'>Genre</div>
         <input v-model='genre' type='text' class='pl-lg-3 pt-0 text searchText font-weight-light font-italic' placeholder='Choose a genre'>
       </div>
-    </div>
-    <div v-if="this.$route.name != 'collaborate'" class='row mobileSearch border border-dark'>
-      <div class='search col-sm-12'>
-        <div class='pl-lg-3 pt-2 text text-headers font-weight-bold'>Date</div>
+    </div> -->
+    <div v-if="this.$route.name != 'collaborate'" class='row mobileSearch'>
+      <div class='border border-dark search col-11 pl-4'>
+        <div class='pt-2 text text-headers font-weight-bold'>Date</div>
         <input v-model='date' type='date' class='pt-0 date'>
       </div>
     </div>
-    <div v-if="this.$route.name === 'collaborate'" class='row mobileSearch border border-dark'>
-      <div class='search col-sm-12'>
+    <!-- <div v-if="this.$route.name === 'collaborate'" class='row mobileSearch'>
+      <div class='search col-11 pl-4'>
         <div class='pt-2 text text-headers font-weight-bold'>Search</div>
         <input v-model='location' type='text' class='p-0 text searchText font-weight-light font-italic' placeholder='Search posts e.g. drummer wanted'>
       </div>
-    </div>
-    <div class='row px-5 mobileSearch border border-dark'>
-      <div class='search col-sm-12 pt-2 d-flex justify-content-center'>
-        <img class='icon mt-2' src='~@/assets/img/search.svg'>
+    </div> -->
+    <div class='row mobileSearch'>
+      <div class='border border-dark search col-11 pt-3 d-flex justify-content-center' @click='search()'>
+        <router-link :to='searchRedirect'><img class='icon' src='~@/assets/img/search.svg'></router-link>
       </div>
     </div>
   </main>
 </template>
 
 <script>
-import axios from 'axios'
+import http from '../http-common'
 export default {
   data () {
     return {
@@ -98,22 +98,16 @@ export default {
   },
 
   methods: {
+    searchLocations () {
+      http.get(`locations/${this.keywordSearch}/`).then(response => {
+        console.log(response.data)
+      })
+    },
     search () {
-      if (this.$route.name === 'createEvents') {
-        let response = axios.post('/search-event-spaces', {
-          location: this.location,
-          capacity: this.capacity,
-          date: this.date
-        })
-        this.$store.commit('searchResults', response)
-      } else {
-        let response = axios.post('/search-events', {
-          location: this.location,
-          genre: this.genre,
-          date: this.date
-        })
-        this.$store.commit('searchResults', response)
-      }
+      http.get(`events/${this.location}/`).then(response => {
+        console.log(response.data)
+      })
+      // this.$store.commit('searchResults', response)
     }
   }
 }
@@ -188,7 +182,6 @@ input {
   background-color: transparent;
   box-sizing: border-box;
   border: none;
-  transition: 0.4s ease-in-out;
 }
 
 .searchText:focus {
@@ -215,7 +208,7 @@ input {
   }
 
   .largeSearch {
-    display: none;
+    display: none !important;
   }
 }
 </style>

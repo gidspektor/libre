@@ -7,6 +7,7 @@ class Events(models.Model):
   date_time = models.DateTimeField(blank=False)
   location = models.ForeignKey(Location, on_delete=models.CASCADE)
   name = models.CharField(max_length=100, blank=False, null=True)
+  show = models.BooleanField(blank=True, default=0)
 
   def __str__(self):
     return self.location.name + ' / ' + str(self.date_time)
