@@ -31,7 +31,6 @@ class EventsListView(APIView):
         q_list = [Q(show=1), Q(location__city=location.city.id)]
 
         if date:
-            print(datetime.datetime.strptime(date, '%Y-%m-%d'))
             q_list.append(Q(date_time__date=datetime.datetime.strptime(date, '%Y-%m-%d')))
 
         events = Events.objects.filter(reduce(operator.and_, q_list))
