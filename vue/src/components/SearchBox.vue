@@ -3,9 +3,17 @@
     <div class='row largeSearch d-flex justify-content-center'>
       <div class='col-9'>
         <div class='search px-5 d-flex justify-content-center border border-dark' v-bind:class="columnSize">
-          <div class='searchItem border-right border-dark mr-5 col-lg-6' v-bind:class="locationClass">
+          <div class='searchItem border-right border-dark mr-5 col-lg-7' v-bind:class="locationClass">
             <div class='pt-2 text text-headers font-weight-bold'>Location</div>
             <input v-model='keywordSearch' @input='searchLocations' type='text' class='p-0 text searchText font-weight-light font-italic' placeholder='Choose a city'>
+            <div class='px-0 drop col-12'>
+              <span class='pl-3 locationItem py-1 d-block searchText font-weight-bold font-italic'
+                v-for='(returnedLocation, index) in returnedLocations'
+                :key='index'
+                @click='selectLocation(returnedLocation)'>
+                  {{returnedLocation.city}}, {{returnedLocation.country}}
+              </span>
+            </div>
           </div>
           <!-- <div v-if="this.$route.name === 'createEvents'" class='col-lg-3 searchItem pr-0 mr-5'>
             <div class='pl-lg-4 pt-2 text text-headers font-weight-bold'>Capacity</div>
@@ -38,7 +46,7 @@
     <div class='row mobileSearch'>
       <div class='border border-dark search col-11 pl-4'>
         <div class='pt-2 text text-headers font-weight-bold'>Location</div>
-        <input v-model='location' type='text' class='p-0 text searchText font-weight-light font-italic' placeholder='Choose a city'>
+        <input v-model='keywordSearch' type='text' class='p-0 text searchText font-weight-light font-italic' placeholder='Choose a city'>
       </div>
     </div>
     <!-- <div v-if="this.$route.name != 'collaborate'" class='row mobileSearch border border-dark'>
@@ -72,14 +80,18 @@ import http from '../http-common'
 export default {
   data () {
     return {
-      location: '',
       genre: '',
       date: '',
       capacity: '',
-      keywordSearch: ''
+      keywordSearch: '',
+      returnedLocations: ''
     }
   },
-
+  created () {
+    window.addEventListener('click', () => {
+      this.returnedLocations = []
+    })
+  },
   computed: {
     searchRedirect () {
       return this.$route.name === 'home' ? 'findEvents' : this.$route.name
@@ -98,15 +110,28 @@ export default {
   },
 
   methods: {
+    sanitizeString (string) {
+      return string.replace(/[^a-zA-Z0-9 -]/, '').replace(' ', '-')
+    },
+    selectLocation (selectedLocation) {
+      this.keywordSearch = selectedLocation.city.replace(' ', '-') + '-' + selectedLocation.country
+    },
     searchLocations () {
-      http.get(`locations/${this.keywordSearch}/`).then(response => {
-        console.log(response.data)
-      })
+      this.returnedLocations = ''
+      if (this.keywordSearch) {
+        let cleanedString = this.sanitizeString(this.keywordSearch)
+        http.get(`locations/${cleanedString}/`).then(response => {
+          this.returnedLocations = response.data.results
+        })
+      }
     },
     search () {
-      http.get(`events/${this.location}/`).then(response => {
-        console.log(response.data)
-      })
+      if (this.keywordSearch) {
+        let cleanedString = this.sanitizeString(this.keywordSearch)
+        http.get(`events/${cleanedString}?date=${this.date}`).then(response => {
+          console.log(response.data)
+        })
+      }
       // this.$store.commit('searchResults', response)
     }
   }
@@ -147,7 +172,7 @@ export default {
 }
 
 .searchText {
-  font-size: 12px;
+  font-size: 14px;
   width: 100%;
 }
 
@@ -164,7 +189,6 @@ export default {
   display: inline-block;
   height: 100%;
   border-radius: 60px;
-  transition: 0.4s ease-in-out;
 }
 
 .date {
@@ -192,6 +216,23 @@ input {
   height: 25px;
   width: 25px;
   cursor: pointer;
+}
+
+.drop {
+  border-radius: 10px;
+  z-index: 1000;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  background-color: #ffff;
+  position: absolute;
+  top: 65px;
+  left: -10px;
+  cursor: pointer;
+}
+
+.locationItem:hover {
+  border-radius: 10px;
+  opacity: 0.5;
+  background-color: rgb(240, 234, 234);
 }
 
 @media screen and (max-width: 1400px) {

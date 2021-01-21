@@ -1,10 +1,11 @@
 from rest_framework.views import APIView
 import datetime
-from api.models import Events
+from api.models import Events, Countries_cities
 from django.http import JsonResponse
 from collections import OrderedDict
 import operator
 from django.db.models import Q
+from api.tools import sanitize_string
 from django.core import serializers
 from functools import reduce
 
@@ -12,14 +13,25 @@ from functools import reduce
 class EventsListView(APIView):
     def get(self, request, location):
         date = request.GET.get('date', '')
-        city = request.GET.get('city', '')
-        q_list = [Q(location_id__country__country__icontains=country)]
-        q_list.append(Q(show=1))
+        search_terms = []
+        search_string = sanitize_string(location)
 
-        if city:
-            q_list.append(Q(location_id__city__city__icontains=city))
+        if '-' in search_string:
+            search_terms = search_string.rsplit('-', 1)
+
+        if len(search_terms) > 1 and not search_terms[1].isspace():
+            term_one = search_terms[0].strip()
+            term_two = search_terms[1].strip()
+            location_query = (Q(country__country__icontains=term_one) & Q(city__city__icontains=term_two)) | (Q(country__country__icontains=term_two) & Q(city__city__icontains=term_one))
+        else:
+            location_query = Q(country__country__icontains=search_string) | Q(city__city__icontains=search_string)
+
+        location = Countries_cities.objects.filter(location_query).first()
+
+        q_list = [Q(show=1), Q(location__city=location.city.id)]
 
         if date:
+            print(datetime.datetime.strptime(date, '%Y-%m-%d'))
             q_list.append(Q(date_time__date=datetime.datetime.strptime(date, '%Y-%m-%d')))
 
         events = Events.objects.filter(reduce(operator.and_, q_list))

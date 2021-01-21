@@ -3,7 +3,7 @@ from django.urls import path, re_path
 from api.views import EventsSearch, LocationSearch
 
 urlpatterns = [
-    path('events/<country>/',
+    path('events/<location>/',
         EventsSearch.EventsListView.as_view(),
         name='events'
     ),

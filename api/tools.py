@@ -1,7 +1,8 @@
-from selenium import webdriver
+from bs4 import BeautifulSoup
 from selenium.webdriver.chrome.options import Options
 import os
-from bs4 import BeautifulSoup
+import re
+from selenium import webdriver
 
 def create_parser(page_source, page_type):
   '''
@@ -20,3 +21,7 @@ def create_web_driver():
   chrome_options.add_argument('--headless')
   driver = webdriver.Chrome(executable_path=r'./api/driver/chromedriver', chrome_options=chrome_options)
   return driver
+
+def sanitize_string(string):
+    return re.sub(r"[^a-zA-Z0-9 -]", "", string)
+
