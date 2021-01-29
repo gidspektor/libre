@@ -1,9 +1,10 @@
 <template>
   <main class='container-fluid bg-white section pt-5'>
-    <SearchBox></SearchBox>
+    <SearchBox @no-results='noResultsFromSearch'></SearchBox>
     <ResultsBox
       v-for='(result, index) in grabResults'
       :key='index'
+      :resultsIndex='index'
       :cardImage='result.image'
       :cardText='result.description'
       :eventId='result.event_id'
@@ -11,6 +12,12 @@
       :date_time='result.date_time'
       :allows_own_drinks='result.allows_own_drinks'
     ></ResultsBox>
+    <div class='emptyResults' v-if='containsResults'>
+      <span class='row d-flex justify-content-center'>
+        <h3 v-if='error' class='col-6 d-flex justify-content-center mt-5 searchText'>{{error}}</h3>
+        <h3 v-else class='col-4 d-flex justify-content-center mt-5 searchText'>Search for Libre events here</h3>
+      </span>
+    </div>
   </main>
 </template>
 
@@ -23,17 +30,28 @@ export default {
     SearchBox,
     ResultsBox
   },
-
-  computed: {
-    grabResults () {
-      console.log(store.state.eventSearchResults)
-      return store.state.eventSearchResults
+  data () {
+    return {
+      error: ''
     }
   },
+  computed: {
+    grabResults () {
+      return store.state.eventSearchResults
+    },
+    containsResults () {
+      let show = true
 
+      if (store.state.eventSearchResults && store.state.eventSearchResults.length >= 1) {
+        show = false
+      }
+
+      return show
+    }
+  },
   methods: {
-    toggleDropdown () {
-      this.state = !this.state
+    noResultsFromSearch () {
+      this.error = 'Sorry no Libre events found'
     }
   }
 }
@@ -48,6 +66,11 @@ export default {
 
 .rowSpace {
   margin-top: 80px;
+}
+
+.emptyResults {
+  height: 500px;
+  font-family: 'Lucida Sans';
 }
 
 @media screen and (max-width: 800px) {

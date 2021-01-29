@@ -1,11 +1,11 @@
 <template>
-  <main>
-    <div class='row largeSearch d-flex justify-content-center'>
+  <main class='pt-4'>
+    <div class='row largeSearch mb-4 d-flex justify-content-center'>
       <div class='col-9'>
-        <div class='search px-5 d-flex justify-content-center border border-dark' v-bind:class="columnSize">
-          <div class='searchItem border-right border-dark mr-5 col-lg-7' v-bind:class="locationClass">
+        <div class='search px-5 d-flex justify-content-center border border-dark' v-bind:class='columnSize'>
+          <div class='searchItem border-right border-dark mr-5 col-lg-7' v-bind:class='locationClass'>
             <div class='pt-2 text text-headers font-weight-bold'>Location</div>
-            <input v-model='keywordSearch' @input='searchLocations' type='text' class='p-0 text searchText font-weight-light font-italic' placeholder='Choose a city'>
+            <input v-model='keywordSearch' @input='searchLocations' type='text' class='p-0 text libreFont searchText font-weight-light font-italic' placeholder='Choose a city'>
             <div class='px-0 drop col-12'>
               <span class='pl-3 locationItem py-1 d-block searchText font-weight-bold font-italic'
                 v-for='(returnedLocation, index) in returnedLocations'
@@ -141,6 +141,10 @@ export default {
           this.error = response.data.error
           this.keywordSearch = response.data.location
           this.$store.dispatch('eventSearchResults', response.data.results)
+
+          if (!response.data.results || response.data.results.length === 0) {
+            this.$emit('no-results')
+          }
         })
       }
     }
@@ -149,6 +153,10 @@ export default {
 </script>
 
 <style scoped>
+.libreFont {
+  font-family: 'Lucida Sans';
+}
+
 .mobileSearch {
   display: none;
 }

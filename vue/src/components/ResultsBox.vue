@@ -1,11 +1,11 @@
 <template>
-  <main class='row d-flex justify-content-center my-lg-4 my-4 cardStyles bg-light'>
+  <main class='row d-flex justify-content-center cardStyles' v-bind:class='topBorder'>
     <div class='col-lg-4 pt-3 item px-lg-1 mt-lg-1 mr-lg-4'>
       <img class='cardImage card-img-top' :src='require(`../assets/images/${cardImage}.jpg`)' alt='Card image cap'>
     </div>
     <div class='noUnderline col-lg-6 item mt-3' >
       <div class='pb-lg-0 pt-lg-2 mr-lg-0'>
-        <h5 class='mb-lg-3'>{{cardTitle}}The Castle</h5>
+        <h5 class='mb-lg-3'>{{cardTitle}}</h5>
         <p class='font-weight-light font-italic text'>{{cardText}}</p>
         <div class='mt-lg-5'>
           <p class='d-lg-inline font-weight-bold'>Artists:</p>
@@ -22,7 +22,23 @@
 
 <script>
 export default {
-  props: ['cardImage', 'cardText', 'eventId', 'cardTitle', 'capacity', 'date_time', 'allows_own_drinks']
+  props: [
+    'cardImage',
+    'cardText',
+    'eventId',
+    'cardTitle',
+    'capacity',
+    'date_time',
+    'allows_own_drinks',
+    'resultsIndex'
+  ],
+
+  computed: {
+    topBorder () {
+      return this.resultsIndex === 0 ? 'cardTopBorder' : ''
+    }
+  }
+
 }
 </script>
 
@@ -30,7 +46,13 @@ export default {
 .cardStyles {
   height: 300px;
   cursor: pointer;
-  border-bottom: solid rgb(230, 227, 227);
+  border-bottom: solid rgba(13, 201, 44, 0.3);
+  border-width: 2px;
+}
+
+.cardTopBorder {
+  border-top: solid rgba(13, 201, 44, 0.3);
+  border-width: 2px;
 }
 
 .cardImage {

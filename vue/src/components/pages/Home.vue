@@ -4,10 +4,10 @@
       <SearchBox></SearchBox>
       <div class='row d-block rowSpace ml-4 mt-4 pt-lg-5 mt-lg-5'>
         <div class='col-12'>
-          <h1 class='text-white mb-1'>Events near you</h1>
-          <h6 class='font-weight-light font-italic text-white mb-3'>Find events happening near you.</h6>
+          <h1 class='text-white mb-1 libreFont'>Events near you</h1>
+          <h6 class='font-weight-light text-white mb-3 libreFont'>Find events happening near you.</h6>
           <a href='/'>
-            <button type='button' class='font-weight-light font-italic btn btn-light'>Nearby events</button>
+            <button type='button' class='font-weight-light btn btn-light libreFont'>Nearby events</button>
           </a>
         </div>
       </div>
@@ -41,16 +41,16 @@
         </div>
       </div>
       <div class='row d-flex justify-content-center pb-4'>
-        <h5 class='col-lg-6 col-12 font-weight-light font-italic text-center'>
+        <h5 class='col-lg-6 col-12 font-weight-light text-center libreFont'>
           We believe in events created by the people;
           by subscribing you can get notified when people are creating events in your area.
         </h5>
       </div>
       <div class='row d-flex justify-content-center py-4'>
-        <div class='col-lg-2 col-12 input-group mb-3'>
+        <div class='col-lg-2 col-12 input-group mb-3 libreFont'>
           <input v-model='email' type='email' class='form-control' placeholder='Email Address'>
         </div>
-        <div class='col-lg-2 col-12 input-group'>
+        <div class='col-lg-2 col-12 input-group libreFont'>
           <select v-model='location' class='form-control browser-default custom-select'>
             <option disabled value=''>Choose location</option>
             <option value='Barcelona'>Barcelona</option>
@@ -113,6 +113,10 @@ export default {
 </script>
 
 <style scoped>
+.libreFont {
+  font-family: 'Lucida Sans';
+}
+
 .section {
   height: 700px;
 }

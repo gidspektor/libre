@@ -4,7 +4,7 @@
       <img class='cardImage card-img-top' :src='require(`../assets/img/${cardImage}`)' alt='Card image cap'>
       <div class='card-body pl-0 pb-0 pt-2 ml-3'>
         <h5 class='mb-2'>{{cardTitle}}</h5>
-        <p class='font-weight-light font-italic text'>{{cardText}}</p>
+        <p class='font-weight-light text libreFont'>{{cardText}}</p>
       </div>
     </router-link>
   </div>
@@ -17,6 +17,10 @@ export default {
 </script>
 
 <style scoped>
+.libreFont {
+  font-family: 'Lucida Sans';
+}
+
 .cardStyles {
   width: 200px;
   border-top-left-radius: 20px;
@@ -42,7 +46,7 @@ export default {
 }
 
 .text {
-  font-size: 12px;
+  font-size: 15px;
 }
 
 @media screen and (max-width: 500px) {

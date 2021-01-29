@@ -2,10 +2,10 @@
   <section class='section container-fluid bg-dark py-5'>
     <div class='row'>
       <div class='text-white col-lg-12 text-center'>
-        <h1 class='display-lg-3 display-5 mainTitle'>Explore Libre</h1>
+        <h1 class='display-lg-3 display-5 mainTitle libreFont'>Explore Libre</h1>
       </div>
     </div>
-    <div class='row text-center d-flex justify-content-center mt-2 mb-5'>
+    <div class='row text-center d-flex justify-content-center mt-2 mb-5 libreFont'>
       <div class='col-lg-1 px-0'>
         <a class='' href='/'>Berlin</a>
       </div>
@@ -16,7 +16,7 @@
         <a href='/'>London</a>
       </div>
     </div>
-    <div class='row mt-4'>
+    <div class='row mt-4 libreFont'>
       <div class='col-lg-6 d-flex justify-content-center'>
         <h5 class='pr-5 text-white'>Logo go here</h5>
       </div>
@@ -37,7 +37,7 @@
           </li>
         </ul>
       </div>
-      <div class='col-lg-2'>
+      <div class='col-lg-2 libreFont'>
         <p class='text-lg-left text-center titles pb-2'>Get Involved</p>
         <ul class='list-unstyled text-lg-left text-center'>
           <li class='pb-2'>
@@ -65,6 +65,10 @@ export default {
 </script>
 
 <style scoped>
+.libreFont {
+  font-family: 'Lucida Sans';
+}
+
 .section {
     height: 500px;
 }
@@ -78,9 +82,5 @@ export default {
 .titles {
   font-size: 15px;
   color: rgb(13, 201, 44);
-}
-
-.mainTitle{
-  font-family: Tahoma;
 }
 </style>
