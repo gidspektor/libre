@@ -1,19 +1,12 @@
 <template>
-  <main class='row d-flex justify-content-center my-lg-4 my-4 bg-white cardStyles'>
-    <div class='col-lg-4 item px-lg-1 mt-lg-1 mr-lg-4'>
-      <img class='cardImage card-img-top' :src='require(`../assets/img/castle.jpg`)' alt='Card image cap'>
+  <main class='row d-flex justify-content-center my-lg-4 my-4 cardStyles bg-light'>
+    <div class='col-lg-4 pt-3 item px-lg-1 mt-lg-1 mr-lg-4'>
+      <img class='cardImage card-img-top' :src='require(`../assets/images/${cardImage}.jpg`)' alt='Card image cap'>
     </div>
-    <div class='noUnderline col-lg-6 item mt-2' :to=cardLink>
+    <div class='noUnderline col-lg-6 item mt-3' >
       <div class='pb-lg-0 pt-lg-2 mr-lg-0'>
         <h5 class='mb-lg-3'>{{cardTitle}}The Castle</h5>
-        <p class='font-weight-light font-italic text'>{{cardText}}
-          Everyone has a plumbus in their home. First they take the dingle bop and they smooth it out with a bunch of schleem. The schleem is then...repurposed for later batches.
-          They take the dingle bop and they push it through the grumbo, where the fleeb is rubbed against it. It's important that the fleeb is rubbed, becasue the fleeb has all the fleeb juice.
-          Then, a schlami shows up, and he rubs it...and spits on it.
-          They cut the fleeb. There's several hizzards in the way.
-          The blamfs rub against the chumbles, and the...plubis, and grumbo are shaved away.
-          That leaves you with...a regular old plumbus.
-        </p>
+        <p class='font-weight-light font-italic text'>{{cardText}}</p>
         <div class='mt-lg-5'>
           <p class='d-lg-inline font-weight-bold'>Artists:</p>
           <!-- <p class='d-inline font-italic' :v-for='(artist, index) in artists'>{{artist}} slam master funk</p><span :v-if='index < artists.length - 1'>,</span> -->
@@ -29,7 +22,7 @@
 
 <script>
 export default {
-  props: ['cardImage', 'cardText', 'cardLink', 'cardTitle', 'capacity', 'genres', 'artists']
+  props: ['cardImage', 'cardText', 'eventId', 'cardTitle', 'capacity', 'date_time', 'allows_own_drinks']
 }
 </script>
 

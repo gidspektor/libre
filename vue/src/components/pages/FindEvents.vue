@@ -1,7 +1,16 @@
 <template>
   <main class='container-fluid bg-white section pt-5'>
-    <SearchBox v-on:grab-results='grabResults'></SearchBox>
-    <ResultsBox></ResultsBox>
+    <SearchBox></SearchBox>
+    <ResultsBox
+      v-for='(result, index) in grabResults'
+      :key='index'
+      :cardImage='result.image'
+      :cardText='result.description'
+      :eventId='result.event_id'
+      :cardTitle='result.name'
+      :date_time='result.date_time'
+      :allows_own_drinks='result.allows_own_drinks'
+    ></ResultsBox>
   </main>
 </template>
 
@@ -16,19 +25,13 @@ export default {
   },
 
   computed: {
-    // grabResults () {
-    //   console.log('pie')
-    //   console.log(store.state.results)
-    //   return store.state.results
-    // }
+    grabResults () {
+      console.log(store.state.eventSearchResults)
+      return store.state.eventSearchResults
+    }
   },
 
   methods: {
-    grabResults () {
-      console.log('pie')
-      console.log(store.state.results)
-      return store.state.results
-    },
     toggleDropdown () {
       this.state = !this.state
     }

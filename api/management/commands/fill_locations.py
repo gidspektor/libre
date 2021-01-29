@@ -10,34 +10,34 @@ logger = logging.getLogger('command')
 
 
 class Command(BaseCommand):
-    help = "Scrapes venue information from websites and stores them in the db."
+  help = "Scrapes venue information from websites and stores them in the db."
 
-    def add_arguments(self, parser):
-        parser.add_argument(
-            '--website',
-            dest='website',
-            default='venuu'
-        )
+  def add_arguments(self, parser):
+    parser.add_argument(
+      '--website',
+      dest='website',
+      default='venuu'
+    )
 
-        parser.add_argument(
-            '--country',
-            dest='country',
-            default='spain'
-        )
+    parser.add_argument(
+      '--country',
+      dest='country',
+      default='spain'
+    )
 
-        parser.add_argument(
-            '--city',
-            dest='city',
-            default='barcelona'
-        )
+    parser.add_argument(
+      '--city',
+      dest='city',
+      default='barcelona'
+    )
 
-    def handle(self, *args, **options):
-        website = options['website']
-        country = options['country']
-        city = options['city']
+  def handle(self, *args, **options):
+    website = options['website']
+    country = options['country']
+    city = options['city']
 
-        url = config.WEBSITES.get(website).get(country).format(city)
-        driver = create_web_driver()
+    url = config.WEBSITES.get(website).get(country).format(city)
+    driver = create_web_driver()
 
-        if website == 'venuu':
-            scrapers.navigate_venuu(driver, url, city)
+    if website == 'venuu':
+      scrapers.navigate_venuu(driver, url, city)

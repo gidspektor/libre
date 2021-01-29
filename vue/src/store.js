@@ -6,7 +6,7 @@ Vue.use(Vuex)
 export default new Vuex.Store({
   state: {
     user: null,
-    searchResults: null
+    eventSearchResults: []
   },
 
   mutations: {
@@ -14,10 +14,9 @@ export default new Vuex.Store({
       state.user = data.user
     },
 
-    setSearchResults (state, data) {
-      state.searchResults = data
-      console.log('heyl')
-      console.log(state.searchResults)
+    setEventSearchResults (state, data) {
+      state.eventSearchResults = data
+      console.log(state.eventSearchResults)
     }
   },
 
@@ -30,8 +29,8 @@ export default new Vuex.Store({
       // })
     },
 
-    searchResults (context, data) {
-      context.commit('setSearchResults', data)
+    eventSearchResults (context, data) {
+      context.commit('setEventSearchResults', data)
     }
   }
 })

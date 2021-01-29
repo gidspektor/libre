@@ -11,9 +11,12 @@
                 v-for='(returnedLocation, index) in returnedLocations'
                 :key='index'
                 @click='selectLocation(returnedLocation)'>
-                  {{returnedLocation.city}}, {{returnedLocation.country}}, {{error}}
+                  {{returnedLocation.city}}, {{returnedLocation.country}}
               </span>
             </div>
+            <span class='alert alert-danger error col-12' role='alert' v-show='error'>
+              {{ error }}
+            </span>
           </div>
           <!-- <div v-if="this.$route.name === 'createEvents'" class='col-lg-3 searchItem pr-0 mr-5'>
             <div class='pl-lg-4 pt-2 text text-headers font-weight-bold'>Capacity</div>
@@ -84,13 +87,14 @@ export default {
       date: '',
       capacity: '',
       keywordSearch: '',
-      returnedLocations: '',
+      returnedLocations: [],
       error: ''
     }
   },
   created () {
     window.addEventListener('click', () => {
       this.returnedLocations = []
+      this.error = ''
     })
   },
   computed: {
@@ -131,13 +135,12 @@ export default {
     },
     search () {
       if (this.keywordSearch) {
+        this.error = null
         let cleanedString = this.sanitizeString(this.keywordSearch)
         http.get(`events/${cleanedString}?date=${this.date}`).then(response => {
           this.error = response.data.error
           this.keywordSearch = response.data.location
-          this.$store.dispatch('searchResults', response.data.results)
-          console.log(this.$store.state.results)
-          // this.$emit('grab-results')
+          this.$store.dispatch('eventSearchResults', response.data.results)
         })
       }
     }
@@ -181,6 +184,15 @@ export default {
 .searchText {
   font-size: 14px;
   width: 100%;
+}
+
+.error {
+  font-size: 10px;
+  border-radius: 10px;
+  z-index: 1000;
+  position: absolute;
+  top: 65px;
+  left: -10px;
 }
 
 .capacity {
