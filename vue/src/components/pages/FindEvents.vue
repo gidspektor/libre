@@ -1,14 +1,14 @@
 <template>
   <main class='container-fluid bg-white section pt-5'>
-    <SearchBox></SearchBox>
+    <SearchBox v-on:grab-results='grabResults'></SearchBox>
     <ResultsBox></ResultsBox>
   </main>
 </template>
 
 <script>
-import { mapState } from 'vuex'
 import ResultsBox from '../ResultsBox'
 import SearchBox from '../SearchBox'
+import store from '../../store'
 export default {
   components: {
     SearchBox,
@@ -16,12 +16,19 @@ export default {
   },
 
   computed: {
-    ...mapState({
-      results: state => state.searchResults
-    })
+    // grabResults () {
+    //   console.log('pie')
+    //   console.log(store.state.results)
+    //   return store.state.results
+    // }
   },
 
   methods: {
+    grabResults () {
+      console.log('pie')
+      console.log(store.state.results)
+      return store.state.results
+    },
     toggleDropdown () {
       this.state = !this.state
     }

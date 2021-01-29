@@ -23,5 +23,5 @@ def create_web_driver():
   return driver
 
 def sanitize_string(string):
-    return re.sub(r"[^a-zA-Z0-9 -]", "", string)
+    return re.sub(r"[^a-zA-Z0-9'-]", "", string).strip()
 

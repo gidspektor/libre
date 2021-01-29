@@ -1,10 +1,12 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 
-const store = new Vuex.Store({
+Vue.use(Vuex)
+
+export default new Vuex.Store({
   state: {
     user: null,
-    searchResults = []
+    searchResults: null
   },
 
   mutations: {
@@ -14,6 +16,8 @@ const store = new Vuex.Store({
 
     setSearchResults (state, data) {
       state.searchResults = data
+      console.log('heyl')
+      console.log(state.searchResults)
     }
   },
 

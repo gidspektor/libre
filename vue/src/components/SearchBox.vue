@@ -11,7 +11,7 @@
                 v-for='(returnedLocation, index) in returnedLocations'
                 :key='index'
                 @click='selectLocation(returnedLocation)'>
-                  {{returnedLocation.city}}, {{returnedLocation.country}}
+                  {{returnedLocation.city}}, {{returnedLocation.country}}, {{error}}
               </span>
             </div>
           </div>
@@ -84,7 +84,8 @@ export default {
       date: '',
       capacity: '',
       keywordSearch: '',
-      returnedLocations: ''
+      returnedLocations: '',
+      error: ''
     }
   },
   created () {
@@ -111,10 +112,13 @@ export default {
 
   methods: {
     sanitizeString (string) {
-      return string.replace(/[^a-zA-Z0-9 -]/, '').replace(' ', '-')
+      string = string.replace(/[^a-z'A-Z ]/, '').replace(/ /g, '-')
+      string = string.replace(/^[^a-zA-Z]*|[^a-zA-Z]*$/gi, '')
+      string = string.replace(/[/(){};:*]/g, '')
+      return string
     },
     selectLocation (selectedLocation) {
-      this.keywordSearch = selectedLocation.city.replace(' ', '-') + '-' + selectedLocation.country
+      this.keywordSearch = selectedLocation.city + ', ' + selectedLocation.country
     },
     searchLocations () {
       this.returnedLocations = ''
@@ -129,10 +133,13 @@ export default {
       if (this.keywordSearch) {
         let cleanedString = this.sanitizeString(this.keywordSearch)
         http.get(`events/${cleanedString}?date=${this.date}`).then(response => {
-          console.log(response.data)
+          this.error = response.data.error
+          this.keywordSearch = response.data.location
+          this.$store.dispatch('searchResults', response.data.results)
+          console.log(this.$store.state.results)
+          // this.$emit('grab-results')
         })
       }
-      // this.$store.commit('searchResults', response)
     }
   }
 }
