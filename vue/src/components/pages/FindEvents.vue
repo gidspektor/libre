@@ -1,16 +1,17 @@
 <template>
   <main class='container-fluid bg-white section pt-5'>
+    <link href="https://fonts.googleapis.com/css?family=Dosis:400,700" rel="stylesheet">
     <SearchBox @no-results='noResultsFromSearch'></SearchBox>
     <ResultsBox
       v-for='(result, index) in grabResults'
       :key='index'
-      :resultsIndex='index'
       :cardImage='result.image'
       :cardText='result.description'
       :eventId='result.event_id'
       :cardTitle='result.name'
       :date_time='result.date_time'
       :allows_own_drinks='result.allows_own_drinks'
+      :capacity='result.capacity'
     ></ResultsBox>
     <div class='emptyResults' v-if='containsResults'>
       <span class='row d-flex justify-content-center'>

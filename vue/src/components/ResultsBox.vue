@@ -1,19 +1,24 @@
 <template>
-  <main class='row d-flex justify-content-center cardStyles' v-bind:class='topBorder'>
-    <div class='col-lg-4 pt-3 item px-lg-1 mt-lg-1 mr-lg-4'>
-      <img class='cardImage card-img-top' :src='require(`../assets/images/${cardImage}.jpg`)' alt='Card image cap'>
-    </div>
-    <div class='noUnderline col-lg-6 item mt-3' >
-      <div class='pb-lg-0 pt-lg-2 mr-lg-0'>
-        <h5 class='mb-lg-3'>{{cardTitle}}</h5>
-        <p class='font-weight-light font-italic text'>{{cardText}}</p>
-        <div class='mt-lg-5'>
-          <p class='d-lg-inline font-weight-bold'>Artists:</p>
-          <!-- <p class='d-inline font-italic' :v-for='(artist, index) in artists'>{{artist}} slam master funk</p><span :v-if='index < artists.length - 1'>,</span> -->
-          <p class='d-lg-inline ml-lg-5 font-weight-bold'>Genres:</p>
-          <p class='d-lg-inline mr-lg-5 font-italic'>{{genres}} beep bop</p>
-          <p class='d-lg-inline font-weight-bold'>Capacity:</p>
-          <p class='d-lg-inline font-italic'>{{capacity}} 100</p>
+  <main class='row my-2 mx-2 d-flex justify-content-center'>
+    <div class='col-11 d-flex justify-content-center cardStyles'>
+      <div class='col-lg-4 pt-3 item px-lg-1 mt-lg-1 mr-lg-4'>
+        <img class='cardImage card-img-top' :src='require(`../assets/images/${cardImage}.jpg`)' alt='Card image cap'>
+      </div>
+      <div class='noUnderline mt-lg-5 col-lg-6 item mt-3' >
+        <div class='pb-lg-0 pt-lg-2 mr-lg-0'>
+          <h5 class='mb-lg-3 libreFont font-weight-bold'>{{cardTitle}}</h5>
+          <p class='font-weight-light font-italic text'>{{cardText}}</p>
+          <div class='mt-lg-5'>
+            <p class='d-lg-inline font-weight-bold libreFont'>When:
+              <span class='libreFont font-weight-light'>{{formatDate(date_time)}}</span>
+            </p>
+            <p class='d-lg-inline ml-lg-5 font-weight-bold libreFont'>Bring your own booze:
+              <span class='libreFont font-weight-light'>{{allows_own_drinks}}</span>
+            </p>
+            <p class='d-lg-inline ml-lg-5 font-weight-bold libreFont'>Capacity:
+              <span class='libreFont font-weight-light'>{{capacity}}</span>
+            </p>
+          </div>
         </div>
       </div>
     </div>
@@ -29,16 +34,19 @@ export default {
     'cardTitle',
     'capacity',
     'date_time',
-    'allows_own_drinks',
-    'resultsIndex'
+    'allows_own_drinks'
   ],
 
-  computed: {
-    topBorder () {
-      return this.resultsIndex === 0 ? 'cardTopBorder' : ''
+  methods: {
+    formatDate (dateTime) {
+      dateTime = dateTime.split('T')
+      let timeOnly = dateTime[1].split(':')
+      let day = dateTime[0].split('-', 3)[2]
+      let month = dateTime[0].split('-', 3)[1]
+
+      return timeOnly[0] + ':' + timeOnly[1] + ', ' + day + ':' + month
     }
   }
-
 }
 </script>
 
@@ -46,8 +54,19 @@ export default {
 .cardStyles {
   height: 300px;
   cursor: pointer;
+  border-top-left-radius: 20px;
+  border-top-right-radius: 20px;
+  border-bottom-left-radius: 20px;
+  border-bottom-right-radius: 20px;
+  border-top: solid rgba(13, 201, 44, 0.3);
   border-bottom: solid rgba(13, 201, 44, 0.3);
   border-width: 2px;
+  background-color: rgba(222, 228, 245, 0.2);
+}
+
+.cardStyles:hover {
+  transition: 0.2s ease-in-out;
+  box-shadow: 2px 2px 2px 2px rgba(0,0,0,0.15);
 }
 
 .cardTopBorder {
@@ -74,6 +93,10 @@ export default {
 
 .text {
   font-size: 14px;
+}
+
+.libreFont {
+  font-family: 'Lucida Sans';
 }
 
 @media screen and (max-width: 500px) {
