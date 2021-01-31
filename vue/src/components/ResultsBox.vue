@@ -13,7 +13,7 @@
               <span class='libreFont font-weight-light'>{{formatDate(date_time)}}</span>
             </p>
             <p class='d-lg-inline ml-lg-5 font-weight-bold libreFont'>Bring your own booze:
-              <span class='libreFont font-weight-light'>{{allows_own_drinks}}</span>
+              <span class='libreFont font-weight-light'>{{formatAllowDrinks}}</span>
             </p>
             <p class='d-lg-inline ml-lg-5 font-weight-bold libreFont'>Capacity:
               <span class='libreFont font-weight-light'>{{capacity}}</span>
@@ -37,6 +37,12 @@ export default {
     'allows_own_drinks'
   ],
 
+  computed: {
+    formatAllowDrinks () {
+      return this.allows_own_drinks ? 'Yes' : 'No'
+    }
+  },
+
   methods: {
     formatDate (dateTime) {
       dateTime = dateTime.split('T')
@@ -58,10 +64,8 @@ export default {
   border-top-right-radius: 20px;
   border-bottom-left-radius: 20px;
   border-bottom-right-radius: 20px;
-  border-top: solid rgba(13, 201, 44, 0.3);
-  border-bottom: solid rgba(13, 201, 44, 0.3);
+  border: solid rgba(12, 12, 12, 0.3);
   border-width: 2px;
-  background-color: rgba(222, 228, 245, 0.2);
 }
 
 .cardStyles:hover {

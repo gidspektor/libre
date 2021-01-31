@@ -258,8 +258,7 @@ input {
 
 .locationItem:hover {
   border-radius: 10px;
-  opacity: 0.5;
-  background-color: rgb(240, 234, 234);
+  background-color: rgba(240, 234, 234, 0.5);
 }
 
 @media screen and (max-width: 1400px) {
