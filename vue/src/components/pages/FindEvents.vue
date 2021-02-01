@@ -16,7 +16,7 @@
     ></ResultsBox>
     <div class="overlay" v-show='showModal'>
       <transition name='fade'>
-        <Modal id='modal' class='myModal' v-show='showModal' transition='bounce' @close-modal='closeModal'></Modal>
+        <Modal id='modal' class='myModal' v-show='showModal' @close-modal='closeModal'></Modal>
       </transition>
     </div>
     <div class='emptyResults' v-if='containsResults'>
@@ -65,6 +65,7 @@ export default {
   methods: {
     closeModal () {
       this.showModal = false
+      document.querySelector('body').style.overflow = ''
     },
     noResultsFromSearch () {
       this.error = 'Sorry no Libre events found'
@@ -73,6 +74,7 @@ export default {
       this.$store.dispatch('selectEvent', event)
       if (!store.state.user) {
         this.showModal = true
+        document.querySelector('body').style.overflow = 'hidden'
       } else {
         this.$router.push('EventPage')
       }

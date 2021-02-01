@@ -80,6 +80,7 @@
 
 <script>
 import http from '../http-common'
+import {sanitizeString} from '../tools'
 export default {
   data () {
     return {
@@ -88,7 +89,8 @@ export default {
       capacity: '',
       keywordSearch: '',
       returnedLocations: [],
-      error: ''
+      error: '',
+      sanitizeString: sanitizeString
     }
   },
   created () {
@@ -115,12 +117,6 @@ export default {
   },
 
   methods: {
-    sanitizeString (string) {
-      string = string.replace(/[^a-z'A-Z ]/, '').replace(/ /g, '-')
-      string = string.replace(/^[^a-zA-Z]*|[^a-zA-Z]*$/gi, '')
-      string = string.replace(/[/(){};:*]/g, '')
-      return string
-    },
     selectLocation (selectedLocation) {
       this.keywordSearch = selectedLocation.city + ', ' + selectedLocation.country
     },
@@ -135,7 +131,7 @@ export default {
     },
     search () {
       if (this.keywordSearch) {
-        this.error = null
+        this.error = ''
         let cleanedString = this.sanitizeString(this.keywordSearch)
         http.get(`events/${cleanedString}?date=${this.date}`).then(response => {
           this.error = response.data.error
