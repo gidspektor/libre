@@ -3,12 +3,12 @@ from api.models import Countries_cities
 from django.http import JsonResponse
 import operator
 from django.db.models import Q
-from api.tools import sanitize_string
+from api.tools import sanitize_url_string
 
 class PartialSearchView(APIView):
   def get(self, request, search_string):
     search_terms = []
-    search_string = sanitize_string(search_string)
+    search_string = sanitize_url_string(search_string)
     found = False
 
     if '-' in search_string:

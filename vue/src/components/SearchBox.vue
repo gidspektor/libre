@@ -80,7 +80,7 @@
 
 <script>
 import http from '../http-common'
-import {sanitizeString} from '../tools'
+import {sanitizeUrlString} from '../tools'
 export default {
   data () {
     return {
@@ -90,7 +90,7 @@ export default {
       keywordSearch: '',
       returnedLocations: [],
       error: '',
-      sanitizeString: sanitizeString
+      sanitizeUrlString: sanitizeUrlString
     }
   },
   created () {
@@ -120,28 +120,28 @@ export default {
     selectLocation (selectedLocation) {
       this.keywordSearch = selectedLocation.city + ', ' + selectedLocation.country
     },
-    searchLocations () {
+    async searchLocations () {
       this.returnedLocations = ''
       if (this.keywordSearch) {
-        let cleanedString = this.sanitizeString(this.keywordSearch)
-        http.get(`locations/${cleanedString}/`).then(response => {
-          this.returnedLocations = response.data.results
-        })
+        let cleanedString = this.sanitizeUrlString(this.keywordSearch)
+        let response = await http.get(`locations/${cleanedString}/`)
+
+        this.returnedLocations = response.data.results
       }
     },
-    search () {
+    async search () {
       if (this.keywordSearch) {
         this.error = ''
-        let cleanedString = this.sanitizeString(this.keywordSearch)
-        http.get(`events/${cleanedString}?date=${this.date}`).then(response => {
-          this.error = response.data.error
-          this.keywordSearch = response.data.location
-          this.$store.dispatch('eventSearchResults', response.data.results)
+        let cleanedString = this.sanitizeUrlString(this.keywordSearch)
+        let response = await http.get(`events/${cleanedString}?date=${this.date}`)
 
-          if (!response.data.results || response.data.results.length === 0) {
-            this.$emit('no-results')
-          }
-        })
+        this.error = response.data.error
+        this.keywordSearch = response.data.location
+        this.$store.dispatch('eventSearchResults', response.data.results)
+
+        if (!response.data.results || response.data.results.length === 0) {
+          this.$emit('no-results')
+        }
       }
     }
   }

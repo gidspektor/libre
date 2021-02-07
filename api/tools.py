@@ -22,6 +22,6 @@ def create_web_driver():
   driver = webdriver.Chrome(executable_path=r'./api/driver/chromedriver', chrome_options=chrome_options)
   return driver
 
-def sanitize_string(string):
-    return re.sub(r"[^a-zA-Z0-9'-]", "", string).strip()
+def sanitize_url_string(string):
+    return re.sub(r"[^a-zA-Z0-9'-]", '', string).strip()
 

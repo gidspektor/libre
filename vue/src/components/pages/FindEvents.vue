@@ -3,7 +3,7 @@
     <link href="https://fonts.googleapis.com/css?family=Dosis:400,700" rel="stylesheet">
     <SearchBox @no-results='noResultsFromSearch'></SearchBox>
     <ResultsBox
-      @click.native='goToEventPage(event)'
+      @go-to-events-page='goToEventPage'
       v-for='(event, index) in grabResults'
       :key='index'
       :cardImage='event.image'

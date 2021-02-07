@@ -5,7 +5,7 @@ from django.http import JsonResponse
 from collections import OrderedDict
 import operator
 from django.db.models import Q
-from api.tools import sanitize_string
+from api.tools import sanitize_url_string
 from django.core import serializers
 from functools import reduce
 
@@ -14,7 +14,7 @@ class EventsListView(APIView):
   def get(self, request, location):
     date = request.GET.get('date', '')
     search_terms = []
-    search_string = sanitize_string(location)
+    search_string = sanitize_url_string(location)
     location_string = ''
     q_list = [Q(show=1)]
     found = False

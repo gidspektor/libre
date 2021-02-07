@@ -1,4 +1,4 @@
-export function sanitizeString (string) {
+export function sanitizeUrlString (string) {
   string = string.replace(/[^a-z'A-Z ]/, '').replace(/ /g, '-')
   string = string.replace(/^[^a-zA-Z]*|[^a-zA-Z]*$/gi, '')
   string = string.replace(/[/(){};:*]/g, '')

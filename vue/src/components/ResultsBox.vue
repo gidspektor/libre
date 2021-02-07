@@ -1,6 +1,6 @@
 <template>
   <main class='row my-2 mx-2 d-flex justify-content-center'>
-    <div class='col-11 d-flex justify-content-center cardStyles'>
+    <div @click='goToEventsPage' class='col-11 d-flex justify-content-center cardStyles'>
       <div class='col-lg-4 pt-3 item px-lg-1 mt-lg-1 mr-lg-4'>
         <img class='cardImage card-img-top' :src='require(`../assets/images/${cardImage}.jpg`)' alt='Card image cap'>
       </div>
@@ -44,6 +44,9 @@ export default {
   },
 
   methods: {
+    goToEventsPage () {
+      this.$emit('go-to-events-page')
+    },
     formatDate (dateTime) {
       dateTime = dateTime.split('T')
       let timeOnly = dateTime[1].split(':')
