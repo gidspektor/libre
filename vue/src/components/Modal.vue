@@ -20,17 +20,18 @@
             <div v-else-if='continueWithEmail'>
               <div class='mb-3 libreFont row'>
                 <div class='col-12'>
-                  <input v-if='userFound' v-model='password' type='password' class='form-control col-12' placeholder='Password'>
-                    <a v-if='userFound' class='pl-1 libreFont' href='/'>Forgot password?</a>
-                  <input v-else v-model='email' type='email' class='form-control col-12' placeholder='Email Address'>
+                  <input v-model='email' type='email' class='form-control col-12' placeholder='Email Address'>
                   <div class='alert alert-danger error mt-1 text-center' role='alert' v-show='error'>
                     {{ error }}
                   </div>
+                  <input v-model='password' type='password' class='form-control col-12' placeholder='Password'>
+                  <a class='pl-1 libreFont' href='#'>Forgot password?</a>
+                  |
+                  <a class='libreFont' href='#' @click='signUp'>Sign up?</a>
                 </div>
               </div>
               <div class='row d-flex justify-content-center'>
-                <button v-if='userFound' @click='login' type='button' class='col-11 btn logoColour libreFont text-center'>Continue</button>
-                <button v-else @click='checkUser' type='button' class='col-11 btn logoColour libreFont text-center'>Continue</button>
+                <button @click='login' type='button' class='col-11 btn logoColour libreFont text-center'>Continue</button>
               </div>
             </div>
             <div class='py-lg-4 row d-flex justify-content-center'>
@@ -100,6 +101,8 @@
 <script>
 import http from '../http-common'
 import {validateEmail} from '../tools'
+import store from '../store'
+
 export default {
   data () {
     return {
@@ -120,17 +123,16 @@ export default {
 
   methods: {
     goBack () {
-      if (this.signUpUser) {
-        this.signUpUser = false
-      }
-
-      if (!this.signUpUser) {
+      if (this.continueWithEmail && !this.signUpUser) {
         this.continueWithEmail = false
       }
 
-      if (this.userFound) {
-        this.userFound = false
+      if (this.signUpUser) {
+        this.signUpUser = false
       }
+    },
+    signUp () {
+      this.signUpUser = true
     },
     goToEventPage () {
       this.$router.push('EventPage')
@@ -143,31 +145,12 @@ export default {
       this.continueWithEmail = true
     },
     async login () {
-      let response = await http.post('user/login', {
-        email: this.email,
-        password: this.password
+      await this.$store.dispatch('obtainToken', [this.email, this.password]).catch((err) => {
+        this.error = 'Username and/or password not found.'
       })
 
-      if (response.logged_in) {
+      if (store.state.jwt) {
         this.$router.push('EventPage')
-      } else {
-        this.error = this.response.error
-      }
-    },
-    async checkUser () {
-      this.error = ''
-      let emailIsValid = this.validateEmail(this.email)
-
-      if (emailIsValid) {
-        let response = await http.get(`user-info/?email=${this.email}`)
-
-        if (!response.data.exists) {
-          this.signUpUser = true
-        }
-
-        this.userFound = response.data.exists
-      } else {
-        this.error = 'Please input a valid email'
       }
     },
     validateForm () {

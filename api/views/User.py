@@ -1,32 +1,34 @@
 from rest_framework.views import APIView
+from rest_framework_jwt.authentication import JSONWebTokenAuthentication
+from rest_framework import permissions
 from django.http import JsonResponse
-import re
+import re, json
 from django.contrib.auth.models import User
+from api.middleware.authentication import JwtAuthentication
 
 
 class CreateUserView(APIView):
   def post(self,request):
+    request_json = json.loads(request.body)
     error = ''
-    name = request.POST.get('name', '')
-    email = request.POST.get('email', '')
-    password = request.POST.get('password', '')
-    password_confirm = request.POST.get('password_confirm', '')
-    print(name, email, password, password_confirm)
+    name = request_json.get('name', '')
+    email = request_json.get('email', '')
+    password = request_json.get('password', '')
+    password_confirm = request_json.get('password_confirm', '')
 
     if not any([name, email, password, password_confirm]):
       return JsonResponse({'error': 'Missing values'})
 
-    name = re.sub(r"[^a-zA-Z0-9']", '', name).split(' ', 1)
+    name = re.sub(r"[^a-zA-Z0-9' ]", '', name).split(' ', 1)
+
     first_name = name[0].strip()
     last_name = name[1].strip()
     email = re.sub(r"[^a-zA-Z0-9@.]", '', email).strip()
 
     if len(password) < 8:
-      error = 'Make sure your password is at lest 8 letters'
+      error = 'Make sure your password is at least 8 letters'
     elif password != password_confirm:
       error = 'Passwords dont match'
-    elif re.search('[0-9]',password) is None:
-      error = 'Make sure your password has a number in it'
 
     if not error:
       new_user = User.objects.create_user(
@@ -43,18 +45,8 @@ class CreateUserView(APIView):
       return JsonResponse({'error': error})
 
 
-class UserInfoView(APIView):
+class UserView(APIView):
+  authentication_classes = (JwtAuthentication,)
+
   def get(self, request):
-    email = request.GET.get('email', None)
-    email = re.sub(r"[^a-zA-Z0-9@.]", '', email).strip()
-
-    user = User.objects.filter(email=email).first()
-
-    if user:
-      return JsonResponse({'exists': True})
-    else:
-      return JsonResponse({'exists': False})
-  
-  # def post(self, request):
-
-
+    print(request.user.__dict__)
