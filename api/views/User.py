@@ -49,4 +49,9 @@ class UserView(APIView):
   authentication_classes = (JwtAuthentication,)
 
   def get(self, request):
-    print(request.user.__dict__)
+    return JsonResponse({'user': {
+      'id': request.user.id,
+      'email': request.user.email,
+      'first_name': request.user.first_name,
+      'last_name': request.user.last_name
+    }})

@@ -13,10 +13,11 @@
       :date_time='event.date_time'
       :allows_own_drinks='event.allows_own_drinks'
       :capacity='event.capacity'
+      :event='event'
     ></ResultsBox>
     <div class="overlay" v-show='showModal'>
       <transition name='fade'>
-        <Modal id='modal' class='myModal' v-show='showModal' @close-modal='closeModal'></Modal>
+        <LoginSignupModal id='modal' class='myModal' v-show='showModal' @close-modal='closeModal'></LoginSignupModal>
       </transition>
     </div>
     <div class='emptyResults' v-if='containsResults'>
@@ -31,13 +32,13 @@
 <script>
 import ResultsBox from '../ResultsBox'
 import SearchBox from '../SearchBox'
-import Modal from '../Modal'
+import LoginSignupModal from '../LoginSignupModal'
 import store from '../../store'
 export default {
   components: {
     SearchBox,
     ResultsBox,
-    Modal
+    LoginSignupModal
   },
 
   data () {
@@ -72,7 +73,7 @@ export default {
     },
     goToEventPage (event) {
       this.$store.dispatch('selectEvent', event)
-      if (!store.state.user) {
+      if (!store.state.jwt) {
         this.showModal = true
         document.querySelector('body').style.overflow = 'hidden'
       } else {

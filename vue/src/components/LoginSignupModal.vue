@@ -101,7 +101,6 @@
 <script>
 import http from '../http-common'
 import {validateEmail} from '../tools'
-import store from '../store'
 
 export default {
   data () {
@@ -145,11 +144,13 @@ export default {
       this.continueWithEmail = true
     },
     async login () {
-      await this.$store.dispatch('obtainToken', [this.email, this.password]).catch((err) => {
-        this.error = 'Username and/or password not found.'
+      this.error = ''
+      await this.$store.dispatch('obtainToken', [this.email, this.password]).catch((badRequest) => {
+        badRequest = 'Username and/or password not found.'
+        this.error = badRequest
       })
 
-      if (store.state.jwt) {
+      if (!this.error) {
         this.$router.push('EventPage')
       }
     },

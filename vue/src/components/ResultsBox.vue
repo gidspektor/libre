@@ -30,11 +30,11 @@ export default {
   props: [
     'cardImage',
     'cardText',
-    'eventId',
     'cardTitle',
     'capacity',
     'date_time',
-    'allows_own_drinks'
+    'allows_own_drinks',
+    'event'
   ],
 
   computed: {
@@ -45,7 +45,7 @@ export default {
 
   methods: {
     goToEventsPage () {
-      this.$emit('go-to-events-page')
+      this.$emit('go-to-events-page', this.event)
     },
     formatDate (dateTime) {
       dateTime = dateTime.split('T')

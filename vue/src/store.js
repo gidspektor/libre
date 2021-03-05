@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import axios from 'axios'
+
 Vue.use(Vuex)
 
 export default new Vuex.Store({
@@ -11,7 +12,8 @@ export default new Vuex.Store({
     jwt: localStorage.getItem('t'),
     endpoints: {
       obtainJWT: 'http://127.0.0.1:8000/api/auth/login/',
-      refreshJWT: 'http://127.0.0.1:8000/api/auth/refresh_login/'
+      refreshJWT: 'http://127.0.0.1:8000/api/auth/refresh_login/',
+      baseUrl: 'http://127.0.0.1:8000/api/'
     }
   },
 
@@ -25,13 +27,11 @@ export default new Vuex.Store({
       state.jwt = null
     },
     userInfo (state, data) {
-      state.user = data.user
+      state.user = data
     },
-
     setEventSearchResults (state, data) {
       state.eventSearchResults = data
     },
-
     setSelectedEvent (state, data) {
       state.selectedEvent = data
     }
@@ -46,11 +46,11 @@ export default new Vuex.Store({
 
       let response = await axios.post(this.state.endpoints.obtainJWT, payload)
 
-      if (response.error) {
-        console.log(response.error)
+      if (!response.error) {
+        await this.dispatch('getUserInfo', response.data.token)
       }
 
-      return context.commit('updateToken', response.data.token)
+      context.commit('updateToken', response.data.token)
     },
     async refreshToken (context) {
       const payload = {
@@ -79,12 +79,14 @@ export default new Vuex.Store({
     //     }
     //   }
     // },
-    getUserInfo (context) {
-      context.commit('userInfo', 'gideon')
-      // create user endpoint
-      // axiox.get('user/info').then((data) => {
-      //   context.commit('userInfo', data)
-      // })
+    async getUserInfo (context, token) {
+      let response = await axios.get('http://127.0.0.1:8000/api/user-info', {
+        headers: {
+          'X-Requested-With': 'XMLHttpRequest',
+          'Authorization': 'Bearer ' + token
+        }
+      })
+      context.commit('userInfo', response.data.user)
     },
 
     eventSearchResults (context, data) {
