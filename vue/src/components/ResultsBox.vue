@@ -10,7 +10,7 @@
           <p class='font-weight-light font-italic text'>{{cardText}}</p>
           <div class='mt-lg-5'>
             <p class='d-lg-inline font-weight-bold libreFont'>When:
-              <span class='libreFont font-weight-light'>{{formatDate(date_time)}}</span>
+              <span class='libreFont font-weight-light'>{{this.formatDate(date_time)}}</span>
             </p>
             <p class='d-lg-inline ml-lg-5 font-weight-bold libreFont'>Bring your own booze:
               <span class='libreFont font-weight-light'>{{formatAllowDrinks}}</span>
@@ -26,7 +26,14 @@
 </template>
 
 <script>
+import {formatDate} from '../tools'
 export default {
+  data () {
+    return {
+      formatDate: formatDate
+    }
+  },
+
   props: [
     'cardImage',
     'cardText',
@@ -46,14 +53,6 @@ export default {
   methods: {
     goToEventsPage () {
       this.$emit('go-to-events-page', this.event)
-    },
-    formatDate (dateTime) {
-      dateTime = dateTime.split('T')
-      let timeOnly = dateTime[1].split(':')
-      let day = dateTime[0].split('-', 3)[2]
-      let month = dateTime[0].split('-', 3)[1]
-
-      return timeOnly[0] + ':' + timeOnly[1] + ', ' + day + ':' + month
     }
   }
 }

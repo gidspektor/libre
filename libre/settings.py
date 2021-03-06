@@ -132,6 +132,6 @@ CORS_ORIGIN_WHITELIST = [
 JWT_AUTH = {
   'JWT_AUTH_HEADER_PREFIX': 'Bearer',
   'JWT_ALLOW_REFRESH': True,
-  'JWT_EXPIRATION_DELTA': datetime.timedelta(hours=1),
-  'JWT_REFRESH_EXPIRATION_DELTA': datetime.timedelta(days=7),
+  'JWT_EXPIRATION_DELTA': datetime.timedelta(minutes=30),
+  'JWT_REFRESH_EXPIRATION_DELTA': datetime.timedelta(days=1),
 }

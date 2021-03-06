@@ -1,7 +1,8 @@
 import axios from 'axios'
+import store from './store'
 
 export default axios.create({
-  baseURL: 'http://127.0.0.1:8000/api/',
+  baseURL: store.state.endpoints.baseUrl,
   headers: {
     'X-Requested-With': 'XMLHttpRequest',
     'Authorization': 'Bearer ' + localStorage.getItem('t')

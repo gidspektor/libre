@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import axios from 'axios'
+import jwtDecode from 'jwt-decode'
 
 Vue.use(Vuex)
 
@@ -64,23 +65,23 @@ export default new Vuex.Store({
 
       context.commit('updateToken', response.data.token)
     },
-    // inspectToken (context) {
-    //   const token = state.jwt
-    //   if (token) {
-    //     const decoded = jwt_decode(token)
-    //     const exp = decoded.exp
-    //     const orig_iat = decoded.orig_iat
-    //     if (exp - (Date.now() / 1000) < 1800 && (Date.now() / 1000) - orig_iat < 628200) {
-    //       context.dispatch('refreshToken')
-    //     } else if (exp - (Date.now() / 1000) < 1800) {
-    //       // DO NOT REFRESH
-    //     } else {
-    //       // PROMPT USER TO RE-LOGIN, THIS ELSE CLAUSE COVERS THE CONDITION WHERE A TOKEN IS EXPIRED AS WELL
-    //     }
-    //   }
-    // },
+    inspectToken (context) {
+      const token = this.state.jwt
+      if (token) {
+        const decoded = jwtDecode(token)
+        const exp = decoded.exp
+        const origIat = decoded.orig_iat
+        if (exp - (Date.now() / 1000) < 1800 && (Date.now() / 1000) - origIat < 86400) {
+          context.dispatch('refreshToken')
+        } else if (exp - (Date.now() / 1000) < 1800) {
+          // DO NOT REFRESH
+        } else {
+          console.log('login')
+        }
+      }
+    },
     async getUserInfo (context, token) {
-      let response = await axios.get('http://127.0.0.1:8000/api/user-info', {
+      let response = await axios.get(this.state.endpoints.baseUrl + 'user-info', {
         headers: {
           'X-Requested-With': 'XMLHttpRequest',
           'Authorization': 'Bearer ' + token
