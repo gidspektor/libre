@@ -1,8 +1,7 @@
-export default function authenticate ({ next, store }) {
-  store.dispatch('inspectToken')
-  if (!store.state.jwt || !store.state.selectedEvent) {
+export default async function authenticate ({ next, store }) {
+  if (!Object.keys(store.state.selectedEvent).length) {
     return next({
-      path: '/'
+      path: '/FindEvents'
     })
   }
   return next()

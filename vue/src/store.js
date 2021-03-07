@@ -1,7 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import axios from 'axios'
-import jwtDecode from 'jwt-decode'
 
 Vue.use(Vuex)
 
@@ -9,13 +8,14 @@ export default new Vuex.Store({
   state: {
     user: null,
     eventSearchResults: [],
-    selectedEvent: [],
+    selectedEvent: localStorage.getItem('event'),
     jwt: localStorage.getItem('t'),
     endpoints: {
       obtainJWT: 'http://127.0.0.1:8000/api/auth/login/',
       refreshJWT: 'http://127.0.0.1:8000/api/auth/refresh_login/',
       baseUrl: 'http://127.0.0.1:8000/api/'
-    }
+    },
+    isGuest: false
   },
 
   mutations: {
@@ -34,7 +34,11 @@ export default new Vuex.Store({
       state.eventSearchResults = data
     },
     setSelectedEvent (state, data) {
-      state.selectedEvent = data
+      localStorage.setItem('event', JSON.stringify(data))
+      state.selectedEvent = JSON.stringify(data)
+    },
+    setGuest (state, data) {
+      state.isGuest = data
     }
   },
 
@@ -65,21 +69,6 @@ export default new Vuex.Store({
 
       context.commit('updateToken', response.data.token)
     },
-    inspectToken (context) {
-      const token = this.state.jwt
-      if (token) {
-        const decoded = jwtDecode(token)
-        const exp = decoded.exp
-        const origIat = decoded.orig_iat
-        if (exp - (Date.now() / 1000) < 1800 && (Date.now() / 1000) - origIat < 86400) {
-          context.dispatch('refreshToken')
-        } else if (exp - (Date.now() / 1000) < 1800) {
-          // DO NOT REFRESH
-        } else {
-          console.log('login')
-        }
-      }
-    },
     async getUserInfo (context, token) {
       let response = await axios.get(this.state.endpoints.baseUrl + 'user-info', {
         headers: {
@@ -89,13 +78,15 @@ export default new Vuex.Store({
       })
       context.commit('userInfo', response.data.user)
     },
-
     eventSearchResults (context, data) {
       context.commit('setEventSearchResults', data)
     },
 
     selectEvent (context, data) {
       context.commit('setSelectedEvent', data)
+    },
+    setGuest (context, data) {
+      context.commit('setGuest', data)
     }
   }
 })

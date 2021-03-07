@@ -15,14 +15,14 @@
         <div class='modal-body'>
           <div v-if='!signUpUser'>
             <div v-if='!continueWithEmail' class='row d-flex justify-content-center'>
-              <button @click='goToEventPage' type='button' class='col-11 btn logoColour libreFont text-center'>Continue as guest</button>
+              <button @click='goToEventPageAsGuest' type='button' class='col-11 btn logoColour libreFont text-center'>Continue as guest</button>
             </div>
             <div v-else-if='continueWithEmail'>
               <div class='mb-3 libreFont row'>
                 <div class='col-12'>
                   <input v-model='email' type='email' class='form-control col-12' placeholder='Email Address'>
                   <div class='alert alert-danger error mt-1 text-center' role='alert' v-show='error'>
-                    {{ error }}
+                    {{ emailError }}
                   </div>
                   <input v-model='password' type='password' class='form-control col-12' placeholder='Password'>
                   <a class='pl-1 libreFont' href='#'>Forgot password?</a>
@@ -133,7 +133,8 @@ export default {
     signUp () {
       this.signUpUser = true
     },
-    goToEventPage () {
+    goToEventPageAsGuest () {
+      this.$store.dispatch('setGuest')
       this.$router.push('EventPage')
     },
     closeModal () {
@@ -145,13 +146,19 @@ export default {
     },
     async login () {
       this.error = ''
-      await this.$store.dispatch('obtainToken', [this.email, this.password]).catch((badRequest) => {
-        badRequest = 'Username and/or password not found.'
-        this.error = badRequest
-      })
+      let emailIsValid = this.validateEmail(this.email)
 
-      if (!this.error) {
-        this.$router.push('EventPage')
+      if (!emailIsValid) {
+        this.emailError = 'Please insert a valid email'
+      } else {
+        await this.$store.dispatch('obtainToken', [this.email, this.password]).catch((badRequest) => {
+          badRequest = 'Username and/or password not found.'
+          this.error = badRequest
+        })
+
+        if (!this.error) {
+          this.$router.push('EventPage')
+        }
       }
     },
     validateForm () {
