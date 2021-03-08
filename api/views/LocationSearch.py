@@ -1,5 +1,5 @@
 from rest_framework.views import APIView
-from api.models import Countries_cities
+from api.models import CountriesCities
 from django.http import JsonResponse
 import operator
 from django.db.models import Q
@@ -20,14 +20,14 @@ class PartialSearchView(APIView):
 
       query = (Q(country__country__icontains=term_one) & Q(city__city__icontains=term_two)) | (Q(country__country__icontains=term_two) & Q(city__city__icontains=term_one))
 
-      locations = Countries_cities.objects.filter(query)
+      locations = CountriesCities.objects.filter(query)
 
       if locations.count():
         found = True
 
     if not found:
       query = Q(country__country__icontains=search_string.replace('-', ' ')) | Q(city__city__icontains=search_string.replace('-', ' '))
-      locations = Countries_cities.objects.filter(query)
+      locations = CountriesCities.objects.filter(query)
 
     response = {}
 

@@ -14,10 +14,10 @@
         </div>
         <div class='modal-body'>
           <div v-if='!signUpUser'>
-            <div v-if='!continueWithEmail' class='row d-flex justify-content-center'>
+            <!-- <div v-if='!continueWithEmail' class='row d-flex justify-content-center'>
               <button @click='goToEventPageAsGuest' type='button' class='col-11 btn logoColour libreFont text-center'>Continue as guest</button>
-            </div>
-            <div v-else-if='continueWithEmail'>
+            </div> -->
+            <div v-if='continueWithEmail'>
               <div class='mb-3 libreFont row'>
                 <div class='col-12'>
                   <input v-model='email' type='email' class='form-control col-12' placeholder='Email Address'>
@@ -34,10 +34,10 @@
                 <button @click='login' type='button' class='col-11 btn logoColour libreFont text-center'>Continue</button>
               </div>
             </div>
-            <div class='py-lg-4 row d-flex justify-content-center'>
+            <!-- <div class='py-lg-4 row d-flex justify-content-center'>
               <div class='col-11 line text-center'><span class='or'>or</span></div>
-            </div>
-            <div class='row d-flex justify-content-center'>
+            </div> -->
+            <div class=' pt-lg-4 row d-flex justify-content-center'>
               <button type='button' class='col-11 btn customButton'>
                 <div>
                   <img class='d-inline logos' src='~@/assets/img/google.png'>
@@ -192,7 +192,7 @@ export default {
       let cleanedName = this.name.replace(/[^a-z'A-Z ]/, '').replace(/[/(){};:*]/g, '')
 
       if (formIsValid) {
-        let response = await http.post('create/', {
+        let response = await http.post('create-user/', {
           name: cleanedName,
           email: this.email,
           password: this.password,

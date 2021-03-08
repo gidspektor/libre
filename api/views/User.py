@@ -1,10 +1,9 @@
 from rest_framework.views import APIView
-from rest_framework_jwt.authentication import JSONWebTokenAuthentication
 from rest_framework import permissions
 from django.http import JsonResponse
+from api.middleware.authentication import JwtAuthentication
 import re, json
 from django.contrib.auth.models import User
-from api.middleware.authentication import JwtAuthentication
 
 
 class CreateUserView(APIView):
@@ -29,6 +28,11 @@ class CreateUserView(APIView):
       error = 'Make sure your password is at least 8 letters'
     elif password != password_confirm:
       error = 'Passwords dont match'
+
+    user_already_exists = User.objects.get(email=email).first()
+
+    if user_already_exists:
+      error = 'User already exists with that email.'
 
     if not error:
       new_user = User.objects.create_user(

@@ -1,14 +1,16 @@
-from api.views import EventsSearch, LocationSearch, User
+from api.views import Events, LocationSearch, User
 from django.urls import path, re_path, include
 from rest_framework_jwt.views import obtain_jwt_token, refresh_jwt_token
 
 urlpatterns = [
+  # Authorization
   path('auth/login/', obtain_jwt_token),
 
   path('auth/refresh_login/', refresh_jwt_token),
 
+  # Search
   path('events/<location>/',
-    EventsSearch.EventsListView.as_view(),
+    Events.EventsListView.as_view(),
     name='events'
   ),
 
@@ -17,7 +19,8 @@ urlpatterns = [
     name='locations'
   ),
 
-  path('create/',
+  # User actions
+  path('create-user/',
     User.CreateUserView.as_view(),
     name='user_creation'
   ),
@@ -25,5 +28,11 @@ urlpatterns = [
   path('user-info/',
     User.UserView.as_view(),
     name='user_info'
+  ),
+
+  # Event
+  path('purchase-ticket/',
+    Events.EventTicketPurchaseView.as_view(),
+    name='purchaseTickets'
   )
 ]

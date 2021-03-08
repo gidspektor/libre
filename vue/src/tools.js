@@ -20,24 +20,25 @@ export function formatDate (dateTime) {
   let day = dateTime[0].split('-', 3)[2]
   let month = dateTime[0].split('-', 3)[1]
 
-  return timeOnly[0] + ':' + timeOnly[1] + ', ' + day + ':' + month
+  return timeOnly[0] + ':' + timeOnly[1] + ', ' + day + '/' + month
 }
 
 export function inspectToken (token) {
-  let action = ''
+  let state = ''
+
   if (token) {
     const decoded = jwtDecode(token)
     const exp = decoded.exp
     const origIat = decoded.orig_iat
 
     if (exp - (Date.now() / 1000) < 1800 && (Date.now() / 1000) - origIat >= 86400) {
-      action = 'refresh'
+      state = 'refresh'
     } else if (exp - (Date.now() / 1000) < 1800 && exp - (Date.now() / 1000) > 0) {
-      action = 'active'
+      state = 'active'
     } else {
-      action = 'expired'
+      state = 'expired'
     }
   }
 
-  return action
+  return state
 }

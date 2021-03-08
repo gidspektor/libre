@@ -3,10 +3,10 @@
     <div class='row pt-5'>
       <div class='col-12 col-md-6 mt-5 pl-4 pl-lg-5'>
         <div class='row d-flex justify-content-start pl-lg-5'>
-          <input v-model='name' class='form-control col-7' placeholder='Full name' type='text'>
+          <input readonly v-model='name' class='form-control col-7' placeholder='Full name' type='text'>
         </div>
         <div class='row d-flex justify-content-start my-2 pl-lg-5'>
-          <input v-model='email' class='form-control col-7' placeholder='Email address' type='email'>
+          <input readonly v-model='email' class='form-control col-7' placeholder='Email address' type='email'>
           <div class='alert alert-danger error mt-1 text-center' role='alert' v-show='emailError'>
             {{ emailError }}
           </div>
@@ -51,7 +51,7 @@
               </div>
           </div>
           <br/>
-          <a href='#' @click='submitPurchase' class='btn logoColour btn-lg btn-block col-7 mt-lg-1' role='button'>Pay</a>
+          <button @click='submitPurchase' class='btn logoColour btn-lg btn-block col-7 mt-lg-1' role='button'>Pay</button>
         </div>
       </div>
       <div class='order-first order-md-last col-12 col-md-6 mt-5 pl-lg-0 pl-4 pr-lg-5'>
@@ -96,22 +96,14 @@ export default {
       year: '',
       quantity: '1',
       csv: '',
-      event: [],
-      guest: false
+      event: []
     }
   },
 
   created () {
     this.event = JSON.parse(store.state.selectedEvent)
-
-    if (store.state.isGuest) {
-      this.guest = false
-    }
-
-    if (store.state.user) {
-      this.email = store.state.user.email
-      this.name = store.state.user.first_name + ' ' + store.state.user.last_name
-    }
+    this.email = store.state.user.email
+    this.name = store.state.user.first_name + ' ' + store.state.user.last_name
   },
 
   computed: {
@@ -160,16 +152,16 @@ export default {
     },
     async submitPurchase () {
       let formIsValid = this.validateForm()
-      let cleanedName = this.name.replace(/[^a-z'A-Z ]/, '').replace(/[/(){};:*]/g, '')
 
       if (formIsValid) {
-        let response = await http.post('purchase-ticket', {
-          email: this.email,
-          name: cleanedName,
-          event: store.state.selectedEvent.id,
-          cardNumber: this.cardNumber,
+        let response = await http.post('purchase-ticket/', {
+          user_info: store.state.user,
+          event_id: this.event.event_id,
+          card_number: this.cardNumber,
           csv: this.csv,
-          expirty: this.month + '/' + this.year
+          expiry_month: this.month,
+          expiry_year: this.year,
+          quantity: this.quantity
         })
         console.log(response)
       }

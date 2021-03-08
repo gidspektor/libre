@@ -30,10 +30,12 @@
 </template>
 
 <script>
+import {inspectToken} from '../../tools'
+import LoginSignupModal from '../LoginSignupModal'
 import ResultsBox from '../ResultsBox'
 import SearchBox from '../SearchBox'
-import LoginSignupModal from '../LoginSignupModal'
 import store from '../../store'
+
 export default {
   components: {
     SearchBox,
@@ -73,7 +75,9 @@ export default {
     },
     goToEventPage (event) {
       this.$store.dispatch('selectEvent', event)
-      if (!store.state.jwt) {
+      let tokenState = store.state.jwt ? inspectToken(store.state.jwt) : ''
+
+      if (!store.state.jwt || tokenState === 'expired') {
         this.showModal = true
         document.querySelector('body').style.overflow = 'hidden'
       } else {

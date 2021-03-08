@@ -1,5 +1,5 @@
 <template>
-  <div id='app'>
+  <div v-if='loaded' id='app'>
     <Navbar></Navbar>
     <router-view/>
     <Footer></Footer>
@@ -19,14 +19,29 @@ export default {
     Footer
   },
 
-  created () {
-    if (store.state.jwt) {
-      let tokenState = inspectToken(store.state.jwt)
-
-      if (tokenState === 'active') {
-        this.$store.dispatch('getUserInfo', store.state.jwt)
-      }
+  data () {
+    return {
+      loaded: false
     }
+  },
+
+  async created () {
+    let tokenState = store.state.jwt ? inspectToken(store.state.jwt) : ''
+
+    if (tokenState === 'active') {
+      await this.$store.dispatch('getUserInfo', store.state.jwt)
+    }
+
+    if (tokenState === 'refresh') {
+      await this.$store.dispatch('refreshToken')
+      this.$store.dispatch('getUserInfo', store.state.jwt)
+    }
+
+    if (tokenState === 'expired') {
+      this.$router.push('Login')
+    }
+
+    this.loaded = true
   }
 }
 </script>

@@ -8,6 +8,7 @@ class Events(models.Model):
   location = models.ForeignKey(Location, on_delete=models.CASCADE)
   name = models.CharField(max_length=100, blank=False, null=True)
   show = models.BooleanField(blank=True, default=0)
+  sold_out = models.BooleanField(blank=True, default=0)
 
   def __str__(self):
     return self.location.name + ' / ' + str(self.date_time)
