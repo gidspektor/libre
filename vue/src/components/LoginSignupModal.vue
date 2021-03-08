@@ -199,6 +199,10 @@ export default {
           password_confirm: this.passwordRepeat
         })
 
+        if (response.data.error) {
+          this.emailError = response.data.error
+        }
+
         if (response.data.success) {
           this.$router.push('EventPage')
         }

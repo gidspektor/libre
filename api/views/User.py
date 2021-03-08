@@ -29,7 +29,7 @@ class CreateUserView(APIView):
     elif password != password_confirm:
       error = 'Passwords dont match'
 
-    user_already_exists = User.objects.get(email=email).first()
+    user_already_exists = User.objects.get(email=email)
 
     if user_already_exists:
       error = 'User already exists with that email.'
