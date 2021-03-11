@@ -18,20 +18,6 @@
               {{ error }}
             </span>
           </div>
-          <!-- <div v-if="this.$route.name === 'createEvents'" class='col-lg-3 searchItem pr-0 mr-5'>
-            <div class='pl-lg-4 pt-2 text text-headers font-weight-bold'>Capacity</div>
-            <select v-model='capacity' class='ml-lg-4 pl-lg-2 rounded-pill capacity'>
-              <option disabled value=''>Choose</option>
-              <option value='10-50'>10-50</option>
-              <option value='50-150'>50-150</option>
-              <option value='150-250'>150-250</option>
-              <option value='250-350'>250-350</option>
-            </select>
-          </div> -->
-          <!-- <div v-else-if="this.$route.name != 'collaborate'" class='col-lg-3 searchItem pr-0 mr-5 '>
-            <div class='pl-lg-3 pt-2 text text-headers font-weight-bold'>Genre</div>
-            <input v-model='genre' type='text' class='pl-lg-3 pt-0 text searchText font-weight-light font-italic' placeholder='Choose a genre'>
-          </div> -->
           <div v-if="this.$route.name != 'collaborate'" class='col-lg-4 searchItem'>
             <div class='pl-lg-1 pt-2 mr-3 text text-headers font-weight-bold'>Date</div>
             <input v-model='date' type='date' class='pt-0 date'>
@@ -80,6 +66,7 @@
 
 <script>
 import http from '../http-common'
+import store from '../store'
 import {sanitizeUrlString} from '../tools'
 export default {
   data () {
@@ -93,13 +80,24 @@ export default {
       sanitizeUrlString: sanitizeUrlString
     }
   },
+
   created () {
     window.addEventListener('click', () => {
       this.returnedLocations = []
       this.error = ''
     })
   },
+
+  watch: {
+    inputSearch (newValue, oldValue) {
+      this.keywordSearch = newValue
+    }
+  },
+
   computed: {
+    inputSearch () {
+      return store.state.keywordSearch
+    },
     searchRedirect () {
       return this.$route.name === 'home' ? 'findEvents' : this.$route.name
     },
@@ -136,8 +134,8 @@ export default {
         let response = await http.get(`events/${cleanedString}?date=${this.date}`)
 
         this.error = response.data.error
-        this.keywordSearch = response.data.location
         this.$store.dispatch('eventSearchResults', response.data.results)
+        this.$store.dispatch('setKeywordSearch', response.data.location)
 
         if (!response.data.results || response.data.results.length === 0) {
           this.$emit('no-results')

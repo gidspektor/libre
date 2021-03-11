@@ -27,3 +27,6 @@ def sanitize_url_string(string):
 
 def sanitize_numeric_string(string):
   return re.sub(r"[^0-9']", '', string).strip()
+
+def sanitize_string(string):
+  return re.sub(r"[^a-zA-Z0-9]", '', string).strip()

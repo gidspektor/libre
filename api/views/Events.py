@@ -1,5 +1,5 @@
 from rest_framework.views import APIView
-import datetime
+from datetime import datetime, timedelta
 from api.models import Events, CountriesCities, UserEventsAssoc
 from django.http import JsonResponse
 from api.middleware.authentication import JwtAuthentication
@@ -8,12 +8,14 @@ import operator, json
 from django.db.models import Q
 from api.tools import sanitize_url_string
 from django.core import serializers
+from django.core.mail import send_mail
 from django.db.models import Sum
 from functools import reduce
 
 
 class EventsListView(APIView):
   def get(self, request, location):
+    error = ''
     date = request.GET.get('date', '')
     search_terms = []
     search_string = sanitize_url_string(location)
@@ -51,35 +53,48 @@ class EventsListView(APIView):
           found = True
 
     if date:
-      q_list.append(Q(date_time__date=datetime.datetime.strptime(date, '%Y-%m-%d')))
+      if datetime.strptime(date, '%Y-%m-%d') < datetime.now() - timedelta(days=1):
+        error = 'Cant search the past'
+      else:
+        q_list.append(Q(date_time__date=datetime.strptime(date, '%Y-%m-%d')))
+    else:
+      q_list.append(Q(date_time__date__gte=datetime.now()))
 
     if found:
       events = Events.objects.filter(reduce(operator.and_, q_list))
     else:
-      return JsonResponse({'error': "Couldn't find a location with that name."})
+      error = 'Couldn\'t find a location with that name.'
 
-    response_dict = {}
+    if not error:
+      response_dict = {}
 
-    for event in events:
-      response_dict[event.id] = {
-        'name': event.name,
-        'city': event.location.city.city,
-        'country': event.location.country.country,
-        'capacity': event.location.capacity,
-        'allows_own_drinks': event.location.allows_own_drinks,
-        'serves_alcohol': event.location.serves_alcohol,
-        'image': event.location.image,
-        'description': event.description,
-        'date_time': event.date_time,
-        'event_id': event.id
+      for event in events:
+        capacity = event.location.capacity
+        tickets_bought = event.tickets_bought
+        tickets_left = capacity - tickets_bought
+
+        response_dict[event.id] = {
+          'name': event.name,
+          'city': event.location.city.city,
+          'country': event.location.country.country,
+          'capacity': capacity,
+          'allows_own_drinks': event.location.allows_own_drinks,
+          'serves_alcohol': event.location.serves_alcohol,
+          'image': event.location.image,
+          'description': event.description,
+          'date_time': event.date_time,
+          'event_id': event.id,
+          'atl': tickets_left
+        }
+
+      data = {
+        'results': sorted(response_dict.values(), key=operator.itemgetter('date_time')),
+        'location': location_string
       }
 
-    data = {
-      'results': sorted(response_dict.values(), key=operator.itemgetter('date_time')),
-      'location': location_string
-    }
-
-    return JsonResponse(data)
+      return JsonResponse(data)
+    else:
+      return JsonResponse({'error': error})
 
 
 class EventTicketPurchaseView(APIView):
@@ -125,9 +140,12 @@ class EventTicketPurchaseView(APIView):
     if number_of_tickets_bought.get('quantity__sum', 0):
       if number_of_tickets_bought.get('quantity__sum', 0) + int(ticket_quantity) > max_tickets:
         error = 'Invalid amount'
-    
-    if event.sold_out:
-      error = 'Sold out'
+
+    number_of_tickets_user_bought = UserEventsAssoc.objects.filter(event=event, user=request.user).aggregate(Sum('quantity'))
+
+    if number_of_tickets_user_bought.get('quantity__sum', 0):
+      if (number_of_tickets_user_bought.get('quantity__sum', 0) > 1):
+        error = 'Invalid amount'
 
     # card payment functionality would go here with a fail condition.
 
@@ -138,10 +156,21 @@ class EventTicketPurchaseView(APIView):
         quantity=int(ticket_quantity)
       ).save()
 
+      event.tickets_bought += int(ticket_quantity)
+      event.save()
+
       number_of_tickets_bought = UserEventsAssoc.objects.filter(event=event).aggregate(Sum('quantity'))
 
       if max_tickets == number_of_tickets_bought.get('quantity__sum', 0):
         event.sold_out = True
+
+      send_mail(
+        'Libre',
+        'Hi {} your ticket to {} is attached.'.format(request.user.first_name, event.name),
+        'tickets@libre.com',
+        [request.user.email],
+        fail_silently=False,
+      )
 
       return JsonResponse({'success': True})
     else:

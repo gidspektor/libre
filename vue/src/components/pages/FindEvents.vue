@@ -13,6 +13,7 @@
       :date_time='event.date_time'
       :allows_own_drinks='event.allows_own_drinks'
       :capacity='event.capacity'
+      :atl='event.atl'
       :event='event'
     ></ResultsBox>
     <div class="overlay" v-show='showModal'>
@@ -77,7 +78,7 @@ export default {
       this.$store.dispatch('selectEvent', event)
       let tokenState = store.state.jwt ? inspectToken(store.state.jwt) : ''
 
-      if (!store.state.jwt || tokenState === 'expired') {
+      if (!tokenState || tokenState === 'expired') {
         this.showModal = true
         document.querySelector('body').style.overflow = 'hidden'
       } else {

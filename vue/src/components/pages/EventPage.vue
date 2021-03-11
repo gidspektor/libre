@@ -1,7 +1,15 @@
 <template>
   <main class='container-fluid bg-white section pt-5'>
     <div class='row pt-5'>
-      <div class='col-12 col-md-6 mt-5 pl-4 pl-lg-5'>
+      <div v-if='purchaseComplete || alreadyAttending' class='col-12 col-md-6 mt-5 pl-4 pl-lg-5'>
+        <div class='col-lg-12'>
+          <h5 v-if='alreadyAttending' class='libreFont'>You're already going to {{this.event.name}}!</h5>
+          <h5 v-else class='libreFont'>You're going to {{this.event.name}}!</h5>
+          <p class='libreFont d-inline'>You will receive your tickets via email at</p>
+          <p class='d-inline libreFont font-weight-bold'>{{this.email}}</p>
+        </div>
+      </div>
+      <div v-if='!purchaseComplete && !alreadyAttending' class='col-12 col-md-6 mt-5 pl-4 pl-lg-5'>
         <div class='row d-flex justify-content-start pl-lg-5'>
           <input readonly v-model='name' class='form-control col-7' placeholder='Full name' type='text'>
         </div>
@@ -46,7 +54,7 @@
                 <label>Number of tickets</label>
                 <select v-model='quantity'>
                   <option value='1'>1</option>
-                  <option value='2'>2</option>
+                  <option v-if='!lastTicket && !boughtOne' value='2'>2</option>
                 </select>
               </div>
           </div>
@@ -96,14 +104,24 @@ export default {
       year: '',
       quantity: '1',
       csv: '',
-      event: []
+      event: [],
+      lastTicket: false,
+      purchaseComplete: false,
+      alreadyAttending: false,
+      boughtOne: false
     }
   },
 
   created () {
     this.event = JSON.parse(store.state.selectedEvent)
+
+    if (this.event.atl === 1) {
+      this.lastTicket = true
+    }
+
     this.email = store.state.user.email
     this.name = store.state.user.first_name + ' ' + store.state.user.last_name
+    this.checkIfAlreadyAttending(store.state.user)
   },
 
   computed: {
@@ -113,6 +131,19 @@ export default {
   },
 
   methods: {
+    checkIfAlreadyAttending (user) {
+      let quantityPurchased = user.future_events.filter(event =>
+        event === this.event.name
+      )
+
+      if (quantityPurchased.length === 2) {
+        this.alreadyAttending = true
+      }
+
+      if (quantityPurchased.length === 1) {
+        this.boughtOne = true
+      }
+    },
     checkIsNumber (event) {
       if (event.target.value && !/^\d+$/.test(event.target.value)) {
         document.getElementById(event.target.id).style.backgroundColor = 'IndianRed'
@@ -163,7 +194,10 @@ export default {
           expiry_year: this.year,
           quantity: this.quantity
         })
-        console.log(response)
+
+        if (response.data.success) {
+          this.purchaseComplete = true
+        }
       }
     }
   }

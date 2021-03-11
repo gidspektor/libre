@@ -135,3 +135,8 @@ JWT_AUTH = {
   'JWT_EXPIRATION_DELTA': datetime.timedelta(minutes=30),
   'JWT_REFRESH_EXPIRATION_DELTA': datetime.timedelta(days=1),
 }
+
+# not for prod as i dont have a smtp server
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+EMAIL_HOST = '127.0.0.1'
+EMAIL_PORT = 1025

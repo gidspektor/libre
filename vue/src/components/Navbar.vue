@@ -8,8 +8,10 @@
         <button class='navbar-toggler bg-light' type='button' data-toggle='collapse' data-target='#navbarSupportedContent' aria-controls='navbarSupportedContent' aria-expanded='false' aria-label='Toggle navigation'>
           <span class='navbar-toggler-icon' id='hamburgerDropdown' @click='toggleHamburger'></span>
           <div class='drop dropdown-menu-right' v-show='hamBurgetState'>
-            <a class='nav-link' href='#'>Sign up</a>
-            <a class='nav-link' href='#'>Log in</a>
+            <a v-if='loggedIn' class='nav-link' href='#/Account'>Account</a>
+            <a v-else class='nav-link' href='#/SignUp'>Sign up</a>
+            <a v-if='loggedIn' class='nav-link' @click='logout' href='/'>Logout</a>
+            <a v-else class='nav-link' href='#/Login'>Login</a>
             <div class='dropdown-divider'></div>
             <!-- <router-link class='nav-link' :to="{createEvents}">Host events</router-link> -->
             <a class='nav-link' href='#'>Help</a>
@@ -26,8 +28,10 @@
                 <img class='' src='~@/assets/img/user.svg'>
               </span>
               <div class='drop dropdown-menu-right' v-show='dropState'>
-                <a class='nav-link' href='#'>Sign up</a>
-                <a class='nav-link' href='#'>Log in</a>
+                <a v-if='loggedIn' class='nav-link' href='#/Account'>Account</a>
+                <a v-else class='nav-link' href='#/SignUp'>Sign up</a>
+                <a v-if='loggedIn' class='nav-link' @click='logout' href='/'>Logout</a>
+                <a v-else class='nav-link' href='#/Login'>Login</a>
                 <div class='dropdown-divider'></div>
                 <a class='nav-link' href='#/Collaborate'>Collaborate</a>
                 <a class='nav-link' href='#'>Help</a>
@@ -41,6 +45,8 @@
 </template>
 
 <script>
+import store from '../store'
+
 export default {
   data () {
     return {
@@ -48,11 +54,16 @@ export default {
       hamBurgetState: false
     }
   },
+
   computed: {
+    loggedIn () {
+      return store.state.user
+    },
     searchRedirect () {
       return this.$route.name !== 'collaborate' ? 'findEvents' : this.$route.name
     }
   },
+
   created () {
     window.addEventListener('click', (e) => {
       if (e.target.id !== 'navbarDropdown' && e.target.id !== 'hamburgerDropdown') {
@@ -61,7 +72,11 @@ export default {
       }
     })
   },
+
   methods: {
+    logout () {
+      this.$store.dispatch('logout')
+    },
     toggleDropdown () {
       this.dropState = !this.dropState
     },

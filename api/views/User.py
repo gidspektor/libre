@@ -1,9 +1,11 @@
 from rest_framework.views import APIView
+from datetime import datetime
 from rest_framework import permissions
 from django.http import JsonResponse
 from api.middleware.authentication import JwtAuthentication
 import re, json
 from django.contrib.auth.models import User
+from api.models import UserEventsAssoc
 
 
 class CreateUserView(APIView):
@@ -53,9 +55,16 @@ class UserView(APIView):
   authentication_classes = (JwtAuthentication,)
 
   def get(self, request):
-    return JsonResponse({'user': {
-      'id': request.user.id,
-      'email': request.user.email,
-      'first_name': request.user.first_name,
-      'last_name': request.user.last_name
-    }})
+    past_user_events = UserEventsAssoc.objects.filter(user=request.user, event__date_time__lte=datetime.now()).order_by('event__date_time').values_list('event__name', flat=True)
+    future_user_events = UserEventsAssoc.objects.filter(user=request.user, event__date_time__gte=datetime.now()).order_by('event__date_time').values_list('event__name', flat=True)
+
+    return JsonResponse({
+      'user': {
+        'id': request.user.id,
+        'email': request.user.email,
+        'first_name': request.user.first_name,
+        'last_name': request.user.last_name,
+        'past_events': list(past_user_events),
+        'future_events': list(future_user_events)
+      }
+    })

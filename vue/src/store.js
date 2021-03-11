@@ -15,10 +15,14 @@ export default new Vuex.Store({
       refreshJWT: 'http://127.0.0.1:8000/api/auth/refresh_login/',
       baseUrl: 'http://127.0.0.1:8000/api/'
     },
-    isGuest: false
+    isGuest: false,
+    keywordSearch: ''
   },
 
   mutations: {
+    setKeywordSearch (state, data) {
+      state.keywordSearch = data
+    },
     updateToken (state, newToken) {
       localStorage.setItem('t', newToken)
       state.jwt = newToken
@@ -39,6 +43,12 @@ export default new Vuex.Store({
     },
     setGuest (state, data) {
       state.isGuest = data
+    },
+    logout (state, data) {
+      localStorage.clear()
+      state.user = null
+      state.jwt = null
+      state.selectedEvent = null
     }
   },
 
@@ -63,8 +73,8 @@ export default new Vuex.Store({
       }
       let response = await axios.post(this.state.endpoints.refreshJWT, payload)
 
-      if (response.error) {
-        console.log(response.error)
+      if (!response.error) {
+        await this.dispatch('getUserInfo', response.data.token)
       }
 
       context.commit('updateToken', response.data.token)
@@ -87,6 +97,12 @@ export default new Vuex.Store({
     },
     setGuest (context, data) {
       context.commit('setGuest', data)
+    },
+    setKeywordSearch (context, data) {
+      context.commit('setKeywordSearch', data)
+    },
+    logout (context, data) {
+      context.commit('logout')
     }
   }
 })

@@ -21,13 +21,16 @@
               <div class='mb-3 libreFont row'>
                 <div class='col-12'>
                   <input v-model='email' type='email' class='form-control col-12' placeholder='Email Address'>
-                  <div class='alert alert-danger error mt-1 text-center' role='alert' v-show='error'>
+                  <div class='alert alert-danger error mt-1 text-center' role='alert' v-show='emailError'>
                     {{ emailError }}
                   </div>
                   <input v-model='password' type='password' class='form-control col-12' placeholder='Password'>
                   <a class='pl-1 libreFont' href='#'>Forgot password?</a>
                   |
                   <a class='libreFont' href='#' @click='signUp'>Sign up?</a>
+                  <div class='alert alert-danger error mt-1 text-center' role='alert' v-show='error'>
+                    {{ error }}
+                  </div>
                 </div>
               </div>
               <div class='row d-flex justify-content-center'>
@@ -37,7 +40,7 @@
             <!-- <div class='py-lg-4 row d-flex justify-content-center'>
               <div class='col-11 line text-center'><span class='or'>or</span></div>
             </div> -->
-            <div class=' pt-lg-4 row d-flex justify-content-center'>
+            <div class='pt-lg-4 row d-flex justify-content-center'>
               <button type='button' class='col-11 btn customButton'>
                 <div>
                   <img class='d-inline logos' src='~@/assets/img/google.png'>
@@ -84,6 +87,9 @@
             <div class='alert alert-danger error mt-1 text-center' role='alert' v-show='passwordNotMatchError'>
               {{ passwordNotMatchError }}
             </div>
+            <div class='alert alert-danger error mt-1 text-center' role='alert' v-show='error'>
+              {{ error }}
+            </div>
             <div class='py-lg-2 row d-flex justify-content-center'>
               <div class='col-11 line text-center'></div>
             </div>
@@ -109,7 +115,6 @@ export default {
       email: '',
       validateEmail: validateEmail,
       error: '',
-      userFound: false,
       password: '',
       passwordRepeat: '',
       signUpUser: false,
@@ -200,7 +205,7 @@ export default {
         })
 
         if (response.data.error) {
-          this.emailError = response.data.error
+          this.error = response.data.error
         }
 
         if (response.data.success) {
@@ -247,18 +252,18 @@ export default {
   background-color: rgba(240, 234, 234, 0.5);
 }
 
-.or {
+/* .or {
   background:#fff;
   padding:0 10px;
-}
+} */
 
-.line {
+/* .line {
   line-height: 0.1em;
   margin: 10px 0 20px;
   height: 0px;
   border-bottom: solid rgba(20, 20, 20, 0.1);
   border-width: 2px;
-}
+} */
 
 .modalHead {
   border-bottom: solid rgba(20, 20, 20, 0.1);

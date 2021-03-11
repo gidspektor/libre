@@ -1,8 +1,14 @@
-from api.views import Events, LocationSearch, User
+from api.views import Events, LocationSearch, User, Messages
 from django.urls import path, re_path, include
 from rest_framework_jwt.views import obtain_jwt_token, refresh_jwt_token
 
 urlpatterns = [
+  # Messages
+  path('host-request/',
+    Messages.HostMessageRequest.as_view(),
+    name='host_message_request'
+  ),
+
   # Authorization
   path('auth/login/', obtain_jwt_token),
 
@@ -30,7 +36,7 @@ urlpatterns = [
     name='user_info'
   ),
 
-  # Event
+  # Event actions
   path('purchase-ticket/',
     Events.EventTicketPurchaseView.as_view(),
     name='purchaseTickets'

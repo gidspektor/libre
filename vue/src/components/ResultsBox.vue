@@ -1,10 +1,11 @@
 <template>
   <main class='row my-2 mx-2 d-flex justify-content-center'>
-    <div @click='goToEventsPage' class='col-11 d-flex justify-content-center cardStyles'>
+    <h5 v-if='isNotAvailable' class='soldOutText jumbotron vertical-center mt-lg-5 d-flex justify-content-center'>Sold Out</h5>
+    <div :class='isNotAvailable' @click='goToEventsPage' class='col-11 d-flex justify-content-center cardStyles'>
       <div class='col-lg-4 pt-3 item px-lg-1 mt-lg-1 mr-lg-4'>
         <img class='cardImage card-img-top' :src='require(`../assets/images/${cardImage}.jpg`)' alt='Card image cap'>
       </div>
-      <div class='noUnderline mt-lg-5 col-lg-6 item mt-3' >
+      <div class='noUnderline mt-lg-5 col-lg-6 item mt-3'>
         <div class='pb-lg-0 pt-lg-2 mr-lg-0'>
           <h5 class='mb-lg-3 libreFont font-weight-bold'>{{cardTitle}}</h5>
           <p class='font-weight-light font-italic text'>{{cardText}}</p>
@@ -41,18 +42,22 @@ export default {
     'capacity',
     'date_time',
     'allows_own_drinks',
-    'event'
+    'event',
+    'atl'
   ],
 
   computed: {
     formatAllowDrinks () {
       return this.allows_own_drinks ? 'Yes' : 'No'
+    },
+    isNotAvailable () {
+      return !this.atl ? 'soldOut' : ''
     }
   },
 
   methods: {
     goToEventsPage () {
-      this.$emit('go-to-events-page', this.event)
+      return !this.atl ? null : this.$emit('go-to-events-page', this.event)
     }
   }
 }
@@ -103,6 +108,14 @@ export default {
 
 .libreFont {
   font-family: 'Lucida Sans';
+}
+
+.soldOutText {
+  position: absolute;
+}
+
+.soldOut {
+  opacity: 0.3;
 }
 
 @media screen and (max-width: 500px) {

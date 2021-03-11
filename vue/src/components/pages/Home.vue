@@ -76,9 +76,9 @@ export default {
     return {
       mainLeftCard: {
         image: 'warehouse.jpg',
-        title: 'Create Events',
-        text: 'Create your own crowdfunded events, you choose the location and you choose the music.',
-        link: 'createEvents'
+        title: 'Host Events',
+        text: 'Create your own events, you create the location and you choose the music.',
+        link: 'hostEvents'
       },
       mainMiddleCard: {
         image: 'crowd.jpg',

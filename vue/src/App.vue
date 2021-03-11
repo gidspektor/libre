@@ -26,6 +26,7 @@ export default {
   },
 
   async created () {
+    let securePages = ['eventPage', 'account']
     let tokenState = store.state.jwt ? inspectToken(store.state.jwt) : ''
 
     if (tokenState === 'active') {
@@ -37,7 +38,7 @@ export default {
       this.$store.dispatch('getUserInfo', store.state.jwt)
     }
 
-    if (tokenState === 'expired') {
+    if (tokenState === 'expired' && securePages.includes(this.$route.name)) {
       this.$router.push('Login')
     }
 

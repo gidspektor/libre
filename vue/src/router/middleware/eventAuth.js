@@ -1,6 +1,6 @@
 import {inspectToken} from '../../tools'
 
-export default async function authenticate ({ next, store }) {
+export default async function eventAuthenticate ({ next, store }) {
   if (!Object.keys(store.state.selectedEvent).length) {
     return next({
       path: '/FindEvents'
@@ -11,6 +11,10 @@ export default async function authenticate ({ next, store }) {
 
   if (tokenState === 'refresh') {
     this.$store.dispatch('refreshToken')
+  } else if (tokenState === 'expired' || !tokenState) {
+    return next({
+      path: '/Login'
+    })
   }
 
   return next()
