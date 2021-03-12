@@ -22,11 +22,11 @@ def create_web_driver():
   driver = webdriver.Chrome(executable_path=r'./api/driver/chromedriver', chrome_options=chrome_options)
   return driver
 
-def sanitize_url_string(string):
+def sanitize_search_string(string):
     return re.sub(r"[^a-zA-Z0-9'-]", '', string).strip()
 
 def sanitize_numeric_string(string):
   return re.sub(r"[^0-9']", '', string).strip()
 
-def sanitize_string(string):
-  return re.sub(r"[^a-zA-Z0-9]", '', string).strip()
+def sanitize_message_string(string):
+  return re.sub(r"[^a-z'A-Z0-9,.; ]", '', string).strip()

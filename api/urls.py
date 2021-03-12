@@ -1,4 +1,4 @@
-from api.views import Events, LocationSearch, User, Messages
+from api.views import Events, LocationSearch, User, Messages, Collaborate
 from django.urls import path, re_path, include
 from rest_framework_jwt.views import obtain_jwt_token, refresh_jwt_token
 
@@ -21,7 +21,7 @@ urlpatterns = [
   ),
 
   path('locations/<search_string>/',
-    LocationSearch.PartialSearchView.as_view(),
+    LocationSearch.SearchListView.as_view(),
     name='locations'
   ),
 
@@ -39,6 +39,17 @@ urlpatterns = [
   # Event actions
   path('purchase-ticket/',
     Events.EventTicketPurchaseView.as_view(),
-    name='purchaseTickets'
+    name='purchase_tickets'
+  ),
+
+  # user posts
+  path('posts/<location>/',
+    Collaborate.SearchPosts.as_view(),
+    name='posts'
+  ),
+
+  path('create-post/',
+    Collaborate.CreatePost.as_view(),
+    name='create_post'
   )
 ]

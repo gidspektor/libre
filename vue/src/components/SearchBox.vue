@@ -5,7 +5,7 @@
         <div class='search px-5 d-flex justify-content-center border border-dark' v-bind:class='columnSize'>
           <div class='searchItem border-right border-dark mr-5 col-lg-7' v-bind:class='locationClass'>
             <div class='pt-2 text text-headers font-weight-bold'>Location</div>
-            <input v-model='keywordSearch' @input='searchLocations' type='text' class='p-0 text libreFont searchText font-weight-light font-italic' placeholder='Choose a city'>
+            <input v-model='keywordLocationSearch' @input='searchLocations' type='text' class='p-0 text libreFont searchText font-weight-light font-italic' placeholder='Choose a city'>
             <div class='px-0 drop col-12'>
               <span class='pl-3 locationItem py-1 d-block searchText font-weight-bold font-italic'
                 v-for='(returnedLocation, index) in returnedLocations'
@@ -24,9 +24,12 @@
           </div>
           <div v-if="this.$route.name === 'collaborate'" class='col-lg-4 searchItem pl-lg-1'>
             <div class='pt-2 text text-headers font-weight-bold'>Search</div>
-            <input v-model='keywordSearch' type='text' class='p-0 text searchText font-weight-light font-italic' placeholder='Search posts e.g. drummer wanted'>
+            <input v-model='keywordPostSearch' type='text' class='p-0 text searchText font-weight-light font-italic' placeholder='Search posts e.g. drummer wanted'>
           </div>
-          <div class='col-lg-1 ml-auto pt-lg-3 searchItem' @click='search()'>
+          <div v-if="this.$route.name === 'collaborate'" class='col-lg-1 ml-auto pt-lg-3 searchItem' @click='searchPosts()'>
+            <router-link :to='searchRedirect'><img class='icon' src='~@/assets/img/search.svg'></router-link>
+          </div>
+          <div v-else class='col-lg-1 ml-auto pt-lg-3 searchItem' @click='searchEvents()'>
             <router-link :to='searchRedirect'><img class='icon' src='~@/assets/img/search.svg'></router-link>
           </div>
         </div>
@@ -35,29 +38,20 @@
     <div class='row mobileSearch'>
       <div class='border border-dark search col-11 pl-4'>
         <div class='pt-2 text text-headers font-weight-bold'>Location</div>
-        <input v-model='keywordSearch' type='text' class='p-0 text searchText font-weight-light font-italic' placeholder='Choose a city'>
+        <input v-model='keywordLocationSearch' type='text' class='p-0 text searchText font-weight-light font-italic' placeholder='Choose a city'>
       </div>
     </div>
-    <!-- <div v-if="this.$route.name != 'collaborate'" class='row mobileSearch border border-dark'>
-      <div class='search col-sm-12'>
-        <div class='pl-lg-3 pt-2 text text-headers font-weight-bold'>Genre</div>
-        <input v-model='genre' type='text' class='pl-lg-3 pt-0 text searchText font-weight-light font-italic' placeholder='Choose a genre'>
-      </div>
-    </div> -->
-    <div v-if="this.$route.name != 'collaborate'" class='row mobileSearch'>
+    <div v-if="this.$route.name !== 'collaborate'" class='row mobileSearch'>
       <div class='border border-dark search col-11 pl-4'>
         <div class='pt-2 text text-headers font-weight-bold'>Date</div>
         <input v-model='date' type='date' class='pt-0 date'>
       </div>
     </div>
-    <!-- <div v-if="this.$route.name === 'collaborate'" class='row mobileSearch'>
-      <div class='search col-11 pl-4'>
-        <div class='pt-2 text text-headers font-weight-bold'>Search</div>
-        <input v-model='location' type='text' class='p-0 text searchText font-weight-light font-italic' placeholder='Search posts e.g. drummer wanted'>
-      </div>
-    </div> -->
     <div class='row mobileSearch'>
-      <div class='border border-dark search col-11 pt-3 d-flex justify-content-center' @click='search()'>
+      <div v-if="this.$route.name === 'collaborate'" class='border border-dark search col-11 pt-3 d-flex justify-content-center' @click='searchPosts()'>
+        <router-link :to='searchRedirect'><img class='icon' src='~@/assets/img/search.svg'></router-link>
+      </div>
+      <div v-else class='border border-dark search col-11 pt-3 d-flex justify-content-center' @click='searchEvents()'>
         <router-link :to='searchRedirect'><img class='icon' src='~@/assets/img/search.svg'></router-link>
       </div>
     </div>
@@ -67,17 +61,19 @@
 <script>
 import http from '../http-common'
 import store from '../store'
-import {sanitizeUrlString} from '../tools'
+import {sanitizeSearchString} from '../tools'
+
 export default {
   data () {
     return {
       genre: '',
       date: '',
       capacity: '',
-      keywordSearch: '',
+      keywordLocationSearch: '',
+      keywordPostSearch: '',
       returnedLocations: [],
       error: '',
-      sanitizeUrlString: sanitizeUrlString
+      sanitizeSearchString: sanitizeSearchString
     }
   },
 
@@ -89,14 +85,14 @@ export default {
   },
 
   watch: {
-    inputSearch (newValue, oldValue) {
-      this.keywordSearch = newValue
+    inputSearch () {
+      this.keywordLocationSearch = store.state.keywordLocationSearch
     }
   },
 
   computed: {
     inputSearch () {
-      return store.state.keywordSearch
+      return store.state.keywordLocationSearch
     },
     searchRedirect () {
       return this.$route.name === 'home' ? 'findEvents' : this.$route.name
@@ -116,26 +112,40 @@ export default {
 
   methods: {
     selectLocation (selectedLocation) {
-      this.keywordSearch = selectedLocation.city + ', ' + selectedLocation.country
+      this.keywordLocationSearch = selectedLocation.city + ', ' + selectedLocation.country
     },
     async searchLocations () {
       this.returnedLocations = ''
-      if (this.keywordSearch) {
-        let cleanedString = this.sanitizeUrlString(this.keywordSearch)
-        let response = await http.get(`locations/${cleanedString}/`)
+      let cleanedString = this.sanitizeSearchString(this.keywordLocationSearch)
+      let response = await http.get(`locations/${cleanedString}/`)
 
-        this.returnedLocations = response.data.results
-      }
+      this.returnedLocations = response.data.results
     },
-    async search () {
-      if (this.keywordSearch) {
+    async searchEvents () {
+      if (this.keywordLocationSearch) {
         this.error = ''
-        let cleanedString = this.sanitizeUrlString(this.keywordSearch)
+        let cleanedString = this.sanitizeSearchString(this.keywordLocationSearch)
         let response = await http.get(`events/${cleanedString}?date=${this.date}`)
 
         this.error = response.data.error
         this.$store.dispatch('eventSearchResults', response.data.results)
-        this.$store.dispatch('setKeywordSearch', response.data.location)
+        this.keywordLocationSearch = response.data.location
+        this.$store.dispatch('setkeywordLocationSearch', response.data.location)
+
+        if (!response.data.results || response.data.results.length === 0) {
+          this.$emit('no-results')
+        }
+      }
+    },
+    async searchPosts () {
+      if (this.keywordLocationSearch) {
+        this.error = ''
+        let cleanedLocationString = this.sanitizeSearchString(this.keywordLocationSearch)
+        let cleanedSearchTermString = this.sanitizeSearchString(this.keywordPostSearch)
+        let response = await http.get(`posts/${cleanedLocationString}?search-term=${cleanedSearchTermString}`)
+
+        this.error = response.data.error
+        this.$store.dispatch('postSearchResults', response.data.results)
 
         if (!response.data.results || response.data.results.length === 0) {
           this.$emit('no-results')

@@ -6,51 +6,23 @@ from api.middleware.authentication import JwtAuthentication
 from collections import OrderedDict
 import operator, json
 from django.db.models import Q
-from api.tools import sanitize_url_string
+from api.views.LocationSearch import SearchLocationView
+from api.tools import sanitize_search_string
 from django.core import serializers
 from django.core.mail import send_mail
 from django.db.models import Sum
 from functools import reduce
 
 
-class EventsListView(APIView):
+class EventsListView(APIView, SearchLocationView):
   def get(self, request, location):
     error = ''
     date = request.GET.get('date', '')
-    search_terms = []
-    search_string = sanitize_url_string(location)
+    search_string = sanitize_search_string(location)
     location_string = ''
     q_list = [Q(show=1)]
-    found = False
 
-    if '-' in search_string:
-      search_terms = search_string.rsplit('-', 1)
-
-    if len(search_terms) > 1 and not search_terms[1].isspace():
-      term_one = search_terms[0].replace('-', ' ')
-      term_two = search_terms[1].replace('-', ' ')
-
-      location_query = (Q(country__country__icontains=term_one) & Q(city__city__icontains=term_two)) | (Q(country__country__icontains=term_two) & Q(city__city__icontains=term_one))
-      location = CountriesCities.objects.filter(location_query).first()
-
-      if location:
-        q_list.append(Q(location__city=location.city.id))
-        location_string = location.city.city + ', ' + location.country.country
-        found = True
-
-    if not found:
-      city_search = CountriesCities.objects.filter(Q(city__city__icontains=search_string.replace('-', ' '))).order_by('city__city').first()
-
-      if city_search:
-        q_list.append(Q(location__city=city_search.city.id))
-        location_string = city_search.city.city + ', ' + city_search.country.country
-        found = True
-      else:
-        country_search = CountriesCities.objects.filter(Q(country__country__icontains=search_string.replace('-', ' '))).first()
-        if country_search:
-          q_list.append(Q(location__country=country_search.country.id))
-          location_string = country_search.country.country
-          found = True
+    location = SearchLocationView.grab_one_location(self, search_string)
 
     if date:
       if datetime.strptime(date, '%Y-%m-%d') < datetime.now() - timedelta(days=1):
@@ -60,7 +32,14 @@ class EventsListView(APIView):
     else:
       q_list.append(Q(date_time__date__gte=datetime.now()))
 
-    if found:
+    if location.get('location', ''):
+      location_string = location.get('location_string')
+
+      if location.get('country_or_city', '') == 'city':
+        q_list.append(Q(location__city=location.get('location').city.id))
+      else:
+        q_list.append(Q(location__country=location.get('location').country.id))
+
       events = Events.objects.filter(reduce(operator.and_, q_list))
     else:
       error = 'Couldn\'t find a location with that name.'

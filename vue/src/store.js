@@ -7,6 +7,8 @@ Vue.use(Vuex)
 export default new Vuex.Store({
   state: {
     user: null,
+    UserPostResults: [],
+    selectedPost: localStorage.getItem('post'),
     eventSearchResults: [],
     selectedEvent: localStorage.getItem('event'),
     jwt: localStorage.getItem('t'),
@@ -16,12 +18,19 @@ export default new Vuex.Store({
       baseUrl: 'http://127.0.0.1:8000/api/'
     },
     isGuest: false,
-    keywordSearch: ''
+    setkeywordLocationSearch: ''
   },
 
   mutations: {
-    setKeywordSearch (state, data) {
-      state.keywordSearch = data
+    setPostSearchResults (state, data) {
+      state.UserPostResults = data
+    },
+    setSelectPost (state, data) {
+      localStorage.setItem('post', JSON.stringify(data))
+      state.selectedPost = JSON.stringify(data)
+    },
+    setkeywordLocationSearch (state, data) {
+      state.setkeywordLocationSearch = data
     },
     updateToken (state, newToken) {
       localStorage.setItem('t', newToken)
@@ -91,18 +100,23 @@ export default new Vuex.Store({
     eventSearchResults (context, data) {
       context.commit('setEventSearchResults', data)
     },
-
     selectEvent (context, data) {
       context.commit('setSelectedEvent', data)
     },
     setGuest (context, data) {
       context.commit('setGuest', data)
     },
-    setKeywordSearch (context, data) {
-      context.commit('setKeywordSearch', data)
+    setkeywordLocationSearch (context, data) {
+      context.commit('setkeywordLocationSearch', data)
     },
     logout (context, data) {
       context.commit('logout')
+    },
+    selectPost (context, data) {
+      context.commit('setSelectPost', data)
+    },
+    postSearchResults (context, data) {
+      context.commit('setPostSearchResults', data)
     }
   }
 })

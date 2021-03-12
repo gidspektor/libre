@@ -13,15 +13,14 @@
             <a v-if='loggedIn' class='nav-link' @click='logout' href='/'>Logout</a>
             <a v-else class='nav-link' href='#/Login'>Login</a>
             <div class='dropdown-divider'></div>
-            <!-- <router-link class='nav-link' :to="{createEvents}">Host events</router-link> -->
             <a class='nav-link' href='#'>Help</a>
           </div>
         </button>
         <div class='collapse navbar-collapse d-flex-md justify-content-end' id='navbarSupportedContent'>
           <ul class='navbar-nav'>
             <li class='nav-item mr-3'>
-              <a v-if="this.$route.name !== 'createEvents'" class='nav-link text-white libreFont' href='#/createEvents'>Host an event</a>
-              <a v-else class='nav-link text-white libreFont' href='#/FindEvents'>Find an event</a>
+              <a v-if="this.$route.name !== 'collaborate' && this.$route.name !== 'Post'" class='nav-link text-white libreFont' href='#/createEvents'>Host an event</a>
+              <a v-else class='nav-link text-white createPostText libreFont' href='#/CreatePost'>Create a post +</a>
             </li>
             <li class='nav-item dropdown'>
               <span class='nav-link dropdown-toggle mr-3 text-black' @click='toggleDropdown' id='navbarDropdown' role='button'>
@@ -119,5 +118,9 @@ nav{
 
 .logoColour {
   color: rgb(13, 201, 44);
+}
+
+.createPostText {
+  font-size: 20px;
 }
 </style>
