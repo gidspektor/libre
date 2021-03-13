@@ -3,6 +3,7 @@
     <div v-if='requestSent'>
       <div class='row mt-5 pt-5 d-flex justify-content-center'>
         <h5 class='col-12 text-center libreFont'>Your post is live!</h5>
+        <a href='#/Collaborate' class='col-12 text-center libreFont'>Return to posts?</a>
       </div>
     </div>
     <div v-else>

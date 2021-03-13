@@ -2,8 +2,9 @@
   <main class='container-fluid bg-white section pt-5'>
     <link href="https://fonts.googleapis.com/css?family=Dosis:400,700" rel="stylesheet">
     <SearchBox @no-results='noResultsFromSearch'></SearchBox>
+    <hr>
     <ResultsBox
-      @go-to-events-page='goToEventPage'
+      @go-to-events-page='isLoggedIn'
       v-for='(event, index) in grabResults'
       :key='index'
       :cardImage='event.image'
@@ -16,9 +17,16 @@
       :atl='event.atl'
       :event='event'
     ></ResultsBox>
-    <div class="overlay" v-show='showModal'>
+    <div class='overlay' v-show='showModal'>
       <transition name='fade'>
-        <LoginSignupModal id='modal' class='myModal' v-show='showModal' @close-modal='closeModal'></LoginSignupModal>
+        <LoginSignupModal
+          id='modal'
+          class='myModal'
+          v-show='showModal'
+          @close-modal='closeModal'
+          @next-page='goToEventPage'
+          >
+          </LoginSignupModal>
       </transition>
     </div>
     <div class='emptyResults' v-if='containsResults'>
@@ -67,6 +75,9 @@ export default {
   },
 
   methods: {
+    goToEventPage () {
+      this.$router.push('EventPage')
+    },
     closeModal () {
       this.showModal = false
       document.querySelector('body').style.overflow = ''
@@ -74,7 +85,7 @@ export default {
     noResultsFromSearch () {
       this.error = 'Sorry no Libre events found'
     },
-    goToEventPage (event) {
+    isLoggedIn (event) {
       this.$store.dispatch('selectEvent', event)
       let tokenState = store.state.jwt ? inspectToken(store.state.jwt) : ''
 
@@ -82,7 +93,7 @@ export default {
         this.showModal = true
         document.querySelector('body').style.overflow = 'hidden'
       } else {
-        this.$router.push('EventPage')
+        this.goToEventPage()
       }
     }
   }
@@ -135,9 +146,7 @@ export default {
   font-family: 'Lucida Sans';
 }
 
-@media screen and (max-width: 800px) {
-  .section {
-    height: 1050px;
-  }
+.section {
+  height: auto;
 }
 </style>

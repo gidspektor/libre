@@ -7,7 +7,7 @@ from django.db.models import Q
 from api.tools import sanitize_search_string
 
 
-class SearchListView(APIView):
+class SearchLocationListView(APIView):
   def get(self, request, search_string):
     search_terms = []
     search_string = sanitize_search_string(search_string)

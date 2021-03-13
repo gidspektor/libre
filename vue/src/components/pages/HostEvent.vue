@@ -20,7 +20,7 @@
           {{ emailError }}
         </div>
         <div class='row d-flex justify-content-center'>
-          <textarea v-model='comment' class='form-control inputfield mt-4 col-lg-6 col-10' placeholder='Tell us why you want to host an event, if you have a location give us as much information about it as you can please.'></textarea>
+          <textarea v-model='comment' class='form-control inputfield mt-4 col-lg-6 col-10' placeholder='Tell us why you want to host an event, give us as much information about your location as you can please.'></textarea>
         </div>
         <div class='alert alert-danger error mt-1 text-center' role='alert' v-show='error'>
           {{ error }}

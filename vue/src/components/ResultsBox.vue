@@ -122,5 +122,8 @@ export default {
   .cardImage {
     height: 30vw;
   }
+  .cardStyles {
+    height: auto;
+  }
 }
 </style>

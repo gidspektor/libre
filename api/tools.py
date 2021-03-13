@@ -29,4 +29,4 @@ def sanitize_numeric_string(string):
   return re.sub(r"[^0-9']", '', string).strip()
 
 def sanitize_message_string(string):
-  return re.sub(r"[^a-z'A-Z0-9,.; ]", '', string).strip()
+  return re.sub(r"[^a-z'A-Z0-9,.!?; ]", '', string).strip()

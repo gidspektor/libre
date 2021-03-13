@@ -21,7 +21,7 @@ urlpatterns = [
   ),
 
   path('locations/<search_string>/',
-    LocationSearch.SearchListView.as_view(),
+    LocationSearch.SearchLocationListView.as_view(),
     name='locations'
   ),
 
@@ -51,5 +51,15 @@ urlpatterns = [
   path('create-post/',
     Collaborate.CreatePost.as_view(),
     name='create_post'
+  ),
+
+  path('create-comment/',
+    Collaborate.CreateComment.as_view(),
+    name='create_comment'
+  ),
+
+  path('get-comments/<post_id>',
+    Collaborate.GetComments.as_view(),
+    name='get_comments'
   )
 ]

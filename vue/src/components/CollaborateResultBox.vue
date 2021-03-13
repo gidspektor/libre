@@ -6,22 +6,34 @@
         <h6>{{location}}</h6>
         <p class='font-weight-light font-italic text'>{{description}}</p>
       </div>
+      <h6 class='mt-5'>{{userName}}</h6>
+      <h6 class='mb-3'>{{formatDate(date)}}</h6>
     </div>
   </main>
 </template>
 
 <script>
+import {formatDate} from '../tools'
 export default {
   props: [
     'title',
     'description',
     'location',
-    'userPost'
+    'userPost',
+    'userName',
+    'date'
   ],
+
+  data () {
+    return {
+      formatDate: formatDate
+    }
+  },
 
   methods: {
     goToPostPage () {
-      return this.$emit('go-to-post-page', this.userPost)
+      this.$store.dispatch('selectPost', this.userPost)
+      this.$router.push('Post')
     }
   }
 }
@@ -30,7 +42,6 @@ export default {
 <style scoped>
 .cardStyles {
   height: 300px;
-  cursor: pointer;
   border-bottom: solid rgb(230, 227, 227);
 }
 
@@ -48,6 +59,7 @@ export default {
 }
 
 .item {
+  cursor: pointer;
   display: inline-block;
 }
 

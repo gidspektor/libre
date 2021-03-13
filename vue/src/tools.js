@@ -31,7 +31,7 @@ export function inspectToken (token) {
     const exp = decoded.exp
     const origIat = decoded.orig_iat
 
-    if (exp - (Date.now() / 1000) < 1800 && (Date.now() / 1000) - origIat >= 86400) {
+    if (exp - (Date.now() / 1000) < 1800 && (Date.now() / 1000) - origIat > 86400) {
       state = 'refresh'
     } else if (exp - (Date.now() / 1000) < 1800 && exp - (Date.now() / 1000) > 0) {
       state = 'active'

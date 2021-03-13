@@ -138,10 +138,10 @@ export default {
     signUp () {
       this.signUpUser = true
     },
-    goToEventPageAsGuest () {
-      this.$store.dispatch('setGuest')
-      this.$router.push('EventPage')
-    },
+    // goToEventPageAsGuest () {
+    //   this.$store.dispatch('setGuest')
+    //   this.$router.push('EventPage')
+    // },
     closeModal () {
       this.continueWithEmail = false
       this.$emit('close-modal')
@@ -162,7 +162,7 @@ export default {
         })
 
         if (!this.error) {
-          this.$router.push('EventPage')
+          this.$emit('next-page')
         }
       }
     },
@@ -209,6 +209,7 @@ export default {
         }
 
         if (response.data.success) {
+          console.log(this.$router.name)
           this.$router.push('EventPage')
         }
       }

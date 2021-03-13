@@ -3,12 +3,13 @@
     <SearchBox @no-results='noResultsFromSearch'></SearchBox>
     <hr>
     <CollaborateResultBox
-      @go-to-post-page='goToPostPage'
       v-for='(userPost, index) in grabPosts'
       :key='index'
       :title='userPost.title'
       :description='userPost.description'
       :location='userPost.location'
+      :userName='userPost.user_name'
+      :date='userPost.date_time'
       :userPost='userPost'
     ></CollaborateResultBox>
     <div class='emptyResults' v-if='containsResults'>
@@ -53,10 +54,6 @@ export default {
   },
 
   methods: {
-    goToPostPage (event) {
-      this.$store.dispatch('selectPost', event)
-      this.$router.push('Post')
-    },
     noResultsFromSearch () {
       this.error = 'Sorry no posts found'
     }
@@ -80,9 +77,7 @@ export default {
   margin-top: 80px;
 }
 
-@media screen and (max-width: 800px) {
-  .section {
-    height: 700px;
-  }
+.section {
+  height: auto;
 }
 </style>

@@ -71,7 +71,7 @@ export default {
         })
 
         if (!this.error) {
-          this.$router.push('Account')
+          this.$router.go(-1)
         }
       }
     }
