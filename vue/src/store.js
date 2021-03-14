@@ -7,7 +7,7 @@ Vue.use(Vuex)
 export default new Vuex.Store({
   state: {
     user: null,
-    UserPostResults: [],
+    postSearchResults: [],
     selectedPost: localStorage.getItem('post'),
     eventSearchResults: [],
     selectedEvent: localStorage.getItem('event'),
@@ -23,7 +23,7 @@ export default new Vuex.Store({
 
   mutations: {
     setPostSearchResults (state, data) {
-      state.UserPostResults = data
+      state.postSearchResults = data
     },
     setSelectPost (state, data) {
       localStorage.setItem('post', JSON.stringify(data))

@@ -7,7 +7,7 @@ from django.db.models import Q
 from api.tools import sanitize_search_string
 
 
-class SearchLocationListView(APIView):
+class LocationListView(APIView):
   def get(self, request, search_string):
     search_terms = []
     search_string = sanitize_search_string(search_string)
@@ -44,7 +44,7 @@ class SearchLocationListView(APIView):
     return JsonResponse(data)
 
 
-class SearchLocationView(DetailView):
+class LocationDetailView(DetailView):
   def grab_one_location(self, search_string):
     found = False
     location = ''
@@ -82,7 +82,7 @@ class SearchLocationView(DetailView):
           location = country_search
 
     return {
-        'location': location,
-        'location_string': location_string,
-        'country_or_city': country_or_city
-      }
+      'location': location,
+      'location_string': location_string,
+      'country_or_city': country_or_city
+    }

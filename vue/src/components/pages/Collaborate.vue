@@ -40,12 +40,12 @@ export default {
 
   computed: {
     grabPosts () {
-      return store.state.UserPostResults
+      return store.state.postSearchResults.reverse()
     },
     containsResults () {
       let show = true
 
-      if (store.state.UserPostResults && store.state.UserPostResults.length >= 1) {
+      if (store.state.postSearchResults && store.state.postSearchResults.length >= 1) {
         show = false
       }
 

@@ -14,9 +14,6 @@
         </div>
         <div class='modal-body'>
           <div v-if='!signUpUser'>
-            <!-- <div v-if='!continueWithEmail' class='row d-flex justify-content-center'>
-              <button @click='goToEventPageAsGuest' type='button' class='col-11 btn logoColour libreFont text-center'>Continue as guest</button>
-            </div> -->
             <div v-if='continueWithEmail'>
               <div class='mb-3 libreFont row'>
                 <div class='col-12'>
@@ -37,9 +34,6 @@
                 <button @click='login' type='button' class='col-11 btn logoColour libreFont text-center'>Continue</button>
               </div>
             </div>
-            <!-- <div class='py-lg-4 row d-flex justify-content-center'>
-              <div class='col-11 line text-center'><span class='or'>or</span></div>
-            </div> -->
             <div class='pt-lg-4 row d-flex justify-content-center'>
               <button type='button' class='col-11 btn customButton'>
                 <div>
@@ -68,6 +62,9 @@
           <div v-else-if='signUpUser'>
             <div class='row d-flex justify-content-center'>
               <input v-model='name' class='form-control col-11' placeholder='Full name' type='text'>
+            </div>
+            <div class='alert alert-danger error mt-1 text-center' role='alert' v-show='nameError'>
+              {{ nameError }}
             </div>
             <div class='row d-flex justify-content-center my-2'>
               <input v-model='email' class='form-control col-11' placeholder='Email address' type='email'>
@@ -121,7 +118,8 @@ export default {
       name: '',
       emailError: '',
       passwordLengthError: '',
-      passwordNotMatchError: ''
+      passwordNotMatchError: '',
+      nameError: ''
     }
   },
 
@@ -138,10 +136,6 @@ export default {
     signUp () {
       this.signUpUser = true
     },
-    // goToEventPageAsGuest () {
-    //   this.$store.dispatch('setGuest')
-    //   this.$router.push('EventPage')
-    // },
     closeModal () {
       this.continueWithEmail = false
       this.$emit('close-modal')
@@ -162,7 +156,7 @@ export default {
         })
 
         if (!this.error) {
-          this.$emit('next-page')
+          setTimeout(this.$emit('next-page'), 1000)
         }
       }
     },
@@ -171,8 +165,13 @@ export default {
       let emailIsValid = this.validateEmail(this.email)
 
       this.emailError = ''
+      this.nameError = ''
       this.passwordLengthError = ''
       this.passwordNotMatchError = ''
+
+      if (this.name.split(' ').length === 1 || !this.name) {
+        this.nameError = 'Please input full name'
+      }
 
       if (!emailIsValid) {
         this.emailError = 'Please insert a valid email'
@@ -209,8 +208,12 @@ export default {
         }
 
         if (response.data.success) {
-          console.log(this.$router.name)
-          this.$router.push('EventPage')
+          await this.$store.dispatch('obtainToken', [this.email, this.password]).catch((badRequest) => {
+            badRequest = 'Username and/or password not found.'
+            this.error = badRequest
+          })
+
+          setTimeout(this.$router.push('EventPage'), 1000)
         }
       }
     }

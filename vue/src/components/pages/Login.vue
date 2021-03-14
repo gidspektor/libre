@@ -71,7 +71,7 @@ export default {
         })
 
         if (!this.error) {
-          this.$router.go(-1)
+          setTimeout(this.$router.go(-1), 1000)
         }
       }
     }

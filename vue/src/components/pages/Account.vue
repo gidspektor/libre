@@ -74,6 +74,38 @@
               </div>
             </div>
           </div>
+          <div class='row gutters-sm'>
+            <div class='col-sm-6 mb-3'>
+              <div class='card h-100'>
+                <div class='card-body'>
+                  <i class='d-flex align-items-center mb-3 material-icons text-info mr-2'>Your posts</i>
+                  <small
+                    class='d-block clickable'
+                    v-for='(userPost, index) in userPosts'
+                    :key='index'
+                    @click='goToPost(userPost)'
+                  >
+                    {{userPost.title}}
+                  </small>
+                </div>
+              </div>
+            </div>
+            <div class='col-sm-6 mb-3'>
+              <div class='card h-100'>
+                <div class='card-body'>
+                  <i class='d-flex align-items-center mb-3 material-icons text-info mr-2'>Posts you've commented on</i>
+                  <small
+                    class='d-block clickable'
+                    v-for='(userCommentedOnPost, index) in userCommentedOnPosts'
+                    :key='index'
+                    @click='goToPost(userCommentedOnPost)'
+                  >
+                    {{userCommentedOnPost.title}}
+                  </small>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -81,29 +113,45 @@
 </template>
 
 <script>
+import http from '../../http-common'
 import store from '../../store'
+
 export default {
   data () {
     return {
       user: '',
       futureEvents: [],
-      pastEvents: []
+      pastEvents: [],
+      userPosts: {},
+      userCommentedOnPosts: {}
     }
   },
 
-  created () {
+  async created () {
     this.user = store.state.user
 
-    this.futureEvents = store.state.user.future_events.filter((event, index, self) => {
+    let userEvents = await http.get('user-event-info')
+
+    this.futureEvents = userEvents.data.future_events.filter((event, index, self) => {
       return self.indexOf(event) === index
     })
 
-    this.pastEvents = store.state.user.past_events.filter((event, index, self) => {
+    this.pastEvents = userEvents.data.past_events.filter((event, index, self) => {
       return self.indexOf(event) === index
     })
+
+    let userCommentedOnPostsResponse = await http.get('user-commented-posts')
+    this.userCommentedOnPosts = userCommentedOnPostsResponse.data.results
+
+    let userPostsResponse = await http.get('user-posts')
+    this.userPosts = userPostsResponse.data.results
   },
 
   methods: {
+    goToPost (post) {
+      this.$store.dispatch('selectPost', post)
+      this.$router.push('/Post')
+    },
     resetPassword () {
       alert(`A password reset link has been sent to ${this.user.email}`)
     },
@@ -162,10 +210,20 @@ body{
 .bg-gray-300 {
   background-color: #e2e8f0;
 }
+
 .h-100 {
   height: 100%!important;
 }
+
 .shadow-none {
   box-shadow: none!important;
+}
+
+.clickable {
+  cursor: pointer;
+}
+
+.clickable:hover {
+  color: aqua;
 }
 </style>

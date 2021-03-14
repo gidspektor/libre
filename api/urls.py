@@ -1,4 +1,4 @@
-from api.views import Events, LocationSearch, User, Messages, Collaborate
+from api.views import Events, LocationSearch, User, Messages, Comments, Posts
 from django.urls import path, re_path, include
 from rest_framework_jwt.views import obtain_jwt_token, refresh_jwt_token
 
@@ -21,19 +21,24 @@ urlpatterns = [
   ),
 
   path('locations/<search_string>/',
-    LocationSearch.SearchLocationListView.as_view(),
+    LocationSearch.LocationListView.as_view(),
     name='locations'
   ),
 
   # User actions
   path('create-user/',
-    User.CreateUserView.as_view(),
+    User.NewUserView.as_view(),
     name='user_creation'
   ),
 
   path('user-info/',
-    User.UserView.as_view(),
+    User.UserInfoDetailView.as_view(),
     name='user_info'
+  ),
+
+  path('user-event-info',
+    User.UserEventsView.as_view(),
+    name='user_events'
   ),
 
   # Event actions
@@ -42,24 +47,35 @@ urlpatterns = [
     name='purchase_tickets'
   ),
 
-  # user posts
+  # User posts
   path('posts/<location>/',
-    Collaborate.SearchPosts.as_view(),
+    Posts.PostsListView.as_view(),
     name='posts'
   ),
 
   path('create-post/',
-    Collaborate.CreatePost.as_view(),
+    Posts.CreatePost.as_view(),
     name='create_post'
   ),
 
+  path('user-posts/',
+    Posts.UserPostsListView.as_view(),
+    name='user_posts'
+  ),
+
+  path('user-commented-posts/',
+    Posts.UserCommentedOnPostsListView.as_view(),
+    name='user_commented_on_posts'
+  ),
+
+  # User comments
   path('create-comment/',
-    Collaborate.CreateComment.as_view(),
+    Comments.CreateComment.as_view(),
     name='create_comment'
   ),
 
   path('get-comments/<post_id>',
-    Collaborate.GetComments.as_view(),
+    Comments.CommentsListView.as_view(),
     name='get_comments'
   )
 ]

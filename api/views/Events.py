@@ -6,7 +6,7 @@ from api.middleware.authentication import JwtAuthentication
 from collections import OrderedDict
 import operator, json
 from django.db.models import Q
-from api.views.LocationSearch import SearchLocationView
+from api.views.LocationSearch import LocationDetailView
 from api.tools import sanitize_search_string
 from django.core import serializers
 from django.core.mail import send_mail
@@ -14,15 +14,15 @@ from django.db.models import Sum
 from functools import reduce
 
 
-class EventsListView(APIView, SearchLocationView):
-  def get(self, request, location):
+class EventView(APIView, LocationDetailView):
+  def get_events(self, request, location):
     error = ''
     date = request.GET.get('date', '')
     search_string = sanitize_search_string(location)
     location_string = ''
     q_list = [Q(show=1)]
 
-    location = SearchLocationView.grab_one_location(self, search_string)
+    location = LocationDetailView.grab_one_location(self, search_string)
 
     if date:
       if datetime.strptime(date, '%Y-%m-%d') < datetime.now() - timedelta(days=1):
@@ -66,14 +66,20 @@ class EventsListView(APIView, SearchLocationView):
           'atl': tickets_left
         }
 
-      data = {
+      return {
         'results': sorted(response_dict.values(), key=operator.itemgetter('date_time')),
         'location': location_string
       }
-
-      return JsonResponse(data)
     else:
-      return JsonResponse({'error': error})
+      return {'error': error}
+
+
+class EventsListView(EventView):
+  def get(self, request, location):
+    data = self.get_events(request, location)
+
+    return JsonResponse(data)
+  
 
 
 class EventTicketPurchaseView(APIView):

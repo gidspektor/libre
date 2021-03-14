@@ -7,6 +7,9 @@
       <div class='row d-flex justify-content-center'>
         <input v-model='name' class='form-control col-lg-6 col-10' placeholder='Full name' type='text'>
       </div>
+      <div class='alert alert-danger error mt-1 text-center' role='alert' v-show='nameError'>
+        {{ nameError }}
+      </div>
       <div class='row d-flex justify-content-center my-2'>
         <input v-model='email' class='form-control col-lg-6 col-10' placeholder='Email address' type='email'>
       </div>
@@ -67,7 +70,12 @@ export default {
       validateEmail: validateEmail,
       error: '',
       password: '',
-      emailError: ''
+      emailError: '',
+      nameError: '',
+      name: '',
+      passwordRepeat: '',
+      passwordLengthError: '',
+      passwordNotMatchError: ''
     }
   },
 
@@ -77,8 +85,13 @@ export default {
       let emailIsValid = this.validateEmail(this.email)
 
       this.emailError = ''
+      this.nameError = ''
       this.passwordLengthError = ''
       this.passwordNotMatchError = ''
+
+      if (this.name.split(' ').length === 1 || !this.name) {
+        this.nameError = 'Please input full name'
+      }
 
       if (!emailIsValid) {
         this.emailError = 'Please insert a valid email'
@@ -115,7 +128,12 @@ export default {
         }
 
         if (response.data.success) {
-          this.$router.push('EventPage')
+          await this.$store.dispatch('obtainToken', [this.email, this.password]).catch((badRequest) => {
+            badRequest = 'Username and/or password not found.'
+            this.error = badRequest
+          })
+
+          setTimeout(this.$router.push('Account'), 1000)
         }
       }
     }
