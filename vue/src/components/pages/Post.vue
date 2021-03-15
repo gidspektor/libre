@@ -1,24 +1,12 @@
 <template>
   <main class='section container-fluid mt-5 pt-5'>
-    <div class='overlay' v-show='showModal'>
-      <transition name='fade'>
-        <LoginSignupModal
-          id='modal'
-          class='myModal'
-          v-show='showModal'
-          @close-modal='closeModal'
-          @next-page='submitComment'
-          >
-          </LoginSignupModal>
-      </transition>
-    </div>
-    <div v-show='!showModal'>
+    <div>
       <div class='row d-flex justify-content-center my-lg-4 my-4 bg-white cardStyles'>
         <div class='noUnderline col-10 item mt-2'>
           <div class='pb-lg-0 pt-lg-2 mr-lg-0'>
             <h5 class='mb-lg-3'>{{post.title}}</h5>
             <h6>{{post.location}}</h6>
-            <p class='font-weight-light font-italic text'>{{post.description}}</p>
+            <p v-if='!showModal' class='font-weight-light font-italic text'>{{post.description}}</p>
           </div>
           <h6 class='mt-5'>{{post.user_name}}</h6>
           <h6 class='mb-3'>{{formatDate(post.date_time)}}</h6>
@@ -37,15 +25,27 @@
           </div>
         </div>
       </div>
-      <div class='row d-flex justify-content-center'>
+      <div v-if='!showModal' class='row d-flex justify-content-center'>
         <textarea v-model='inputComment' class='form-control inputfield mt-4 col-lg-10 col-10' placeholder='Leave a comment'></textarea>
       </div>
       <div class='alert alert-danger error mt-1 text-center' role='alert' v-show='error'>
         {{ error }}
       </div>
-      <div class='row d-flex justify-content-center mt-4'>
+      <div v-if='!showModal' class='row d-flex justify-content-center mt-4'>
         <button @click='isLoggedIn' class='btn logoColour libreFont col-lg-6 col-10 mb-4'>Post comment</button>
       </div>
+      <div class='overlay' v-show='showModal'>
+      <transition name='fade'>
+        <LoginSignupModal
+          id='modal'
+          class='myModal'
+          v-show='showModal'
+          @close-modal='closeModal'
+          @next-page='submitComment'
+          >
+          </LoginSignupModal>
+      </transition>
+    </div>
     </div>
   </main>
 </template>
@@ -146,7 +146,7 @@ export default {
 .myModal {
   z-index: 1000;
   position: fixed;
-  bottom: 30%;
+  bottom: 60%;
   left: 50%;
   width:30em;
   height:18em;

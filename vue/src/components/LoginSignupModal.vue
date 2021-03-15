@@ -102,10 +102,15 @@
 </template>
 
 <script>
+import GoogleSignInButton from 'vue-google-signin-button-directive'
 import http from '../http-common'
 import {validateEmail} from '../tools'
 
 export default {
+  directives: {
+    GoogleSignInButton
+  },
+
   data () {
     return {
       continueWithEmail: false,
@@ -120,10 +125,18 @@ export default {
       passwordLengthError: '',
       passwordNotMatchError: '',
       nameError: ''
+      // clientId: '',
+      // v-google-signin-button='clientId'
     }
   },
 
   methods: {
+    // OnGoogleAuthSuccess (idToken) {
+    //   console.log(idToken)
+    // },
+    // OnGoogleAuthFail (error) {
+    //   console.log(error)
+    // },
     goBack () {
       if (this.continueWithEmail && !this.signUpUser) {
         this.continueWithEmail = false
@@ -156,7 +169,7 @@ export default {
         })
 
         if (!this.error) {
-          setTimeout(this.$emit('next-page'), 1000)
+          setTimeout(this.$emit('next-page'), 2000)
         }
       }
     },
@@ -213,7 +226,7 @@ export default {
             this.error = badRequest
           })
 
-          setTimeout(this.$router.push('EventPage'), 1000)
+          setTimeout(this.$emit('next-page'), 2000)
         }
       }
     }

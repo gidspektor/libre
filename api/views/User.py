@@ -69,7 +69,7 @@ class UserView(APIView):
     }
 
     return response_dict
-  
+
   def get_user_events(self, request):
     past_user_events = UserEventsAssoc.objects.filter(
       user=request.user,
@@ -88,7 +88,7 @@ class UserView(APIView):
 
     return response_dict
 
-  
+
 class UserEventsView(UserView):
   authentication_classes = (JwtAuthentication,)
 

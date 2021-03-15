@@ -18,7 +18,8 @@ export default new Vuex.Store({
       baseUrl: 'http://127.0.0.1:8000/api/'
     },
     isGuest: false,
-    setkeywordLocationSearch: ''
+    setkeywordLocationSearch: '',
+    clientId: '737037142096-pmqa51ssn0q24g1gag0ckln70ff0vlo1.apps.googleusercontent.com'
   },
 
   mutations: {
