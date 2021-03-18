@@ -78,19 +78,19 @@ export default {
         image: 'warehouse.jpg',
         title: 'Host Events',
         text: 'Create your own events, you create the location and you choose the music.',
-        link: 'hostEvents'
+        link: '/HostEvents'
       },
       mainMiddleCard: {
         image: 'crowd.jpg',
         title: 'Find events',
         text: 'Find events happening near you now, created by music lovers.',
-        link: 'findEvents'
+        link: '/FindEvents'
       },
       mainRightCard: {
         image: 'artists.jpg',
         title: 'Collaborate',
         text: 'Connect with other artists who want to set up events, or just make music.',
-        link: 'collaborate'
+        link: '/Collaborate'
       },
       state: false,
       location: '',

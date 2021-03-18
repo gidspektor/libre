@@ -35,6 +35,11 @@
         <h3 v-else class='col-4 d-flex justify-content-center mt-5 searchText'>Search for Libre events here</h3>
       </span>
     </div>
+    <div class='emptyResults' v-if='isLoading'>
+      <span class='row d-flex justify-content-center'>
+        <h3 class='col-4 d-flex justify-content-center mt-5 searchText'>Loading...</h3>
+      </span>
+    </div>
   </main>
 </template>
 
@@ -60,6 +65,9 @@ export default {
   },
 
   computed: {
+    isLoading () {
+      return store.state.loading
+    },
     grabResults () {
       return store.state.eventSearchResults
     },
@@ -67,6 +75,7 @@ export default {
       let show = true
 
       if (store.state.eventSearchResults && store.state.eventSearchResults.length >= 1) {
+        this.$store.dispatch('loading', false)
         show = false
       }
 

@@ -8,32 +8,35 @@
         <button class='navbar-toggler bg-light' type='button' data-toggle='collapse' data-target='#navbarSupportedContent' aria-controls='navbarSupportedContent' aria-expanded='false' aria-label='Toggle navigation'>
           <span class='navbar-toggler-icon' id='hamburgerDropdown' @click='toggleHamburger'></span>
           <div class='drop dropdown-menu-right' v-show='hamBurgetState'>
-            <a v-if='loggedIn' class='nav-link' href='#/Account'>Account</a>
-            <a v-else class='nav-link' href='#/SignUp'>Sign up</a>
-            <a v-if='loggedIn' class='nav-link' @click='logout' href='/'>Logout</a>
-            <a v-else class='nav-link' href='#/Login'>Login</a>
+            <a v-if='loggedIn' class='nav-link'><router-link to='/Account'>Account</router-link></a>
+            <a v-else class='nav-link'><router-link to='signUp'>Sign up</router-link></a>
+            <a v-if='loggedIn' class='nav-link' @click='logout'><router-link to='/'>Logout</router-link></a>
+            <a v-else class='nav-link'><router-link to='/Login'>Login</router-link></a>
             <div class='dropdown-divider'></div>
-            <a class='nav-link' href='#'>Help</a>
+            <a class='nav-link'><router-link to='/Collaborate'>Collaborate</router-link></a>
           </div>
         </button>
         <div class='collapse navbar-collapse d-flex-md justify-content-end' id='navbarSupportedContent'>
           <ul class='navbar-nav'>
             <li class='nav-item mr-3'>
-              <a v-if="this.$route.name !== 'collaborate' && this.$route.name !== 'post'" class='nav-link text-white libreFont' href='#/hostEvents'>Host an event</a>
-              <a v-else class='nav-link text-white createPostText libreFont' href='#/CreatePost'>Create a post +</a>
+              <a v-if="this.$route.name !== 'collaborate' && this.$route.name !== 'post'" class='noUnderline nav-link text-white libreFont'>
+                <router-link to='/HostEvents'>Host an event</router-link>
+              </a>
+              <a v-else class='noUnderline nav-link text-white createPostText libreFont'>
+                <router-link to='/CreatePost'>Create a post +</router-link>
+              </a>
             </li>
             <li class='nav-item dropdown'>
               <span class='nav-link dropdown-toggle mr-3 text-black' @click='toggleDropdown' id='navbarDropdown' role='button'>
                 <img class='' src='~@/assets/img/user.svg'>
               </span>
               <div class='drop dropdown-menu-right' v-show='dropState'>
-                <a v-if='loggedIn' class='nav-link' href='#/Account'>Account</a>
-                <a v-else class='nav-link' href='#/SignUp'>Sign up</a>
-                <a v-if='loggedIn' class='nav-link' @click='logout' href='/'>Logout</a>
-                <a v-else class='nav-link' href='#/Login'>Login</a>
+                <a v-if='loggedIn' class='nav-link'><router-link to='/Account'>Account</router-link></a>
+                <a v-else class='nav-link'><router-link to='signUp'>Sign up</router-link></a>
+                <a v-if='loggedIn' class='nav-link' @click='logout'><router-link to='/'>Logout</router-link></a>
+                <a v-else class='nav-link'><router-link to='/Login'>Login</router-link></a>
                 <div class='dropdown-divider'></div>
-                <a class='nav-link' href='#/Collaborate'>Collaborate</a>
-                <a class='nav-link' href='#'>Help</a>
+                <a class='nav-link'><router-link to='/Collaborate'>Collaborate</router-link></a>
               </div>
             </li>
           </ul>
@@ -122,5 +125,10 @@ nav{
 
 .createPostText {
   font-size: 20px;
+}
+
+.noUnderline {
+  color: inherit;
+  text-decoration: none !important
 }
 </style>

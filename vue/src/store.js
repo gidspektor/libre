@@ -19,10 +19,14 @@ export default new Vuex.Store({
     },
     isGuest: false,
     setkeywordLocationSearch: '',
-    clientId: '737037142096-pmqa51ssn0q24g1gag0ckln70ff0vlo1.apps.googleusercontent.com'
+    clientId: '737037142096-pmqa51ssn0q24g1gag0ckln70ff0vlo1.apps.googleusercontent.com',
+    loading: false
   },
 
   mutations: {
+    setLoading (state, data) {
+      state.loading = data
+    },
     setPostSearchResults (state, data) {
       state.postSearchResults = data
     },
@@ -118,6 +122,9 @@ export default new Vuex.Store({
     },
     postSearchResults (context, data) {
       context.commit('setPostSearchResults', data)
+    },
+    setLoading (context, data) {
+      context.commit('setLoading', data)
     }
   }
 })
