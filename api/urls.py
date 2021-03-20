@@ -36,7 +36,7 @@ urlpatterns = [
     name='user_info'
   ),
 
-  path('user-event-info',
+  path('user-event-info/',
     User.UserEventsView.as_view(),
     name='user_events'
   ),
@@ -74,7 +74,7 @@ urlpatterns = [
     name='create_comment'
   ),
 
-  path('get-comments/<post_id>',
+  path('get-comments/<post_id>/',
     Comments.CommentsListView.as_view(),
     name='get_comments'
   )

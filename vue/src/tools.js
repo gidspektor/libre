@@ -23,11 +23,11 @@ export function formatDate (dateTime) {
   return timeOnly[0] + ':' + timeOnly[1] + ', ' + day + '/' + month
 }
 
-export function inspectToken (token) {
+export function inspectToken () {
   let state = ''
 
-  if (token) {
-    const decoded = jwtDecode(token)
+  if (localStorage.getItem('t')) {
+    const decoded = jwtDecode(localStorage.getItem('t'))
     const exp = decoded.exp
     const origIat = decoded.orig_iat
 
@@ -41,4 +41,18 @@ export function inspectToken (token) {
   }
 
   return state
+}
+
+export function checkJwtActive () {
+  let tokenState = inspectToken()
+
+  if (tokenState === 'active') {
+    console.log('1')
+    return tokenState
+  } else {
+    console.log('redo')
+    setTimeout(() => {
+      this.checkJwtActive()
+    }, 2000)
+  }
 }

@@ -60,7 +60,7 @@
   </main>
 </template>
 <script>
-import http from '../../http-common'
+import {post} from '../../http-common'
 import {validateEmail} from '../../tools'
 
 export default {
@@ -112,11 +112,12 @@ export default {
       return formValid
     },
     async createAccount () {
+      this.error = ''
       let formIsValid = this.validateForm()
       let cleanedName = this.name.replace(/[^a-z'A-Z ]/, '').replace(/[/(){};:*]/g, '')
 
       if (formIsValid) {
-        let response = await http.post('create-user/', {
+        let response = await post('create-user/', {
           name: cleanedName,
           email: this.email,
           password: this.password,
@@ -131,9 +132,11 @@ export default {
           await this.$store.dispatch('obtainToken', [this.email, this.password]).catch((badRequest) => {
             badRequest = 'Username and/or password not found.'
             this.error = badRequest
+          }).then(() => {
+            if (!this.error) {
+              this.$router.push('Account')
+            }
           })
-
-          setTimeout(this.$router.push('Account'), 1000)
         }
       }
     }

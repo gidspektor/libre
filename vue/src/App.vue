@@ -9,7 +9,6 @@
 <script>
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
-import store from './store'
 import {inspectToken} from './tools'
 import Footer from './components/Footer'
 import Navbar from './components/Navbar'
@@ -27,15 +26,15 @@ export default {
 
   async created () {
     let securePages = ['eventPage', 'account']
-    let tokenState = store.state.jwt ? inspectToken(store.state.jwt) : ''
+    let tokenState = inspectToken()
 
     if (tokenState === 'active') {
-      await this.$store.dispatch('getUserInfo', store.state.jwt)
+      await this.$store.dispatch('getUserInfo', localStorage.getItem('t'))
     }
 
     if (tokenState === 'refresh') {
       await this.$store.dispatch('refreshToken')
-      this.$store.dispatch('getUserInfo', store.state.jwt)
+      this.$store.dispatch('getUserInfo', localStorage.getItem('t'))
     }
 
     if (tokenState === 'expired' && securePages.includes(this.$route.name)) {

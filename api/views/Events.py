@@ -126,10 +126,10 @@ class EventTicketPurchaseView(APIView):
       if number_of_tickets_bought.get('quantity__sum', 0) + int(ticket_quantity) > max_tickets:
         error = 'Invalid amount'
 
-    number_of_tickets_user_bought = UserEventsAssoc.objects.filter(event=event, user=request.user).aggregate(Sum('quantity'))
+    tickets_user_bought = UserEventsAssoc.objects.filter(event=event, user=request.user).first()
 
-    if number_of_tickets_user_bought.get('quantity__sum', 0):
-      if (number_of_tickets_user_bought.get('quantity__sum', 0) > 1):
+    if tickets_user_bought:
+      if tickets_user_bought.quantity >= 2:
         error = 'Invalid amount'
 
     # card payment functionality would go here with a fail condition.

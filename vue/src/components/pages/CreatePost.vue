@@ -42,7 +42,7 @@
   </main>
 </template>
 <script>
-import http from '../../http-common'
+import {post, get} from '../../http-common'
 import {sanitizeSearchString} from '../../tools'
 
 export default {
@@ -57,12 +57,6 @@ export default {
       returnedLocations: [],
       sanitizeSearchString: sanitizeSearchString
     }
-  },
-
-  created () {
-    window.addEventListener('click', (e) => {
-      this.error = ''
-    })
   },
 
   methods: {
@@ -98,7 +92,7 @@ export default {
       let cleanedLocation = this.sanitizeSearchString(this.keywordLocationSearch)
 
       if (formIsValid) {
-        let response = await http.post('create-post/', {
+        let response = await post('create-post/', {
           description: cleanedDescription,
           location: cleanedLocation,
           title: cleanedTitle
@@ -117,7 +111,7 @@ export default {
       this.returnedLocations = ''
       if (this.keywordLocationSearch) {
         let cleanedString = this.sanitizeSearchString(this.keywordLocationSearch)
-        let response = await http.get(`locations/${cleanedString}/`)
+        let response = await get(`locations/${cleanedString}/`)
 
         this.returnedLocations = response.data.results
       }

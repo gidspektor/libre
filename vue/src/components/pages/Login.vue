@@ -68,11 +68,11 @@ export default {
         await this.$store.dispatch('obtainToken', [this.email, this.password]).catch((badRequest) => {
           badRequest = 'Username and/or password not found.'
           this.error = badRequest
+        }).then(() => {
+          if (!this.error) {
+            this.$router.go(-1)
+          }
         })
-
-        if (!this.error) {
-          setTimeout(this.$router.go(-1), 1000)
-        }
       }
     }
   }

@@ -56,7 +56,6 @@ class Posts(APIView, LocationDetailView):
 
       posts = UserPosts.objects.filter(query)
 
-      
       response_dict = {}
 
       for post in posts:
@@ -71,7 +70,7 @@ class Posts(APIView, LocationDetailView):
 
       return {
         'results': sorted(response_dict.values(), key=operator.itemgetter('date_time')),
-        'location': location_string
+        'location': location.get('location_string', '')
       }
     else:
       return {'error': error}

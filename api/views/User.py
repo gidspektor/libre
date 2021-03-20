@@ -54,7 +54,15 @@ class UserView(APIView):
     future_user_events = UserEventsAssoc.objects.filter(
       user=request.user,
       event__date_time__gte=datetime.now()
-    ).order_by('event__date_time').values_list('event__name', flat=True)
+    ).order_by('event__date_time')
+
+    future_user_events_list = []
+
+    for future_user_event in future_user_events:
+      future_user_events_list.append({
+        'name': future_user_event.event.name,
+        'quantity': future_user_event.quantity
+      })
 
     response_dict = {}
 
@@ -64,7 +72,7 @@ class UserView(APIView):
       'email': request.user.email,
       'first_name': request.user.first_name,
       'last_name': request.user.last_name,
-      'future_events': list(future_user_events)
+      'future_events': future_user_events_list
       }
     }
 

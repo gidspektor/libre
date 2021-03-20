@@ -96,7 +96,7 @@ export default {
     },
     isLoggedIn (event) {
       this.$store.dispatch('selectEvent', event)
-      let tokenState = store.state.jwt ? inspectToken(store.state.jwt) : ''
+      let tokenState = inspectToken()
 
       if (!tokenState || tokenState === 'expired') {
         this.showModal = true

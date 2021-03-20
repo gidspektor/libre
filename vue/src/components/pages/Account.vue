@@ -113,7 +113,7 @@
 </template>
 
 <script>
-import http from '../../http-common'
+import {get} from '../../http-common'
 import store from '../../store'
 
 export default {
@@ -130,7 +130,7 @@ export default {
   async created () {
     this.user = store.state.user
 
-    let userEvents = await http.get('user-event-info')
+    let userEvents = await get(`user-event-info`)
 
     this.futureEvents = userEvents.data.future_events.filter((event, index, self) => {
       return self.indexOf(event) === index
@@ -140,10 +140,10 @@ export default {
       return self.indexOf(event) === index
     })
 
-    let userCommentedOnPostsResponse = await http.get('user-commented-posts')
+    let userCommentedOnPostsResponse = await get('user-commented-posts')
     this.userCommentedOnPosts = userCommentedOnPostsResponse.data.results
 
-    let userPostsResponse = await http.get('user-posts')
+    let userPostsResponse = await get('user-posts')
     this.userPosts = userPostsResponse.data.results
   },
 

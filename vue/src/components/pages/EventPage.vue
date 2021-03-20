@@ -83,7 +83,7 @@
 </template>
 
 <script>
-import http from '../../http-common'
+import {post} from '../../http-common'
 import store from '../../store'
 import {validateEmail, formatDate} from '../../tools'
 export default {
@@ -132,16 +132,18 @@ export default {
 
   methods: {
     checkIfAlreadyAttending (user) {
-      let quantityPurchased = user.future_events.filter(event =>
-        event === this.event.name
-      )
+      if (user.future_events.length) {
+        let quantityPurchased = user.future_events.filter(event =>
+          event.name === this.event.name
+        )
 
-      if (quantityPurchased.length === 2) {
-        this.alreadyAttending = true
-      }
+        if (quantityPurchased[0].quantity === 2) {
+          this.alreadyAttending = true
+        }
 
-      if (quantityPurchased.length === 1) {
-        this.boughtOne = true
+        if (quantityPurchased[0].quantity === 1) {
+          this.boughtOne = true
+        }
       }
     },
     checkIsNumber (event) {
@@ -185,7 +187,7 @@ export default {
       let formIsValid = this.validateForm()
 
       if (formIsValid) {
-        let response = await http.post('purchase-ticket/', {
+        let response = await post('purchase-ticket/', {
           user_info: store.state.user,
           event_id: this.event.event_id,
           card_number: this.cardNumber,
@@ -197,6 +199,7 @@ export default {
 
         if (response.data.success) {
           this.purchaseComplete = true
+          this.$store.dispatch('getUserInfo', localStorage.getItem('t'))
         }
       }
     }

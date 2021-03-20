@@ -39,11 +39,9 @@ export default new Vuex.Store({
     },
     updateToken (state, newToken) {
       localStorage.setItem('t', newToken)
-      state.jwt = newToken
     },
     removeToken (state) {
       localStorage.removeItem('t')
-      state.jwt = null
     },
     userInfo (state, data) {
       state.user = data
@@ -54,9 +52,6 @@ export default new Vuex.Store({
     setSelectedEvent (state, data) {
       localStorage.setItem('event', JSON.stringify(data))
       state.selectedEvent = JSON.stringify(data)
-    },
-    setGuest (state, data) {
-      state.isGuest = data
     },
     logout (state, data) {
       localStorage.clear()
@@ -75,9 +70,7 @@ export default new Vuex.Store({
 
       let response = await axios.post(this.state.endpoints.obtainJWT, payload)
 
-      if (!response.error) {
-        await this.dispatch('getUserInfo', response.data.token)
-      }
+      await this.dispatch('getUserInfo', response.data.token)
 
       context.commit('updateToken', response.data.token)
     },
@@ -87,9 +80,7 @@ export default new Vuex.Store({
       }
       let response = await axios.post(this.state.endpoints.refreshJWT, payload)
 
-      if (!response.error) {
-        await this.dispatch('getUserInfo', response.data.token)
-      }
+      await this.dispatch('getUserInfo', response.data.token)
 
       context.commit('updateToken', response.data.token)
     },
@@ -100,6 +91,7 @@ export default new Vuex.Store({
           'Authorization': 'Bearer ' + token
         }
       })
+
       context.commit('userInfo', response.data.user)
     },
     eventSearchResults (context, data) {
@@ -107,9 +99,6 @@ export default new Vuex.Store({
     },
     selectEvent (context, data) {
       context.commit('setSelectedEvent', data)
-    },
-    setGuest (context, data) {
-      context.commit('setGuest', data)
     },
     setkeywordLocationSearch (context, data) {
       context.commit('setkeywordLocationSearch', data)

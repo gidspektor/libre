@@ -1,7 +1,7 @@
 import {inspectToken} from '../../tools'
 
 export default async function accountAuthenticate ({ next, store }) {
-  let tokenState = store.state.jwt ? inspectToken(store.state.jwt) : ''
+  let tokenState = inspectToken()
 
   if (tokenState === 'refresh') {
     this.$store.dispatch('refreshToken')

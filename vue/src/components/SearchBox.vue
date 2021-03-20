@@ -23,9 +23,9 @@
             <div class='pl-lg-1 pt-2 mr-3 text text-headers font-weight-bold'>Date</div>
             <input v-model='date' type='date' class='pt-0 date'>
           </div>
-          <div v-if="this.$route.name === 'collaborate'" class='col-lg-4 searchItem pl-lg-1'>
+          <div v-if="this.$route.name === 'collaborate'" class='col-lg-4 searchItem'>
             <div class='pt-2 text text-headers font-weight-bold'>Search</div>
-            <input v-model='keywordPostSearch' type='text' class='p-0 text searchText font-weight-light font-italic' placeholder='Search posts e.g. drummer wanted'>
+            <input v-model='keywordPostSearch' type='text' class='p-0 text searchText font-weight-light font-italic' placeholder='Search posts'>
           </div>
           <div v-if="this.$route.name === 'collaborate'" class='col-lg-1 ml-auto pt-lg-3 searchItem' @click='searchPosts()'>
             <router-link :to='searchRedirect'><img class='icon' src='~@/assets/img/search.svg'></router-link>
@@ -60,7 +60,7 @@
 </template>
 
 <script>
-import http from '../http-common'
+import {get} from '../http-common'
 import store from '../store'
 import {sanitizeSearchString} from '../tools'
 
@@ -118,16 +118,16 @@ export default {
     async searchLocations () {
       this.returnedLocations = ''
       let cleanedString = this.sanitizeSearchString(this.keywordLocationSearch)
-      let response = await http.get(`locations/${cleanedString}/`)
+      let response = await get(`locations/${cleanedString}/`)
 
       this.returnedLocations = response.data.results
     },
     async searchEvents () {
-      this.$store.dispatch('loading', true)
+      this.$store.dispatch('setLoading', true)
       if (this.keywordLocationSearch) {
         this.error = ''
         let cleanedString = this.sanitizeSearchString(this.keywordLocationSearch)
-        let response = await http.get(`events/${cleanedString}?date=${this.date}`)
+        let response = await get(`events/${cleanedString}?date=${this.date}`)
 
         if (response.data.error) {
           this.error = response.data.error
@@ -143,18 +143,18 @@ export default {
       }
     },
     async searchPosts () {
-      this.$store.dispatch('loading', true)
+      this.$store.dispatch('setLoading', true)
       if (this.keywordLocationSearch) {
         this.error = ''
         let cleanedLocationString = this.sanitizeSearchString(this.keywordLocationSearch)
         let cleanedSearchTermString = this.sanitizeSearchString(this.keywordPostSearch)
-        let response = await http.get(`posts/${cleanedLocationString}?search-term=${cleanedSearchTermString}`)
+        let response = await get(`posts/${cleanedLocationString}?search-term=${cleanedSearchTermString}`)
 
         if (response.data.error) {
           this.error = response.data.error
         } else {
           this.keywordLocationSearch = response.data.location
-          console.log(response.data.location)
+
           this.$store.dispatch('postSearchResults', response.data.results)
         }
 

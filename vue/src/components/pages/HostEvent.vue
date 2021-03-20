@@ -33,7 +33,7 @@
   </main>
 </template>
 <script>
-import http from '../../http-common'
+import {post} from '../../http-common'
 import {validateEmail} from '../../tools'
 
 export default {
@@ -73,7 +73,7 @@ export default {
       let cleanedName = this.name.replace(/[^a-z'A-Z ]/, '').replace(/[/(){};:*]/g, '')
 
       if (formIsValid) {
-        let response = await http.post('host-request/', {
+        let response = await post('host-request/', {
           comment: cleanedComment,
           email: this.email,
           name: cleanedName

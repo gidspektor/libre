@@ -1,13 +1,13 @@
 import {inspectToken} from '../../tools'
 
 export default async function eventAuthenticate ({ next, store }) {
-  if (!Object.keys(store.state.selectedEvent).length) {
+  if (!store.state.selectedEvent || !Object.keys(store.state.selectedEvent).length) {
     return next({
       path: '/FindEvents'
     })
   }
 
-  let tokenState = store.state.jwt ? inspectToken(store.state.jwt) : ''
+  let tokenState = inspectToken()
 
   if (tokenState === 'refresh') {
     this.$store.dispatch('refreshToken')

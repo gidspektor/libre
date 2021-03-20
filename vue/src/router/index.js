@@ -16,6 +16,7 @@ import Terms from '@/components/pages/Terms'
 
 import accountAuthenticate from './middleware/accountAuth'
 import eventAuthenticate from './middleware/eventAuth'
+import postAuthenticate from './middleware/postAuth'
 
 Vue.use(Router)
 
@@ -80,7 +81,23 @@ export default new Router({
     {component: FindEvents, path: '/FindEvents', name: 'findEvents'},
     {component: HostEvent, path: '/HostEvents', name: 'hostEvents'},
     {component: Login, path: '/Login', name: 'login'},
-    {component: Post, path: '/Post', name: 'post'},
+    {
+      component: Post,
+      path: '/Post',
+      name: 'post',
+      meta: {middleware: [postAuthenticate]},
+      beforeEnter: (to, from, next) => {
+        const context = {
+          to,
+          from,
+          next,
+          store
+        }
+        return to.meta.middleware[0]({
+          ...context
+        })
+      }
+    },
     {component: SignUp, path: '/SignUp', name: 'signUp'},
     {component: Terms, path: '/Terms', name: 'terms'}
   ]

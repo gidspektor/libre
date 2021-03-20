@@ -103,7 +103,7 @@
 
 <script>
 import GoogleSignInButton from 'vue-google-signin-button-directive'
-import http from '../http-common'
+import {post} from '../http-common'
 import {validateEmail} from '../tools'
 
 export default {
@@ -163,14 +163,14 @@ export default {
       if (!emailIsValid) {
         this.emailError = 'Please insert a valid email'
       } else {
-        await this.$store.dispatch('obtainToken', [this.email, this.password]).catch((badRequest) => {
+        this.$store.dispatch('obtainToken', [this.email, this.password]).catch((badRequest) => {
           badRequest = 'Username and/or password not found.'
           this.error = badRequest
+        }).then(() => {
+          if (!this.error) {
+            this.$emit('next-page')
+          }
         })
-
-        if (!this.error) {
-          setTimeout(this.$emit('next-page'), 2000)
-        }
       }
     },
     validateForm () {
@@ -205,11 +205,12 @@ export default {
       return formValid
     },
     async createAccount () {
+      this.error = ''
       let formIsValid = this.validateForm()
       let cleanedName = this.name.replace(/[^a-z'A-Z ]/, '').replace(/[/(){};:*]/g, '')
 
       if (formIsValid) {
-        let response = await http.post('create-user/', {
+        let response = await post('create-user/', {
           name: cleanedName,
           email: this.email,
           password: this.password,
@@ -221,12 +222,14 @@ export default {
         }
 
         if (response.data.success) {
-          await this.$store.dispatch('obtainToken', [this.email, this.password]).catch((badRequest) => {
+          this.$store.dispatch('obtainToken', [this.email, this.password]).catch((badRequest) => {
             badRequest = 'Username and/or password not found.'
             this.error = badRequest
+          }).then(() => {
+            if (!this.error) {
+              this.$emit('next-page')
+            }
           })
-
-          setTimeout(this.$emit('next-page'), 2000)
         }
       }
     }
@@ -269,18 +272,13 @@ export default {
   background-color: rgba(240, 234, 234, 0.5);
 }
 
-/* .or {
-  background:#fff;
-  padding:0 10px;
-} */
-
-/* .line {
+.line {
   line-height: 0.1em;
   margin: 10px 0 20px;
   height: 0px;
   border-bottom: solid rgba(20, 20, 20, 0.1);
   border-width: 2px;
-} */
+}
 
 .modalHead {
   border-bottom: solid rgba(20, 20, 20, 0.1);

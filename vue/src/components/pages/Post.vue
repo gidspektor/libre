@@ -51,7 +51,8 @@
 </template>
 
 <script>
-import http from '../../http-common'
+// import axios from 'axios'
+import {post, get} from '../../http-common'
 import {inspectToken, formatDate} from '../../tools'
 import LoginSignupModal from '../LoginSignupModal'
 import store from '../../store'
@@ -79,7 +80,7 @@ export default {
 
   methods: {
     async getComments () {
-      let response = await http.get(`get-comments/${this.post.id}`)
+      let response = await get(`get-comments/${this.post.id}`)
 
       if (response.data.error) {
         this.error = response.data.error
@@ -90,14 +91,12 @@ export default {
     },
     async submitComment () {
       if (/\S/.test(this.inputComment)) {
-        let cleanedComment = this.inputComment.replace(/[^a-z'A-Z!? ]/, '').replace(/[/(){}:*]/g, '')
+        let cleanedComment = this.inputComment.replace(/[^a-z'A-Z!?0-9 ]/, '').replace(/[/(){}:*]/g, '')
         this.showModal = false
         document.querySelector('body').style.overflow = ''
 
-        let response = await http.post('create-comment/', {
-          comment: cleanedComment,
-          post_id: this.post.id
-        })
+        let data = {comment: cleanedComment, post_id: this.post.id}
+        let response = await post('create-comment/', data)
 
         if (response.data.error) {
           this.error = response.data.error
@@ -114,7 +113,7 @@ export default {
     },
     async isLoggedIn (event) {
       if (/\S/.test(this.inputComment)) {
-        let tokenState = store.state.jwt ? inspectToken(store.state.jwt) : ''
+        let tokenState = inspectToken()
 
         if (!tokenState || tokenState === 'expired') {
           this.showModal = true
