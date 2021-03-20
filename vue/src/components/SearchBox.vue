@@ -48,6 +48,12 @@
         <input v-model='date' type='date' class='pt-0 date'>
       </div>
     </div>
+    <div v-if="this.$route.name === 'collaborate'" class='row mobileSearch'>
+      <div class='border border-dark search col-11 pl-4'>
+       <div class='pt-2 text text-headers font-weight-bold'>Search</div>
+        <input v-model='keywordPostSearch' type='text' class='p-0 text searchText font-weight-light font-italic' placeholder='Search posts'>
+      </div>
+    </div>
     <div class='row mobileSearch'>
       <div v-if="this.$route.name === 'collaborate'" class='border border-dark search col-11 pt-3 d-flex justify-content-center' @click='searchPosts()'>
         <router-link :to='searchRedirect'><img class='icon' src='~@/assets/img/search.svg'></router-link>

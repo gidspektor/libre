@@ -33,7 +33,11 @@ export default {
     }
 
     if (tokenState === 'refresh') {
-      await this.$store.dispatch('refreshToken')
+      await this.$store.dispatch('refreshToken').catch((error) => {
+        console.log(error)
+        localStorage.removeItem('t')
+        this.$router.push('/')
+      })
       this.$store.dispatch('getUserInfo', localStorage.getItem('t'))
     }
 

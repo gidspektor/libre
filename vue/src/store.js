@@ -80,6 +80,10 @@ export default new Vuex.Store({
       }
       let response = await axios.post(this.state.endpoints.refreshJWT, payload)
 
+      if (response.error) {
+        console.log(response.error)
+      }
+
       await this.dispatch('getUserInfo', response.data.token)
 
       context.commit('updateToken', response.data.token)
