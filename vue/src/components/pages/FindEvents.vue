@@ -3,20 +3,22 @@
     <link href="https://fonts.googleapis.com/css?family=Dosis:400,700" rel="stylesheet">
     <SearchBox @no-results='noResultsFromSearch'></SearchBox>
     <hr>
-    <ResultsBox
-      @go-to-events-page='isLoggedIn'
-      v-for='(event, index) in grabResults'
-      :key='index'
-      :cardImage='event.image'
-      :cardText='event.description'
-      :eventId='event.event_id'
-      :cardTitle='event.name'
-      :date_time='event.date_time'
-      :allows_own_drinks='event.allows_own_drinks'
-      :capacity='event.capacity'
-      :atl='event.atl'
-      :event='event'
-    ></ResultsBox>
+    <div v-if='!isLoading'>
+      <ResultsBox
+        @go-to-events-page='isLoggedIn'
+        v-for='(event, index) in grabResults'
+        :key='index'
+        :cardImage='event.image'
+        :cardText='event.description'
+        :eventId='event.event_id'
+        :cardTitle='event.name'
+        :date_time='event.date_time'
+        :allows_own_drinks='event.allows_own_drinks'
+        :capacity='event.capacity'
+        :atl='event.atl'
+        :event='event'
+      ></ResultsBox>
+    </div>
     <div class='overlay' v-show='showModal'>
       <transition name='fade'>
         <LoginSignupModal
@@ -29,7 +31,7 @@
           </LoginSignupModal>
       </transition>
     </div>
-    <div class='emptyResults' v-if='containsResults && !isLoading'>
+    <div class='emptyResults' v-if='doesntContainResults && !isLoading'>
       <span class='row d-flex justify-content-center'>
         <h3 v-if='error' class='col-6 d-flex justify-content-center mt-5 searchText'>{{error}}</h3>
         <h3 v-else class='col-4 d-flex justify-content-center mt-5 searchText'>Search for Libre events here</h3>
@@ -71,7 +73,7 @@ export default {
     grabResults () {
       return store.state.eventSearchResults
     },
-    containsResults () {
+    doesntContainResults () {
       let show = true
 
       if (store.state.eventSearchResults && store.state.eventSearchResults.length >= 1) {

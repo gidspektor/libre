@@ -135,14 +135,15 @@ export default {
         let cleanedString = this.sanitizeSearchString(this.keywordLocationSearch)
         let response = await get(`events/${cleanedString}?date=${this.date}`)
 
-        this.$store.dispatch('setkeywordLocationSearch', response.data.location)
-
         if (response.data.error) {
           this.error = response.data.error
-        } else if (!response.data.results || response.data.results.length === 0) {
-          this.$emit('no-results')
         } else {
           this.$store.dispatch('eventSearchResults', response.data.results)
+          this.$store.dispatch('setkeywordLocationSearch', response.data.location)
+        }
+
+        if (!response.data.results || response.data.results.length === 0) {
+          this.$emit('no-results')
         }
 
         this.$store.dispatch('setLoading', false)
@@ -160,10 +161,13 @@ export default {
 
         if (response.data.error) {
           this.error = response.data.error
-        } else if (!response.data.results || response.data.results.length === 0) {
-          this.$emit('no-results')
         } else {
+          this.$store.dispatch('setkeywordLocationSearch', response.data.location)
           this.$store.dispatch('postSearchResults', response.data.results)
+        }
+
+        if (!response.data.results || response.data.results.length === 0) {
+          this.$emit('no-results')
         }
 
         this.$store.dispatch('setLoading', false)
