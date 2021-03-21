@@ -18,7 +18,7 @@ export default new Vuex.Store({
       baseUrl: 'http://127.0.0.1:8000/api/'
     },
     isGuest: false,
-    setkeywordLocationSearch: '',
+    keywordLocationSearch: '',
     clientId: '737037142096-pmqa51ssn0q24g1gag0ckln70ff0vlo1.apps.googleusercontent.com',
     loading: false
   },
@@ -35,7 +35,7 @@ export default new Vuex.Store({
       state.selectedPost = JSON.stringify(data)
     },
     setkeywordLocationSearch (state, data) {
-      state.setkeywordLocationSearch = data
+      state.keywordLocationSearch = data
     },
     updateToken (state, newToken) {
       localStorage.setItem('t', newToken)

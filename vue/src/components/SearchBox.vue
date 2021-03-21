@@ -135,16 +135,14 @@ export default {
         let cleanedString = this.sanitizeSearchString(this.keywordLocationSearch)
         let response = await get(`events/${cleanedString}?date=${this.date}`)
 
+        this.$store.dispatch('setkeywordLocationSearch', response.data.location)
+
         if (response.data.error) {
           this.error = response.data.error
+        } else if (!response.data.results || response.data.results.length === 0) {
+          this.$emit('no-results')
         } else {
           this.$store.dispatch('eventSearchResults', response.data.results)
-          this.keywordLocationSearch = response.data.location
-          this.$store.dispatch('setkeywordLocationSearch', response.data.location)
-        }
-
-        if (!response.data.results || response.data.results.length === 0) {
-          this.$emit('no-results')
         }
 
         this.$store.dispatch('setLoading', false)
@@ -158,16 +156,14 @@ export default {
         let cleanedSearchTermString = this.sanitizeSearchString(this.keywordPostSearch)
         let response = await get(`posts/${cleanedLocationString}?search-term=${cleanedSearchTermString}`)
 
+        this.$store.dispatch('setkeywordLocationSearch', response.data.location)
+
         if (response.data.error) {
           this.error = response.data.error
-        } else {
-          this.keywordLocationSearch = response.data.location
-
-          this.$store.dispatch('postSearchResults', response.data.results)
-        }
-
-        if (!response.data.results || response.data.results.length === 0) {
+        } else if (!response.data.results || response.data.results.length === 0) {
           this.$emit('no-results')
+        } else {
+          this.$store.dispatch('postSearchResults', response.data.results)
         }
 
         this.$store.dispatch('setLoading', false)
