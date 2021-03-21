@@ -75,7 +75,6 @@ export default {
       let show = true
 
       if (store.state.eventSearchResults && store.state.eventSearchResults.length >= 1) {
-        this.$store.dispatch('loading', false)
         show = false
       }
 

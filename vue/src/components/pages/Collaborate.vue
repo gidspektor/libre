@@ -54,7 +54,6 @@ export default {
       let show = true
 
       if (store.state.postSearchResults && store.state.postSearchResults.length >= 1) {
-        this.$store.dispatch('setLoading', false)
         show = false
       }
 

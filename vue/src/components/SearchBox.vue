@@ -129,8 +129,8 @@ export default {
       this.returnedLocations = response.data.results
     },
     async searchEvents () {
-      this.$store.dispatch('setLoading', true)
       if (this.keywordLocationSearch) {
+        this.$store.dispatch('setLoading', true)
         this.error = ''
         let cleanedString = this.sanitizeSearchString(this.keywordLocationSearch)
         let response = await get(`events/${cleanedString}?date=${this.date}`)
@@ -146,11 +146,13 @@ export default {
         if (!response.data.results || response.data.results.length === 0) {
           this.$emit('no-results')
         }
+
+        this.$store.dispatch('setLoading', false)
       }
     },
     async searchPosts () {
-      this.$store.dispatch('setLoading', true)
       if (this.keywordLocationSearch) {
+        this.$store.dispatch('setLoading', true)
         this.error = ''
         let cleanedLocationString = this.sanitizeSearchString(this.keywordLocationSearch)
         let cleanedSearchTermString = this.sanitizeSearchString(this.keywordPostSearch)
@@ -167,6 +169,8 @@ export default {
         if (!response.data.results || response.data.results.length === 0) {
           this.$emit('no-results')
         }
+
+        this.$store.dispatch('setLoading', false)
       }
     }
   }

@@ -115,8 +115,8 @@ export default {
 
 nav{
   background: rgba(0,0,0,0.4);
-  position: absolute;
   z-index: 1000;
+  position: fixed;
 }
 
 .logoColour {

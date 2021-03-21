@@ -3,95 +3,102 @@
   <div class='myModal'>
     <div class='modal-dialog modal-dialog-centered' role='document'>
       <div class='modal-content'>
-        <div class='row pl-3'>
-          <div @click='closeModal' class='closeModal col-1'>&times;</div>
+        <div class='modal-body' v-if='isLoading'>
+          <span class='row d-flex justify-content-center'>
+            <h3 class='col-4 d-flex justify-content-center mt-5 searchText'>Loading...</h3>
+          </span>
         </div>
-        <div v-if='continueWithEmail | signUpUser' class='row'>
-          <img @click='goBack' class='mt-2 col-1 ml-3 arrow' src='~@/assets/img/arrow.png'>
-        </div>
-        <div class='px-3 modalHead text-center pb-2'>
-          <h5 class='modal-title d-inline font-weight-bold'>Log in or sign up</h5>
-        </div>
-        <div class='modal-body'>
-          <div v-if='!signUpUser'>
-            <div v-if='continueWithEmail'>
-              <div class='mb-3 libreFont row'>
-                <div class='col-12'>
-                  <input v-model='email' type='email' class='form-control col-12' placeholder='Email Address'>
-                  <div class='alert alert-danger error mt-1 text-center' role='alert' v-show='emailError'>
-                    {{ emailError }}
-                  </div>
-                  <input v-model='password' type='password' class='form-control col-12' placeholder='Password'>
-                  <a class='pl-1 libreFont' href='#'>Forgot password?</a>
-                  |
-                  <a class='libreFont' href='#' @click='signUp'>Sign up?</a>
-                  <div class='alert alert-danger error mt-1 text-center' role='alert' v-show='error'>
-                    {{ error }}
+        <div v-else>
+          <div class='row pl-3'>
+            <div @click='closeModal' class='closeModal col-1'>&times;</div>
+          </div>
+          <div v-if='continueWithEmail | signUpUser' class='row'>
+            <img @click='goBack' class='mt-2 col-1 ml-3 arrow' src='~@/assets/img/arrow.png'>
+          </div>
+          <div class='px-3 modalHead text-center pb-2'>
+            <h5 class='modal-title d-inline font-weight-bold'>Log in or sign up</h5>
+          </div>
+          <div class='modal-body'>
+            <div v-if='!signUpUser'>
+              <div v-if='continueWithEmail'>
+                <div class='mb-3 libreFont row'>
+                  <div class='col-12'>
+                    <input v-model='email' type='email' class='form-control col-12' placeholder='Email Address'>
+                    <div class='alert alert-danger error mt-1 text-center' role='alert' v-show='emailError'>
+                      {{ emailError }}
+                    </div>
+                    <input v-model='password' type='password' class='form-control col-12' placeholder='Password'>
+                    <a class='pl-1 libreFont' href='#'>Forgot password?</a>
+                    |
+                    <a class='libreFont' href='#' @click='signUp'>Sign up?</a>
+                    <div class='alert alert-danger error mt-1 text-center' role='alert' v-show='error'>
+                      {{ error }}
+                    </div>
                   </div>
                 </div>
+                <div class='row d-flex justify-content-center'>
+                  <button @click='login' type='button' class='col-11 btn logoColour libreFont text-center'>Continue</button>
+                </div>
+              </div>
+              <div class='pt-lg-4 row d-flex justify-content-center'>
+                <button type='button' class='col-11 btn customButton'>
+                  <div>
+                    <img class='d-inline logos' src='~@/assets/img/google.png'>
+                    <div class='d-inline libreFont mr-4'>Continue with Google</div>
+                  </div>
+                </button>
+              </div>
+              <div class='row d-flex justify-content-center mt-lg-3'>
+                <button type='button' class='col-11 btn customButton'>
+                  <div>
+                    <img class='d-inline logos ml-3' src='~@/assets/img/fb.png'>
+                    <div class='d-inline libreFont mr-4'>Continue with Facebook</div>
+                  </div>
+                </button>
+              </div>
+              <div v-if='!continueWithEmail' class='row d-flex justify-content-center mt-lg-3'>
+                <button type='button' class='col-11 btn customButton' @click='loginWithEmail'>
+                  <div>
+                    <img class='d-inline logos' src='~@/assets/img/email.png'>
+                    <div class='d-inline libreFont mr-4'>Continue with email</div>
+                  </div>
+                </button>
+              </div>
+            </div>
+            <div v-else-if='signUpUser'>
+              <div class='row d-flex justify-content-center'>
+                <input v-model='name' class='form-control col-11' placeholder='Full name' type='text'>
+              </div>
+              <div class='alert alert-danger error mt-1 text-center' role='alert' v-show='nameError'>
+                {{ nameError }}
+              </div>
+              <div class='row d-flex justify-content-center my-2'>
+                <input v-model='email' class='form-control col-11' placeholder='Email address' type='email'>
+              </div>
+              <div class='alert alert-danger error mt-1 text-center' role='alert' v-show='emailError'>
+                {{ emailError }}
               </div>
               <div class='row d-flex justify-content-center'>
-                <button @click='login' type='button' class='col-11 btn logoColour libreFont text-center'>Continue</button>
+                <input v-model='password' class='form-control col-11' placeholder='Create password (minimum of 8 characters)' type='password'>
               </div>
-            </div>
-            <div class='pt-lg-4 row d-flex justify-content-center'>
-              <button type='button' class='col-11 btn customButton'>
-                <div>
-                  <img class='d-inline logos' src='~@/assets/img/google.png'>
-                  <div class='d-inline libreFont mr-4'>Continue with Google</div>
-                </div>
-              </button>
-            </div>
-            <div class='row d-flex justify-content-center mt-lg-3'>
-              <button type='button' class='col-11 btn customButton'>
-                <div>
-                  <img class='d-inline logos ml-3' src='~@/assets/img/fb.png'>
-                  <div class='d-inline libreFont mr-4'>Continue with Facebook</div>
-                </div>
-              </button>
-            </div>
-            <div v-if='!continueWithEmail' class='row d-flex justify-content-center mt-lg-3'>
-              <button type='button' class='col-11 btn customButton' @click='loginWithEmail'>
-                <div>
-                  <img class='d-inline logos' src='~@/assets/img/email.png'>
-                  <div class='d-inline libreFont mr-4'>Continue with email</div>
-                </div>
-              </button>
-            </div>
-          </div>
-          <div v-else-if='signUpUser'>
-            <div class='row d-flex justify-content-center'>
-              <input v-model='name' class='form-control col-11' placeholder='Full name' type='text'>
-            </div>
-            <div class='alert alert-danger error mt-1 text-center' role='alert' v-show='nameError'>
-              {{ nameError }}
-            </div>
-            <div class='row d-flex justify-content-center my-2'>
-              <input v-model='email' class='form-control col-11' placeholder='Email address' type='email'>
-            </div>
-            <div class='alert alert-danger error mt-1 text-center' role='alert' v-show='emailError'>
-              {{ emailError }}
-            </div>
-            <div class='row d-flex justify-content-center'>
-              <input v-model='password' class='form-control col-11' placeholder='Create password (minimum of 8 characters)' type='password'>
-            </div>
-            <div class='alert alert-danger error mt-1 text-center' role='alert' v-show='passwordLengthError'>
-              {{ passwordLengthError }}
-            </div>
-            <div class='row d-flex justify-content-center my-2'>
-              <input v-model='passwordRepeat' class='form-control col-11' placeholder='Repeat password' type='password'>
-            </div>
-            <div class='alert alert-danger error mt-1 text-center' role='alert' v-show='passwordNotMatchError'>
-              {{ passwordNotMatchError }}
-            </div>
-            <div class='alert alert-danger error mt-1 text-center' role='alert' v-show='error'>
-              {{ error }}
-            </div>
-            <div class='py-lg-2 row d-flex justify-content-center'>
-              <div class='col-11 line text-center'></div>
-            </div>
-            <div class='row d-flex justify-content-center'>
-              <button @click='createAccount' class='btn logoColour libreFont col-11'> Create Account</button>
+              <div class='alert alert-danger error mt-1 text-center' role='alert' v-show='passwordLengthError'>
+                {{ passwordLengthError }}
+              </div>
+              <div class='row d-flex justify-content-center my-2'>
+                <input v-model='passwordRepeat' class='form-control col-11' placeholder='Repeat password' type='password'>
+              </div>
+              <div class='alert alert-danger error mt-1 text-center' role='alert' v-show='passwordNotMatchError'>
+                {{ passwordNotMatchError }}
+              </div>
+              <div class='alert alert-danger error mt-1 text-center' role='alert' v-show='error'>
+                {{ error }}
+              </div>
+              <div class='py-lg-2 row d-flex justify-content-center'>
+                <div class='col-11 line text-center'></div>
+              </div>
+              <div class='row d-flex justify-content-center'>
+                <button @click='createAccount' class='btn logoColour libreFont col-11'> Create Account</button>
+              </div>
             </div>
           </div>
         </div>
@@ -124,7 +131,8 @@ export default {
       emailError: '',
       passwordLengthError: '',
       passwordNotMatchError: '',
-      nameError: ''
+      nameError: '',
+      isLoading: false
       // clientId: '',
       // v-google-signin-button='clientId'
     }
@@ -163,6 +171,7 @@ export default {
       if (!emailIsValid) {
         this.emailError = 'Please insert a valid email'
       } else {
+        this.isLoading = true
         this.$store.dispatch('obtainToken', [this.email, this.password]).catch((badRequest) => {
           badRequest = 'Username and/or password not found.'
           this.error = badRequest
@@ -171,6 +180,7 @@ export default {
             this.$emit('next-page')
           }
         })
+        this.isLoading = false
       }
     },
     validateForm () {
@@ -210,6 +220,7 @@ export default {
       let cleanedName = this.name.replace(/[^a-z'A-Z ]/, '').replace(/[/(){};:*]/g, '')
 
       if (formIsValid) {
+        this.isLoading = true
         let response = await post('create-user/', {
           name: cleanedName,
           email: this.email,
@@ -231,6 +242,7 @@ export default {
             }
           })
         }
+        this.isLoading = false
       }
     }
   }
