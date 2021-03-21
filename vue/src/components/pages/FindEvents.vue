@@ -29,7 +29,7 @@
           </LoginSignupModal>
       </transition>
     </div>
-    <div class='emptyResults' v-if='containsResults'>
+    <div class='emptyResults' v-if='containsResults && !isLoading'>
       <span class='row d-flex justify-content-center'>
         <h3 v-if='error' class='col-6 d-flex justify-content-center mt-5 searchText'>{{error}}</h3>
         <h3 v-else class='col-4 d-flex justify-content-center mt-5 searchText'>Search for Libre events here</h3>
