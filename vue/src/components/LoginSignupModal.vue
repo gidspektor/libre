@@ -176,11 +176,12 @@ export default {
           badRequest = 'Username and/or password not found.'
           this.error = badRequest
         }).then(() => {
+          this.isLoading = false
+
           if (!this.error) {
             this.$emit('next-page')
           }
         })
-        this.isLoading = false
       }
     },
     validateForm () {
@@ -237,12 +238,13 @@ export default {
             badRequest = 'Username and/or password not found.'
             this.error = badRequest
           }).then(() => {
+            this.isLoading = false
+
             if (!this.error) {
               this.$emit('next-page')
             }
           })
         }
-        this.isLoading = false
       }
     }
   }
