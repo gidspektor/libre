@@ -86,6 +86,7 @@ export default {
 
   methods: {
     goToEventPage () {
+      document.querySelector('body').style.overflow = ''
       this.$router.push('EventPage')
     },
     closeModal () {

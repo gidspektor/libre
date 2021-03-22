@@ -1,7 +1,7 @@
 import {inspectToken} from '../../tools'
 
 export default async function eventAuthenticate ({ next, store }) {
-  if (!store.state.selectedEvent && !Object.keys(store.state.selectedEvent).length) {
+  if (!store.state.selectedEvent || !Object.keys(store.state.selectedEvent).length) {
     return next({
       path: '/FindEvents'
     })
