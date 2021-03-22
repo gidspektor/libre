@@ -32,7 +32,7 @@
         {{ error }}
       </div>
       <div class='d-flex justify-content-center'>
-        <a class='libreFont d-flex justify-content-center' href='#/Login'>Login?</a>
+        <a class='libreFont d-flex justify-content-center' ><a class='libreFont'><router-link to='login'>Login?</router-link></a></a>
       </div>
       <div class='row d-flex justify-content-center mt-4'>
         <button @click='createAccount' class='btn logoColour libreFont col-lg-6 col-10'> Create Account</button>

@@ -12,7 +12,7 @@
         <input v-model='password' type='password' class='form-control' placeholder='Password'>
         <div class='d-flex justify-content-center'>
           <a class='libreFont mr-auto' href='#'>Forgot password? </a>
-          <a class='libreFont' href='#/SignUp'> Sign up?</a>
+          <a class='libreFont'><router-link to='signUp'>Sign up</router-link></a>
         </div>
         <div class='alert alert-danger error mt-1 text-center' role='alert' v-show='error'>
           {{ error }}
