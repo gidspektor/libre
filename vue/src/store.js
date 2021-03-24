@@ -114,7 +114,7 @@ export default new Vuex.Store({
       context.commit('setSelectPost', data)
     },
     postSearchResults (context, data) {
-      context.commit('setPostSearchResults', data)
+      context.commit('setPostSearchResults', data.reverse())
     },
     setLoading (context, data) {
       context.commit('setLoading', data)

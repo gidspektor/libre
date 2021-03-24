@@ -50,7 +50,7 @@ export default {
       return store.state.loading
     },
     grabPosts () {
-      return store.state.postSearchResults.reverse()
+      return store.state.postSearchResults
     },
     doesntContainResults () {
       let show = true
