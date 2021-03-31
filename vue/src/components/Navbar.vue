@@ -19,10 +19,17 @@
         <div class='collapse navbar-collapse d-flex-md justify-content-end' id='navbarSupportedContent'>
           <ul class='navbar-nav'>
             <li class='nav-item mr-3'>
-              <a v-if="this.$route.name !== 'collaborate' && this.$route.name !== 'post'" class='noUnderline nav-link text-white libreFont'>
+              <a class='noUnderline nav-link text-white libreFont'>
+                <router-link to='/Collaborate'>Collaborate</router-link>
+              </a>
+            </li>
+            <li class='nav-item mr-3'>
+              <a class='noUnderline nav-link text-white libreFont'>
                 <router-link to='/HostEvents'>Host an event</router-link>
               </a>
-              <a v-else class='noUnderline nav-link text-white createPostText libreFont'>
+            </li>
+            <li class='nav-item mr-3'>
+              <a v-if="this.$route.name === 'collaborate' || this.$route.name === 'post'" class='noUnderline nav-link text-white createPostText libreFont'>
                 <router-link to='/CreatePost'>Create a post +</router-link>
               </a>
             </li>
