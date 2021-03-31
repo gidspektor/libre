@@ -59,7 +59,8 @@
               </div>
           </div>
           <br/>
-          <button @click='submitPurchase' class='btn logoColour btn-lg btn-block col-7 mt-lg-1' role='button'>Pay</button>
+          <button v-if="!loading" @click='submitPurchase' class='btn logoColour btn-lg btn-block col-7 mt-lg-1' role='button'>Pay</button>
+          <button v-else class='btn logoColour libreFont col-lg-6 col-10'>Submitting...</button>
         </div>
       </div>
       <div class='order-first order-md-last col-12 col-md-6 mt-5 pl-lg-0 pl-4 pr-lg-5'>
@@ -108,7 +109,8 @@ export default {
       lastTicket: false,
       purchaseComplete: false,
       alreadyAttending: false,
-      boughtOne: false
+      boughtOne: false,
+      loading: false
     }
   },
 
@@ -184,6 +186,7 @@ export default {
       return formValid
     },
     async submitPurchase () {
+      this.loading = true
       let formIsValid = this.validateForm()
 
       if (formIsValid) {
@@ -202,6 +205,8 @@ export default {
           this.$store.dispatch('getUserInfo', localStorage.getItem('t'))
         }
       }
+
+      this.loading = false
     }
   }
 }

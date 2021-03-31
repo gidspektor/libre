@@ -35,7 +35,8 @@
           </div>
         </div>
         <div class='row d-flex justify-content-center mt-4'>
-          <button @click='submitRequest' class='btn logoColour libreFont col-lg-6 col-10'>Submit request</button>
+          <button v-if="!loading" @click='submitRequest' class='btn logoColour libreFont col-lg-6 col-10'>Submit request</button>
+          <button v-else class='btn logoColour libreFont col-lg-6 col-10'>Submitting...</button>
         </div>
       </div>
     </div>
@@ -55,7 +56,8 @@ export default {
       error: '',
       keywordLocationSearch: '',
       returnedLocations: [],
-      sanitizeSearchString: sanitizeSearchString
+      sanitizeSearchString: sanitizeSearchString,
+      loading: false
     }
   },
 
@@ -86,6 +88,7 @@ export default {
       return formValid
     },
     async submitRequest () {
+      this.loading = true
       let formIsValid = this.validateForm()
       let cleanedDescription = this.description.replace(/[^a-z'A-Z ]/, '').replace(/[/(){}:*]/g, '')
       let cleanedTitle = this.title.replace(/[^a-z'A-Z ]/, '').replace(/[/(){};:*]/g, '')
@@ -106,6 +109,8 @@ export default {
           this.requestSent = true
         }
       }
+
+      this.loading = false
     },
     async searchLocations () {
       this.returnedLocations = ''
