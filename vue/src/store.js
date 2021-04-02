@@ -77,7 +77,7 @@ export default new Vuex.Store({
     },
     async refreshToken (context) {
       let isGoogleJwt = false
- 
+
       const decoded = jwtDecode(localStorage.getItem('t'))
 
       if (Object.keys(decoded).includes('iss')) {
@@ -88,10 +88,11 @@ export default new Vuex.Store({
         const payload = {
           token: this.state.jwt
         }
+
         let response = await axios.post(this.state.endpoints.refreshJWT, payload)
-  
+
         await this.dispatch('getUserInfo', response.data.token)
-  
+
         context.commit('updateToken', response.data.token)
       } else {
         localStorage.removeItem('t')
