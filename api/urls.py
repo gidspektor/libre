@@ -1,4 +1,4 @@
-from api.views import Events, LocationSearch, User, Messages, Comments, Posts
+from api.views import Events, LocationSearch, User, Messages, Comments, Posts, JasonWebTokens
 from django.urls import path, re_path, include
 from rest_framework_jwt.views import obtain_jwt_token, refresh_jwt_token
 
@@ -9,10 +9,22 @@ urlpatterns = [
     name='host_message_request'
   ),
 
-  # Authorization
-  path('auth/login/', obtain_jwt_token),
+  # Google login
+  path('auth/google',
+    User.GoogleLoginSignUp.as_view(),
+    name='google_login'
+  ),
 
-  path('auth/refresh_login/', refresh_jwt_token),
+  # Authorization
+  path('auth/login/',
+    JasonWebTokens.ObtainJasonWebToken.as_view(),
+    name='obatin_jwt'
+  ),
+
+  path('auth/refresh_login/',
+    JasonWebTokens.RefreshJasonWebToken.as_view(),
+    name='refresh_token'
+  ),
 
   # Search
   path('events/<location>/',

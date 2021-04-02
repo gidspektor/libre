@@ -26,7 +26,7 @@
       <div class='col-lg-8 col-10 line text-center'><span class='or'>or</span></div>
     </div>
     <div class='pt-lg-4 row d-flex justify-content-center'>
-      <button type='button' class='col-lg-6 col-10 btn customButton'>
+      <button type='button' class='col-lg-6 col-10 btn customButton' v-google-signin-button='clientId'>
         <div>
           <img class='d-inline logos' src='~@/assets/img/google.png'>
           <div class='d-inline libreFont mr-4'>Continue with Google</div>
@@ -44,20 +44,56 @@
   </main>
 </template>
 <script>
+import GoogleSignInButton from 'vue-google-signin-button-directive'
 import {validateEmail} from '../../tools'
+import {post} from '../../http-common'
+import store from '../../store'
 
 export default {
+  directives: {
+    GoogleSignInButton
+  },
+
   data () {
     return {
       email: '',
       validateEmail: validateEmail,
       error: '',
       password: '',
-      emailError: ''
+      emailError: '',
+      clientId: store.state.clientId
     }
   },
 
   methods: {
+    async OnGoogleAuthSuccess (idToken) {
+      this.error = ''
+      this.isLoading = true
+      let response = await post('auth/google', {token: idToken})
+
+      if (response.data.error) {
+        this.error = response.data.error
+      }
+
+      if (response.data.success) {
+        this.$store.dispatch('setTokenWithSocialMedia', idToken).catch((badRequest) => {
+          badRequest = 'Auth error'
+          this.error = badRequest
+        }).then(() => {
+          this.isLoading = false
+
+          if (!this.error) {
+            this.$router.go(-1)
+          }
+        })
+      }
+
+      this.loading = false
+    },
+    OnGoogleAuthFail (error) {
+      this.loading = false
+      console.log(error)
+    },
     async login () {
       this.error = ''
       let emailIsValid = this.validateEmail(this.email)

@@ -28,12 +28,19 @@ export function inspectToken () {
 
   if (localStorage.getItem('t')) {
     const decoded = jwtDecode(localStorage.getItem('t'))
-    const exp = decoded.exp
-    const origIat = decoded.orig_iat
 
-    if (exp - (Date.now() / 1000) < 1800 && (Date.now() / 1000) - origIat > 86400) {
+    const exp = decoded.exp
+    let iat = null
+
+    if (Object.keys(decoded).includes('orig_at')) {
+      iat = decoded.orig_iat
+    } else {
+      iat = decoded.iat
+    }
+
+    if (exp - (Date.now() / 1000) < 1800 && (Date.now() / 1000) - iat > 86400) {
       state = 'refresh'
-    } else if (exp - (Date.now() / 1000) < 1800 && exp - (Date.now() / 1000) > 0) {
+    } else if (exp - (Date.now() / 1000) < 3600) {
       state = 'active'
     } else {
       state = 'expired'
@@ -47,7 +54,6 @@ export function checkJwtActive () {
   let tokenState = inspectToken()
 
   if (tokenState === 'active') {
-    console.log('1')
     return tokenState
   } else {
     console.log('redo')

@@ -41,7 +41,7 @@
                 </div>
               </div>
               <div class='pt-lg-4 row d-flex justify-content-center'>
-                <button type='button' class='col-11 btn customButton'>
+                <button type='button' class='col-11 btn customButton' v-google-signin-button='clientId'>
                   <div>
                     <img class='d-inline logos' src='~@/assets/img/google.png'>
                     <div class='d-inline libreFont mr-4'>Continue with Google</div>
@@ -112,6 +112,7 @@
 import GoogleSignInButton from 'vue-google-signin-button-directive'
 import {post} from '../http-common'
 import {validateEmail} from '../tools'
+import store from '../store'
 
 export default {
   directives: {
@@ -132,19 +133,40 @@ export default {
       passwordLengthError: '',
       passwordNotMatchError: '',
       nameError: '',
-      isLoading: false
-      // clientId: '',
-      // v-google-signin-button='clientId'
+      isLoading: false,
+      clientId: store.state.clientId
     }
   },
 
   methods: {
-    // OnGoogleAuthSuccess (idToken) {
-    //   console.log(idToken)
-    // },
-    // OnGoogleAuthFail (error) {
-    //   console.log(error)
-    // },
+    async OnGoogleAuthSuccess (idToken) {
+      this.error = ''
+      this.isLoading = true
+      let response = await post('auth/google', {token: idToken})
+
+      if (response.data.error) {
+        this.error = response.data.error
+      }
+
+      if (response.data.success) {
+        this.$store.dispatch('setTokenWithSocialMedia', idToken).catch((badRequest) => {
+          badRequest = 'Auth error'
+          this.error = badRequest
+        }).then(() => {
+          this.isLoading = false
+
+          if (!this.error) {
+            this.$emit('next-page')
+          }
+        })
+      }
+
+      this.loading = false
+    },
+    OnGoogleAuthFail (error) {
+      this.loading = false
+      console.log(error)
+    },
     goBack () {
       if (this.continueWithEmail && !this.signUpUser) {
         this.continueWithEmail = false
@@ -238,13 +260,12 @@ export default {
             badRequest = 'Username and/or password not found.'
             this.error = badRequest
           }).then(() => {
-            this.isLoading = false
-
             if (!this.error) {
               this.$emit('next-page')
             }
           })
         }
+        this.isLoading = false
       }
     }
   }

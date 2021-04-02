@@ -5,8 +5,6 @@ WEBSITES = {
   }
 }
 
-# api_key = hE8LjPWB.kdyqCd5aHMwLEEOytZG3EonhCoMKWhIA
-
 CITIES_LIST = {
   'spain': {
     'Sabadell',
@@ -55,3 +53,5 @@ CITIES_LIST = {
     'Polinya'
   }
 }
+
+GOOGLE_CLIENT_ID = '882049321443-dcuqps7sjf6ta8c0g581j15vnqk8j0p3.apps.googleusercontent.com'

@@ -25,6 +25,8 @@ export default {
   },
 
   async created () {
+    document.addEventListener('beforeunload', this.$store.dispatch('logout'))
+
     let securePages = ['eventPage', 'account']
     let tokenState = inspectToken()
 

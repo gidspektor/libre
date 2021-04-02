@@ -19,7 +19,7 @@ export default new Vuex.Store({
     },
     isGuest: false,
     keywordLocationSearch: '',
-    clientId: '737037142096-pmqa51ssn0q24g1gag0ckln70ff0vlo1.apps.googleusercontent.com',
+    clientId: '882049321443-dcuqps7sjf6ta8c0g581j15vnqk8j0p3.apps.googleusercontent.com',
     loading: false
   },
 
@@ -118,6 +118,10 @@ export default new Vuex.Store({
     },
     setLoading (context, data) {
       context.commit('setLoading', data)
+    },
+    async setTokenWithSocialMedia (context, data) {
+      await this.dispatch('getUserInfo', data)
+      context.commit('updateToken', data)
     }
   }
 })

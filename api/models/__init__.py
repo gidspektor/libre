@@ -7,3 +7,4 @@ from .UserEventsAssoc import *
 from .UserPosts import *
 from .UserComments import *
 from .UserPostCommentsAssoc import *
+from .UserSocialLogin import *
