@@ -38,7 +38,6 @@ export default {
         localStorage.removeItem('t')
         this.$router.push('/')
       })
-      this.$store.dispatch('getUserInfo', localStorage.getItem('t'))
     }
 
     if (tokenState === 'expired' && securePages.includes(this.$route.name)) {

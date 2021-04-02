@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import axios from 'axios'
+import jwtDecode from 'jwt-decode'
 
 Vue.use(Vuex)
 
@@ -75,18 +76,26 @@ export default new Vuex.Store({
       context.commit('updateToken', response.data.token)
     },
     async refreshToken (context) {
-      const payload = {
-        token: this.state.jwt
+      let isGoogleJwt = false
+ 
+      const decoded = jwtDecode(localStorage.getItem('t'))
+
+      if (Object.keys(decoded).includes('iss')) {
+        isGoogleJwt = decoded.iss === 'accounts.google.com'
       }
-      let response = await axios.post(this.state.endpoints.refreshJWT, payload)
 
-      if (response.error) {
-        console.log(response.error)
+      if (!isGoogleJwt) {
+        const payload = {
+          token: this.state.jwt
+        }
+        let response = await axios.post(this.state.endpoints.refreshJWT, payload)
+  
+        await this.dispatch('getUserInfo', response.data.token)
+  
+        context.commit('updateToken', response.data.token)
+      } else {
+        localStorage.removeItem('t')
       }
-
-      await this.dispatch('getUserInfo', response.data.token)
-
-      context.commit('updateToken', response.data.token)
     },
     async getUserInfo (context, token) {
       let response = await axios.get(this.state.endpoints.baseUrl + 'user-info', {
