@@ -33,14 +33,14 @@
         </div>
       </button>
     </div>
-    <div class='row d-flex justify-content-center mt-lg-3'>
+    <!-- <div class='row d-flex justify-content-center mt-lg-3'>
       <button type='button' class='col-lg-6 col-10 btn customButton'>
         <div>
           <img class='d-inline logos ml-3' src='~@/assets/img/fb.png'>
           <div class='d-inline libreFont mr-4'>Continue with Facebook</div>
         </div>
       </button>
-    </div>
+    </div> -->
   </main>
 </template>
 <script>
