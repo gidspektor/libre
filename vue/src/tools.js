@@ -29,18 +29,18 @@ export function inspectToken () {
   if (localStorage.getItem('t')) {
     const decoded = jwtDecode(localStorage.getItem('t'))
 
-    const exp = decoded.exp
+    const exp = parseFloat(decoded.exp)
     let iat = null
 
     if (Object.keys(decoded).includes('orig_at')) {
-      iat = decoded.orig_iat
+      iat = parseFloat(decoded.orig_iat)
     } else {
-      iat = decoded.iat
+      iat = parseFloat(decoded.iat)
     }
 
     if (exp - (Date.now() / 1000) < 1800 && (Date.now() / 1000) - iat > 86400) {
       state = 'refresh'
-    } else if (exp - (Date.now() / 1000) < 3600) {
+    } else if (exp - (Date.now() / 1000) < 3600 && exp - (Date.now() / 1000) > 0) {
       state = 'active'
     } else {
       state = 'expired'
