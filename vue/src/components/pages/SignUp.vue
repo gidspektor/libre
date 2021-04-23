@@ -90,13 +90,12 @@ export default {
     async OnGoogleAuthSuccess (idToken) {
       this.error = ''
       this.isLoading = true
-      let response = await post('auth/google', {token: idToken})
+      let response = await post('auth/google', {token: idToken}).catch(error => {
+        this.error = error.response.data.detail
+        this.isLoading = false
+      })
 
-      if (response.data.error) {
-        this.error = response.data.error
-      }
-
-      if (response.data.success) {
+      if (response && (response.status === 201 || response.status === 200)) {
         this.$store.dispatch('setTokenWithSocialMedia', idToken).catch((badRequest) => {
           badRequest = 'Auth error'
           this.error = badRequest
@@ -157,13 +156,11 @@ export default {
           email: this.email,
           password: this.password,
           password_confirm: this.passwordRepeat
+        }).catch(error => {
+          this.error = error.response.data.username[0]
         })
 
-        if (response.data.error) {
-          this.error = response.data.error
-        }
-
-        if (response.data.success) {
+        if (response && response.status === 201) {
           await this.$store.dispatch('obtainToken', [this.email, this.password]).catch((badRequest) => {
             badRequest = 'Username and/or password not found.'
             this.error = badRequest

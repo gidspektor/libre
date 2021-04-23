@@ -82,12 +82,8 @@ export default {
     async getComments () {
       let response = await get(`get-comments/${this.post.id}`)
 
-      if (response.data.error) {
-        this.error = response.data.error
-      } else {
-        this.comments = response.data.results
-        this.inputComment = ''
-      }
+      this.comments = response.data
+      this.inputComment = ''
     },
     async submitComment () {
       if (/\S/.test(this.inputComment)) {
@@ -95,14 +91,12 @@ export default {
         this.showModal = false
         document.querySelector('body').style.overflow = ''
 
-        let data = {comment: cleanedComment, post_id: this.post.id}
-        let response = await post('create-comment/', data)
+        let data = {comment: cleanedComment, post: this.post.id}
+        let response = await post('create-comment/', data).catch(error => {
+          this.error = error.response.data
+        })
 
-        if (response.data.error) {
-          this.error = response.data.error
-        }
-
-        if (response.data.success) {
+        if (response.status === 201) {
           this.getComments()
         }
       }

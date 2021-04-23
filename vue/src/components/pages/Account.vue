@@ -98,9 +98,9 @@
                     class='d-block clickable'
                     v-for='(userCommentedOnPost, index) in userCommentedOnPosts'
                     :key='index'
-                    @click='goToPost(userCommentedOnPost)'
+                    @click='goToPost(userCommentedOnPost.post)'
                   >
-                    {{userCommentedOnPost.title}}
+                    {{userCommentedOnPost.post.title}}
                   </small>
                 </div>
               </div>
@@ -130,7 +130,7 @@ export default {
   async created () {
     this.user = store.state.user
 
-    let userEvents = await get(`user-event-info`)
+    let userEvents = await get(`user-events`)
 
     this.futureEvents = userEvents.data.future_events.filter((event, index, self) => {
       return self.indexOf(event) === index
@@ -140,11 +140,15 @@ export default {
       return self.indexOf(event) === index
     })
 
-    let userCommentedOnPostsResponse = await get('user-commented-posts')
-    this.userCommentedOnPosts = userCommentedOnPostsResponse.data.results
+    let userCommentedOnPostsResponse = await get('user-comments')
+
+    let seen = []
+    this.userCommentedOnPosts = userCommentedOnPostsResponse.data.filter(comment => {
+      return seen.includes(comment.post.id) ? false : seen.push(comment.post.id)
+    })
 
     let userPostsResponse = await get('user-posts')
-    this.userPosts = userPostsResponse.data.results
+    this.userPosts = userPostsResponse.data.data
   },
 
   methods: {

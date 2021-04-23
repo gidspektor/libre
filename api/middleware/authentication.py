@@ -22,4 +22,5 @@ class JwtAuthentication(authentication.BaseAuthentication, VerifyJSONWebTokenSer
     user = User.objects.filter(username=username).first()
 
     if user:
+      request.data['user'] = user.id
       return (user, None)

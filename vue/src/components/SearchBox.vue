@@ -133,16 +133,17 @@ export default {
         this.$store.dispatch('setLoading', true)
         this.error = ''
         let cleanedString = this.sanitizeSearchString(this.keywordLocationSearch)
-        let response = await get(`events/${cleanedString}?date=${this.date}`)
+        let response = await get(`events/${cleanedString}?date=${this.date}`).catch(error => {
+          this.error = error.response.data.detail
+          this.$store.dispatch('setLoading', false)
+        })
 
-        if (response.data.error) {
-          this.error = response.data.error
-        } else {
-          this.$store.dispatch('eventSearchResults', response.data.results)
+        if (response && response.status === 200) {
+          this.$store.dispatch('eventSearchResults', response.data.data)
           this.$store.dispatch('setkeywordLocationSearch', response.data.location)
         }
 
-        if (!response.data.results || response.data.results.length === 0) {
+        if (response && (!response.data.results || response.data.results.length === 0)) {
           this.$emit('no-results')
         }
 
@@ -155,18 +156,17 @@ export default {
         this.error = ''
         let cleanedLocationString = this.sanitizeSearchString(this.keywordLocationSearch)
         let cleanedSearchTermString = this.sanitizeSearchString(this.keywordPostSearch)
-        let response = await get(`posts/${cleanedLocationString}?search-term=${cleanedSearchTermString}`)
+        let response = await get(`posts/${cleanedLocationString}?search-term=${cleanedSearchTermString}`).catch(error => {
+          this.error = error.response.data.detail
+          this.$store.dispatch('setLoading', false)
+        })
 
-        this.$store.dispatch('setkeywordLocationSearch', response.data.location)
-
-        if (response.data.error) {
-          this.error = response.data.error
-        } else {
+        if (response && response.status === 200) {
           this.$store.dispatch('setkeywordLocationSearch', response.data.location)
-          this.$store.dispatch('postSearchResults', response.data.results)
+          this.$store.dispatch('postSearchResults', response.data.data)
         }
 
-        if (!response.data.results || response.data.results.length === 0) {
+        if (response && (!response.data.data || response.data.data.length === 0)) {
           this.$emit('no-results')
         }
 

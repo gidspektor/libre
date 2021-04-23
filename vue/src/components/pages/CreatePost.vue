@@ -99,13 +99,12 @@ export default {
           description: cleanedDescription,
           location: cleanedLocation,
           title: cleanedTitle
+        }).catch(error => {
+          this.error = error.response.data.error
+          this.loading = false
         })
 
-        if (response.data.error) {
-          this.error = response.data.error
-        }
-
-        if (response.data.success) {
+        if (response && response.status === 201) {
           this.requestSent = true
         }
       }

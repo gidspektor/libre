@@ -1,4 +1,4 @@
-from api.views import Events, LocationSearch, User, Messages, Comments, Posts, JasonWebTokens
+from api.views import Events, LocationSearch, User, Messages, Comments, Posts, JasonWebTokens, UserEventsAssoc
 from django.urls import path, re_path, include
 from rest_framework_jwt.views import obtain_jwt_token, refresh_jwt_token
 
@@ -26,68 +26,68 @@ urlpatterns = [
     name='refresh_token'
   ),
 
-  # Search
+  # Events
   path('events/<location>/',
-    Events.EventsListView.as_view(),
+    Events.EventList.as_view(),
     name='events'
   ),
 
+  path('purchase-ticket/',
+    UserEventsAssoc.UserEventsAssocDetail.as_view(),
+    name='purchase_tickets'
+  ),
+
+  # Search
   path('locations/<search_string>/',
     LocationSearch.LocationListView.as_view(),
     name='locations'
   ),
 
-  # User actions
+  # User
   path('create-user/',
-    User.NewUserView.as_view(),
+    User.UserDetail.as_view(),
     name='user_creation'
   ),
 
   path('user-info/',
-    User.UserInfoDetailView.as_view(),
+    User.UserInfo.as_view(),
     name='user_info'
   ),
 
-  path('user-event-info/',
-    User.UserEventsView.as_view(),
+  path('user-events/',
+    UserEventsAssoc.UserEventsAssocList.as_view(),
     name='user_events'
   ),
 
-  # Event actions
-  path('purchase-ticket/',
-    Events.EventTicketPurchaseView.as_view(),
-    name='purchase_tickets'
+  path('user-posts/',
+    Posts.UserPostsList.as_view(),
+    name='user_posts'
   ),
 
-  # User posts
+  path('user-comments/',
+    Comments.UserCommentsList.as_view(),
+    name='user_comments'
+  ),
+
+  # Posts
   path('posts/<location>/',
-    Posts.PostsListView.as_view(),
+    Posts.AllPostsList.as_view(),
     name='posts'
   ),
 
   path('create-post/',
-    Posts.CreatePost.as_view(),
+    Posts.PostDetail.as_view(),
     name='create_post'
   ),
 
-  path('user-posts/',
-    Posts.UserPostsListView.as_view(),
-    name='user_posts'
-  ),
-
-  path('user-commented-posts/',
-    Posts.UserCommentedOnPostsListView.as_view(),
-    name='user_commented_on_posts'
-  ),
-
-  # User comments
+  # Comments
   path('create-comment/',
-    Comments.CreateComment.as_view(),
+    Comments.CommentsDetail.as_view(),
     name='create_comment'
   ),
 
   path('get-comments/<post_id>/',
-    Comments.CommentsListView.as_view(),
+    Comments.CommentsList.as_view(),
     name='get_comments'
   )
 ]

@@ -44,7 +44,7 @@ class LocationListView(APIView):
     return JsonResponse(data)
 
 
-class LocationDetailView(DetailView):
+class LocationDetailMixin(DetailView):
   def grab_one_location(self, search_string):
     found = False
     location = ''

@@ -1,12 +1,12 @@
 <template>
-  <main class='container-fluid bg-white section pt-5'>
+  <main v-if='dataLoaded' class='container-fluid bg-white section pt-5'>
     <div class='row pt-5'>
       <div v-if='purchaseComplete || alreadyAttending' class='col-12 col-md-6 mt-5 pl-4 pl-lg-5'>
         <div class='col-lg-12'>
-          <h5 v-if='alreadyAttending' class='libreFont'>You're already going to {{this.event.name}}!</h5>
-          <h5 v-else class='libreFont'>You're going to {{this.event.name}}!</h5>
+          <h5 v-if='alreadyAttending' class='libreFont'>You're already going to {{ this.event.name }}!</h5>
+          <h5 v-else class='libreFont'>You're going to {{ this.event.name }}!</h5>
           <p class='libreFont d-inline'>You will receive your tickets via email at</p>
-          <p class='d-inline libreFont font-weight-bold'>{{this.email}}</p>
+          <p class='d-inline libreFont font-weight-bold'>{{ this.email }}</p>
         </div>
       </div>
       <div v-if='!purchaseComplete && !alreadyAttending' class='col-12 col-md-6 mt-5 pl-4 pl-lg-5'>
@@ -87,7 +87,7 @@
 </template>
 
 <script>
-import {post} from '../../http-common'
+import {post, get} from '../../http-common'
 import store from '../../store'
 import {validateEmail, formatDate} from '../../tools'
 export default {
@@ -114,6 +114,7 @@ export default {
       alreadyAttending: false,
       boughtOne: false,
       loading: false,
+      dataLoaded: false,
       error: ''
     }
   },
@@ -127,7 +128,7 @@ export default {
 
     this.email = store.state.user.email
     this.name = store.state.user.first_name + ' ' + store.state.user.last_name
-    this.checkIfAlreadyAttending(store.state.user)
+    this.checkIfAlreadyAttending()
   },
 
   computed: {
@@ -137,20 +138,22 @@ export default {
   },
 
   methods: {
-    checkIfAlreadyAttending (user) {
-      if (user.future_events.length) {
-        let quantityPurchased = user.future_events.filter(event =>
-          event.name === this.event.name
-        )
+    async checkIfAlreadyAttending (user) {
+      let response = await get('user-events')
 
-        if (quantityPurchased[0].quantity === 2) {
-          this.alreadyAttending = true
-        }
+      let quantityPurchased = response.data.future_events.filter(event => {
+        return event === this.event.name
+      })
 
-        if (quantityPurchased[0].quantity === 1) {
-          this.boughtOne = true
-        }
+      if (quantityPurchased.length === 1) {
+        this.boughtOne = true
       }
+
+      if (quantityPurchased.length === 2) {
+        this.alreadyAttending = true
+      }
+
+      this.dataLoaded = true
     },
     checkIsNumber (event) {
       if (event.target.value && !/^\d+$/.test(event.target.value)) {
@@ -196,8 +199,8 @@ export default {
 
       if (formIsValid) {
         let response = await post('purchase-ticket/', {
-          user_info: store.state.user,
-          event_id: this.event.event_id,
+          email: store.state.user.email,
+          event: this.event.event_id,
           card_number: this.cardNumber,
           csv: this.csv,
           expiry_month: this.month,
@@ -209,7 +212,7 @@ export default {
           this.loading = false
         })
 
-        if (response.data.success) {
+        if (response.status === 201) {
           this.purchaseComplete = true
           this.$store.dispatch('getUserInfo', localStorage.getItem('t'))
         }
